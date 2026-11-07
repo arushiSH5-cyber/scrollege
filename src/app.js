@@ -106,7 +106,7 @@ const S={natVoice:true,feed:"mine",review:[],limit:5,deckId:"demo",onboarded:fal
  src:"your notes",idx:0,seen:new Set(),got:new Set(),later:new Set(),wrong:[],xp:0,streak:3,tab:"feed",hist:[],test:null,story:false,simple:new Set(),built:false};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],screen=$("#screen");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const hush=()=>{VOX.gen++;try{VOX.audio&&VOX.audio.pause()}catch(e){}try{speechSynthesis.cancel()}catch(e){}};
+const hush=()=>{VOX.gen++;VOX.active=false;VOX.paused=false;try{VOX.audio&&VOX.audio.pause()}catch(e){}try{speechSynthesis.cancel()}catch(e){}setVoxBtn()};
 function toast(m){$$(".toast").forEach(x=>x.remove());const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=m;screen.appendChild(t);setTimeout(()=>t.remove(),2600)}
 /* ---------- sound: soft synth SFX + lo-fi game music (WebAudio, no files) ---------- */
 let AC,MST,FX;
@@ -159,17 +159,24 @@ function yay(){beep(660);beep(880,.1,"sine",.08);beep(1100,.12,"sine",.16);if(S.
 /* ---------- voice ----------
    Natural voice (Cartesia, via /api/tts so the key stays on the server) when it's set up and on in Me.
    Otherwise the most natural voice this device has. say() returns a handle with .onend like an utterance. */
-const VOX={on:false,gen:0,audio:null,cache:new Map(),dev:null};
+const VOX={on:false,gen:0,audio:null,cache:new Map(),dev:null,active:false,paused:false,mode:"device",btn:null};
+/* pause / resume: the button that started the voice turns into ⏸ while talking and ▶ while paused */
+function setVoxBtn(){const b=VOX.btn;if(!b||!b.isConnected||!b._labels)return;const L=b._labels,st=VOX.active?(VOX.paused?"resume":"pause"):"idle";b.innerHTML=L[st];b.setAttribute("aria-label",{idle:L.aria,pause:"Pause",resume:"Resume"}[st]);b.setAttribute("aria-pressed",st==="pause")}
+function voxEnd(g){if(g!==undefined&&g!==VOX.gen)return;VOX.active=false;VOX.paused=false;setVoxBtn()}
+function voicePause(){if(!VOX.active||VOX.paused)return;VOX.paused=true;try{VOX.audio&&!VOX.audio.paused&&VOX.audio.pause()}catch(e){}try{speechSynthesis.pause()}catch(e){}setVoxBtn()}
+function voiceResume(){if(!VOX.active||!VOX.paused)return;VOX.paused=false;try{if(VOX.mode==="audio"&&VOX.audio&&VOX.audio.src)VOX.audio.play()}catch(e){}try{speechSynthesis.resume()}catch(e){}setVoxBtn()}
+function voiceToggle(btn){if(VOX.btn===btn&&VOX.active){VOX.paused?voiceResume():voicePause();return true}return false}
+function voiceBtn(btn,labels){VOX.btn=btn;if(btn)btn._labels=labels;setVoxBtn()}
 fetch("/api/tts").then(r=>r.ok?r.json():{on:false}).then(j=>{VOX.on=!!j.on}).catch(()=>{});
 function deviceVoice(){if(VOX.dev!==null)return VOX.dev;try{const vs=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));if(!vs.length)return null;
   const rank=v=>(/natural|neural|premium|enhanced|siri/i.test(v.name)?4:0)+(/samantha|ava|allison|serena|karen|moira|google us english|aria|jenny/i.test(v.name)?2:0)+(v.localService?0:1)+(/en-us/i.test(v.lang)?1:0);
   VOX.dev=vs.sort((a,b)=>rank(b)-rank(a))[0];return VOX.dev}catch(e){return null}}
 try{speechSynthesis.onvoiceschanged=()=>{VOX.dev=null}}catch(e){}
-function speakDevice(t,rate,h){try{const u=new SpeechSynthesisUtterance(t);u.rate=rate;const v=deviceVoice();if(v)u.voice=v;if(h){u.pitch=h.pitch||1;u.onend=()=>h.onend&&h.onend();u.onboundary=e=>h.onboundary&&h.onboundary(e)}speechSynthesis.speak(u);return u}catch(e){return null}}
-function say(t,rate,mood){if(S.calm&&!rate)rate=.9;rate=rate||1;hush();
+function speakDevice(t,rate,h){try{const u=new SpeechSynthesisUtterance(t);u.rate=rate;const v=deviceVoice();if(v)u.voice=v;if(h){u.pitch=h.pitch||1;u.onend=()=>h.onend&&h.onend();u.onboundary=e=>h.onboundary&&h.onboundary(e)}const g=VOX.gen;u.addEventListener("end",()=>voxEnd(g));u.addEventListener("error",()=>voxEnd(g));VOX.mode="device";speechSynthesis.speak(u);return u}catch(e){return null}}
+function say(t,rate,mood){if(S.calm&&!rate)rate=.9;rate=rate||1;hush();VOX.active=true;
   if(!(VOX.on&&S.natVoice!==false&&navigator.onLine!==false))return speakDevice(t,rate);
   const g=VOX.gen,h={pitch:1,onend:null,onboundary:null},m=S.calm?"calm":mood||"content",key=m+"|"+rate.toFixed(2)+"|"+t;
-  const play=url=>{if(g!==VOX.gen)return;VOX.audio=VOX.audio||new Audio();const a=VOX.audio;a.src=url;a.volume=Math.min(1,Math.max(.1,S.vol??.8));a.onended=()=>h.onend&&h.onend();a.play().catch(()=>{if(g===VOX.gen)speakDevice(t,rate,h)})};
+  const play=url=>{if(g!==VOX.gen)return;VOX.mode="audio";VOX.audio=VOX.audio||new Audio();const a=VOX.audio;a.src=url;a.volume=Math.min(1,Math.max(.1,S.vol??.8));a.onended=()=>{voxEnd(g);h.onend&&h.onend()};if(!VOX.paused)a.play().catch(()=>{if(g===VOX.gen)speakDevice(t,rate,h)})};
   const hit=VOX.cache.get(key);if(hit){play(hit);return h}
   fetch("/api/tts",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({text:t,speed:rate,mood:m})})
     .then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>{const u=URL.createObjectURL(b);VOX.cache.set(key,u);play(u)})
@@ -380,13 +387,13 @@ function bindFeed(){
     if(slot.hasAttribute("data-game")){const g=ev.target.closest("[data-g]");if(g)return playGame(g.dataset.g,0);return}
     if(!slot.dataset.i)return;const i=+slot.dataset.i,r=DECK.reels[i];
     const mb=ev.target.closest("[data-m]");if(mb){S.mode=mb.dataset.m;hush();$$("#feedV .slot[data-i]").forEach(s=>{const j=+s.dataset.i;s.querySelectorAll("[data-m]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===S.mode));s.querySelector(".stage").innerHTML=stage(DECK.reels[j],j)});tickCaps();beep(600);return}
-    if(ev.target.closest("[data-play]"))return podcast(slot,r,i,1);
+    const pb=ev.target.closest("[data-play]");if(pb){if(voiceToggle(pb))return;return podcast(slot,r,i,1)}
     const vb=ev.target.closest("[data-vibe]");if(vb){S.vibe=vb.dataset.vibe;slot.querySelectorAll("[data-vibe]").forEach(x=>x.style.background=x===vb?"var(--pink)":"");return podcast(slot,r,i,1)}
     const sp=ev.target.closest("[data-spd]");if(sp){slot.querySelectorAll("[data-spd]").forEach(x=>x.style.background=x===sp?"var(--pink)":"");return podcast(slot,r,i,+sp.dataset.spd)}
     if(ev.target.closest("[data-simple]")){S.simple.has(i)?S.simple.delete(i):S.simple.add(i);slot.querySelector(".stage").innerHTML=stage(r,i);return}
     if(ev.target.closest("[data-bion]")){S.bionic=!S.bionic;slot.querySelector(".stage").innerHTML=stage(r,i);return}
     if(ev.target.closest("[data-rul]")){S.ruler=!S.ruler;slot.querySelector(".stage").innerHTML=stage(r,i);return}
-    if(ev.target.closest("[data-ra]"))return say(S.simple.has(i)?r.simple:r.t+". "+r.read.join(". "));
+    const ra=ev.target.closest("[data-ra]");if(ra){if(voiceToggle(ra))return;say(S.simple.has(i)?r.simple:r.t+". "+r.read.join(". "));voiceBtn(ra,{idle:"🔊 Read aloud",pause:"⏸ Pause",resume:"▶ Resume",aria:"Read aloud"});return}
     if(ev.target.closest("[data-v3]"))return video3d(r);
     if(ev.target.closest("[data-try]"))return fitLab();
     const rn=ev.target.closest("[data-run]");if(rn)return playGame(rn.dataset.run||"run",i);
@@ -411,10 +418,10 @@ function answer(slot,r,i,k){const ok=k===r.q[2];slot.querySelectorAll("[data-ans
   const box=slot.querySelector("[data-quiz]");box.insertAdjacentHTML("beforeend",`<div class="opt ${ok?"right":"wrong"}" style="display:block"><b>${ok?"🎉 Yes!":"💛 Not quite, that's okay."}</b> <small>${esc(r.q[3])}</small></div>${ok?"":`<button class="cta alt" style="padding:10px" data-retry>Try again</button>`}`);
   if(ok){S.xp+=10;learned(i);yay()}else{missed(i);beep(330,.15,"triangle")}
   const rt=box.querySelector("[data-retry]");if(rt)rt.onclick=()=>{slot.querySelector(".stage").innerHTML=stage(r,i)}}
-let podT;function podcast(slot,r,i,rate){const box=slot.querySelector("[data-pod]");clearTimeout(podT);hush();box.classList.add("on");
+let podT;function podcast(slot,r,i,rate){const box=slot.querySelector("[data-pod]"),pb=box.querySelector("[data-play]");clearTimeout(podT);hush();box.classList.add("on");
   const words=[...box.querySelectorAll("w")];words.forEach(w=>w.classList.remove("on"));const all=r.pod.map(p=>p[1]).join(" ");
   const V={chill:[1,1],hype:[1.15,1.25],cozy:[.9,.85],gamer:[1.1,1.4]}[S.vibe]||[1,1];const intro={hype:"Let's GO! ",cozy:"Okay, get comfy. ",gamer:"New quest unlocked. ",chill:""}[S.vibe]||"";
-  const u=say(intro+all,rate*V[0],{chill:"content",hype:"excited",cozy:"calm",gamer:"enthusiastic"}[S.vibe]);if(u)u.pitch=V[1];let n=0;const step=()=>{words.forEach(w=>w.classList.remove("on"));if(n<words.length){words[n].classList.add("on");n++;podT=setTimeout(step,330/rate)}else box.classList.remove("on")};step();
+  const u=say(intro+all,rate*V[0],{chill:"content",hype:"excited",cozy:"calm",gamer:"enthusiastic"}[S.vibe]);if(u)u.pitch=V[1];voiceBtn(pb,{idle:"▶",pause:"⏸",resume:"▶",aria:"Play"});let n=0;const step=()=>{if(VOX.paused){podT=setTimeout(step,150);return}words.forEach(w=>w.classList.remove("on"));if(n<words.length){words[n].classList.add("on");n++;podT=setTimeout(step,330/rate)}else box.classList.remove("on")};step();
   if(u){u.onboundary=e=>{if(e.name!=="word")return;clearTimeout(podT);const idx=(intro+all).slice(0,e.charIndex).split(" ").length-1-(intro?intro.trim().split(" ").length:0);words.forEach((w,k)=>w.classList.toggle("on",k===idx))};u.onend=()=>{clearTimeout(podT);box.classList.remove("on");words.forEach(w=>w.classList.remove("on"))}}}
 function game(ev,slot){
   const it=ev.target.closest("[data-it]");if(it){slot.querySelectorAll("[data-it]").forEach(x=>x.setAttribute("aria-pressed",x===it));beep(620);return}

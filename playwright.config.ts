@@ -9,7 +9,7 @@ export default defineConfig<Opts>({
   fullyParallel: true,
   workers: 4,
   reporter: [["list"]],
-  use: { baseURL: "http://localhost:5174", trace: "retain-on-failure", launchOptions: { args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--mute-audio"] } },
+  use: { baseURL: "http://localhost:5174", trace: "retain-on-failure", launchOptions: { args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--mute-audio", "--autoplay-policy=no-user-gesture-required"] } },
   webServer: { command: "npx vite --port 5174 --strictPort", url: "http://localhost:5174", reuseExistingServer: false, env: { DEMO_MODE: "true" } },
   projects: [
     { name: "phone-sky", use: { ...phone, theme: "sky" }, testIgnore: /desktop/ },

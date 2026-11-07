@@ -422,3 +422,40 @@ test("no natural voice set up: falls back to the device voice, no switch in Me",
   await page.getByText("🧠 Brain modes").click();
   await expect(page.locator('[data-set="natVoice"]')).toHaveCount(0);
 });
+
+/** a silent WAV clip, `sec` seconds long (so tests can "play" the voice without any sound) */
+function silentWav(sec: number) {
+  const rate = 8000, n = rate * sec, b = Buffer.alloc(44 + n);
+  b.write("RIFF", 0); b.writeUInt32LE(36 + n, 4); b.write("WAVE", 8); b.write("fmt ", 12); b.writeUInt32LE(16, 16);
+  b.writeUInt16LE(1, 20); b.writeUInt16LE(1, 22); b.writeUInt32LE(rate, 24); b.writeUInt32LE(rate, 28); b.writeUInt16LE(1, 32); b.writeUInt16LE(8, 34);
+  b.write("data", 36); b.writeUInt32LE(n, 40); b.fill(128, 44);
+  return b;
+}
+
+test("Read aloud and Listen can pause and resume the voice", async ({ page, app }) => {
+  await page.route("**/api/tts", async (r) => {
+    if (r.request().method() === "GET") return r.fulfill({ json: { on: true } });
+    await r.fulfill({ status: 200, contentType: "audio/wav", body: silentWav(3) });
+  });
+  await app.open({ mode: "read", calm: false, sound: true });
+  const ra = app.slot(0).locator("[data-ra]");
+  await ra.click();
+  await expect(ra).toHaveText("⏸ Pause");
+  await ra.click();
+  await expect(ra).toHaveText("▶ Resume");
+  await page.waitForTimeout(3500);                 // paused: it must not finish on its own
+  await expect(ra).toHaveText("▶ Resume");
+  await ra.click();
+  await expect(ra).toHaveText("⏸ Pause");
+  await expect(ra).toHaveText("🔊 Read aloud", { timeout: 25_000 }); // finished → back to idle
+
+  await app.slot(1).locator('[data-m="listen"]').click();
+  const play = app.slot(1).locator("[data-play]");
+  await play.click();
+  await expect(play).toHaveAttribute("aria-label", "Pause");
+  await expect(play).toHaveText("⏸");
+  await play.click();
+  await expect(play).toHaveAttribute("aria-label", "Resume");
+  await play.click();
+  await expect(play).toHaveAttribute("aria-label", "Pause");
+});
