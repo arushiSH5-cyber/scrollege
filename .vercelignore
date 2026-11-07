@@ -1,0 +1,10 @@
+# never upload secrets or local junk to Vercel
+.env
+.env.*
+!.env.example
+node_modules
+dist
+test-results
+playwright-report
+.claude
+reference

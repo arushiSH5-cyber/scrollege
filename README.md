@@ -10,7 +10,12 @@ Drop your class notes, a PDF or a photo. Get a TikTok-style feed, 3D games and m
 shaped around **your** brain. Built for ADHD, dyslexic and autistic students first, and friendly for everyone.
 
 <!-- LIVE-LINK:START -->
-**🌐 Live demo: coming soon** · works on phone and laptop · installable as an app (PWA)
+### 🌐 Try it: **[scrollege.vercel.app](https://scrollege.vercel.app)**
+
+<a href="https://scrollege.vercel.app"><img src="docs/qr.png" width="170" alt="QR code: scan to open Scrollege on your phone"></a>
+
+📱 Scan with your phone camera, then **Share → Add to Home Screen** (iPhone) or **Install app** (Android).<br>
+The public demo runs on the sample decks, so it's free to play with. Run it yourself with your own key to cook real decks.
 <!-- LIVE-LINK:END -->
 
 </div>
@@ -130,7 +135,7 @@ npm run dev                # restart after changing keys
 
 ### 📱 On your phone
 - With `npm run dev` running, open the **Network** address Vite prints (same Wi-Fi), or
-- open the live link / scan the QR code, then **Share → Add to Home Screen** (iPhone) or **Install app** (Android).
+- open [scrollege.vercel.app](https://scrollege.vercel.app) / scan the QR code at the top, then **Share → Add to Home Screen** (iPhone) or **Install app** (Android).
 
 ---
 
@@ -170,6 +175,15 @@ tests/              Playwright (phone + desktop, 3 looks, axe) and unit tests
 reference/          the approved mockups and build prompts
 DECISIONS.md        every design and build decision, in plain words
 ```
+
+### Deploy your own copy
+```bash
+npx vercel link            # once
+npx vercel deploy --prod   # every time you want to update the live site
+node scripts/make-qr.mjs https://your-app.vercel.app   # new QR code
+```
+Want real AI on your copy? Add `ANTHROPIC_API_KEY` in Vercel → Project → Settings → Environment Variables,
+set `DEMO_MODE=false`, and read **Keep your key safe** above first.
 
 ### Tests
 ```bash

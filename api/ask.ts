@@ -1,7 +1,7 @@
 // POST /api/ask {question, deck, lines} -> {answer, line} or {answer:null} when it isn't in the source.
 import { z } from "zod";
-import { guard, isDemo, aiBudget, fail, structured, FAST, PLAIN, type Req, type Res } from "./_lib/util";
-import { sourceBlock } from "./deck";
+import { guard, isDemo, aiBudget, fail, structured, FAST, PLAIN, type Req, type Res } from "./_lib/util.js";
+import { sourceBlock } from "./deck.js";
 
 const Answer = z.object({
   inSource: z.boolean().describe("true only if the SOURCE clearly answers the question"),

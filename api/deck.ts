@@ -1,8 +1,8 @@
 // POST /api/deck {text, lines, brain, sourceLabel} -> {deck} in the mockup's DECK shape.
 // Every read bullet must be backed by a word-for-word quote from the source (grounding check).
 import { z } from "zod";
-import { guard, isDemo, aiBudget, fail, structured, SMART, PLAIN, type Req, type Res } from "./_lib/util";
-import { DeckSchema, ReelSchema, groundingProblems, toMockupReel, type Reel } from "./_lib/deck";
+import { guard, isDemo, aiBudget, fail, structured, SMART, PLAIN, type Req, type Res } from "./_lib/util.js";
+import { DeckSchema, ReelSchema, groundingProblems, toMockupReel, type Reel } from "./_lib/deck.js";
 
 type Line = { n: number; text: string; page?: number };
 

@@ -1,6 +1,6 @@
 // POST /api/jingle {reel} -> {jingle:[line1, line2]}
 import { z } from "zod";
-import { guard, isDemo, aiBudget, fail, structured, FAST, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, FAST, type Req, type Res } from "./_lib/util.js";
 
 const J = z.object({ jingle: z.array(z.string()).describe("Exactly 2 short rhyming lines") });
 

@@ -1,5 +1,11 @@
 # Decisions
 
+## Published (Nov 7, 2026)
+- GitHub: public repo arushiSH5-cyber/scrollege. Commits credited to the owner's GitHub identity; the pre-push block was removed when the owner asked to publish.
+- Vercel: https://scrollege.vercel.app in demo mode (no key on Vercel, so it costs nothing). `.vercelignore` keeps `.env*` from ever being uploaded.
+- API imports use explicit `.js` paths: Vercel runs the functions as plain Node ES modules, which need them.
+- Key protection for when real AI is turned on: per-visitor and total daily caps, optional `AI_ACCESS_CODE`, plus a Console spend limit (README).
+
 ## Tested with a real Claude key (Nov 7, 2026)
 - Notes → deck (water cycle): 5/5 reels passed the quote check, fair quizzes, steps + 3 cards. ~17 s.
 - PDF (3 pages) → deck with correct "page N" chips. Photo of notes → Claude vision read it → accurate deck.

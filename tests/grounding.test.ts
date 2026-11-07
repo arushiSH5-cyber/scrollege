@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { groundingProblems } from "../api/_lib/deck";
+import { groundingProblems } from "../api/_lib/deck.js";
 
 const SOURCE = `Plants make food (sugar) using light energy.
 Inputs: sunlight, water (roots), carbon dioxide (stomata).

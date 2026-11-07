@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { norm } from "./util";
+import { norm } from "./util.js";
 
 export const ReelSchema = z.object({
   t: z.string().describe("Short reel title, max 6 words"),

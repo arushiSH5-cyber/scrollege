@@ -1,6 +1,6 @@
 // POST /api/source {type:"notes"|"voice"|"pdf"|"photo", data, page?} -> {text, sourceLabel, lines:[{n,text,page?}]}
 import { z } from "zod";
-import { guard, isDemo, aiBudget, fail, structured, SMART, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, SMART, type Req, type Res } from "./_lib/util.js";
 
 type Line = { n: number; text: string; page?: number };
 const MAX_CHARS = 60_000;

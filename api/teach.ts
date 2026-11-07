@@ -1,6 +1,6 @@
 // POST /api/teach {reel, explanation} -> {stars 1-3, mentioned[], missing[]}
 import { z } from "zod";
-import { guard, isDemo, aiBudget, fail, structured, FAST, PLAIN, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, FAST, PLAIN, type Req, type Res } from "./_lib/util.js";
 
 const Grade = z.object({
   stars: z.number().int().describe("1, 2 or 3. 1 = a start, 2 = most key ideas, 3 = all key ideas, correct"),

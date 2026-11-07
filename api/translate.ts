@@ -1,6 +1,6 @@
 // POST /api/translate {deck, lang} -> {deck} with the same shape, translated.
 import { z } from "zod";
-import { guard, isDemo, aiBudget, fail, structured, FAST, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, FAST, type Req, type Res } from "./_lib/util.js";
 
 const LANGS = ["Español", "中文", "Tiếng Việt", "हिन्दी", "العربية", "English"];
 const TReel = z.object({

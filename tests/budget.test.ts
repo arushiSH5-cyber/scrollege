@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { aiBudget } from "../api/_lib/util";
+import { aiBudget } from "../api/_lib/util.js";
 
 const fakeRes = () => { const r: any = { code: 200, body: null }; r.status = (c: number) => { r.code = c; return r; }; r.json = (o: any) => { r.body = o; return r; }; r.setHeader = () => {}; return r; };
 const req = (ip: string, code?: string) => ({ headers: { "x-forwarded-for": ip, ...(code ? { "x-scrollege-code": code } : {}) } });
