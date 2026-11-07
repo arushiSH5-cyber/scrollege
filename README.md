@@ -182,6 +182,9 @@ reference/          the approved mockups and build prompts
 DECISIONS.md        every design and build decision, in plain words
 ```
 
+### Updating the live site
+The live site is connected to this repo: **every push to `main` deploys to [scrollege.vercel.app](https://scrollege.vercel.app) automatically** (in demo mode, so it uses no API keys).
+
 ### Deploy your own copy
 ```bash
 npx vercel link            # once
