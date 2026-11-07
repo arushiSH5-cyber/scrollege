@@ -23,7 +23,7 @@
 
 ## Published (Nov 7, 2026)
 - GitHub: public repo arushiSH5-cyber/scrollege. Commits credited to the owner's GitHub identity; the pre-push block was removed when the owner asked to publish.
-- Vercel: https://scrollege.vercel.app in demo mode (no key on Vercel, so it costs nothing). `.vercelignore` keeps `.env*` from ever being uploaded.
+- Vercel: https://scrollege.vercel.app in demo mode, connected to the GitHub repo: every push to `main` deploys automatically (DEMO_MODE=true is a project environment variable) (no key on Vercel, so it costs nothing). `.vercelignore` keeps `.env*` from ever being uploaded.
 - API imports use explicit `.js` paths: Vercel runs the functions as plain Node ES modules, which need them.
 - Key protection for when real AI is turned on: per-visitor and total daily caps, optional `AI_ACCESS_CODE`, plus a Console spend limit (README).
 
