@@ -25,7 +25,15 @@ To cook real decks, put your keys in `.env.local` and set `DEMO_MODE=false`:
   which you get from a deploy or an HTTPS tunnel later.
 
 ## Scripts
-`npm run dev` · `npm run build` · `npm run preview` · `npm test` (grounding check) · `npm run typecheck` · `npm run icons`
+`npm run dev` · `npm run build` · `npm run preview` · `npm run typecheck` · `npm run icons`
+
+## Tests
+```bash
+npm test            # unit: grounding check + spaced review
+npm run test:e2e    # Playwright: 390×844 phone in both themes + desktop, axe, mockup screenshot match
+```
+The e2e tests start their own dev server on port 5174 in DEMO_MODE. AI answers are faked with `page.route`,
+so the real client code runs without spending API credits. `tests/fixtures/three-pages.pdf` is a real PDF (`node scripts/make-test-pdf.mjs`).
 
 ## Layout
 ```

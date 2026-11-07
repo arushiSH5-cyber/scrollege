@@ -42,3 +42,20 @@ The mockup showed the app inside a phone frame beside a pitch panel. A real app 
 - Settings, XP, pet, review pile → `localStorage`. The current deck → IndexedDB. Both wrapped in try/catch.
 - Onboarding shows once; "Retake the brain quiz" in Me brings it back.
 - Streak = days in a row you opened the app. Missing a day quietly restarts it at 1 (no guilt screens).
+
+## Saving and review (step 4)
+- Every deck you cook is saved in IndexedDB under its own id. Me → 📚 My decks lists them to open or delete (delete asks first).
+- Review pile lives with your settings: `{deck, reel, due, step}`. Missing a quiz or tapping "Review tomorrow" puts a reel in it, due tomorrow.
+  Getting a *due* reel right moves it to 3 days, then 7 days, then out of the pile. Missing it again resets to tomorrow.
+- Due reels show first in the feed with a "🔁 Review" tag.
+- Daily limit: 5 reels by default, 3 as a gentler option (Me → Focus tools). Decks have 5 reels, so a higher limit wouldn't change anything.
+
+## Tests (step 5)
+- Playwright at 390×844 in both themes, plus one desktop test at 1280×800. AI is mocked at the network level.
+- Screenshot match against the mockup: hello, brain quiz and Make screens (both pages loaded side by side, animations frozen). Currently 0% different.
+  The feed isn't compared because its captions rotate on a timer.
+- axe: 0 serious/critical issues on onboarding, feed, Make, Me (all sections open) and the Ask sheet.
+
+## Bugs found by the tests and fixed
+- No-timer mode in Quiz Run 3D didn't actually wait: showing the starting lane on each new gate counted as a pick. Now the gate waits for a real pick.
+- Make's input tabs used `role="tab"` with `aria-pressed` (not allowed) and the test name/date inputs had no labels.

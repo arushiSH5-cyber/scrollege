@@ -1,5 +1,5 @@
 import { post } from "./api.js";
-import { loadSettings, saveSettings, saveDeck, loadDeck } from "./store.js";
+import { loadSettings, saveSettings, saveDeck, loadDeck, listDecks, deleteDeck, addReview, passReview, dueToday, dropDeckReviews, dayKey } from "./store.js";
 const INK="#4a3f3a";
 const RM=(()=>{try{return matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}})();
 /* ---------- original kawaii art ---------- */
@@ -26,7 +26,7 @@ const SC=[
  `<svg class="scene" viewBox="0 0 220 160" aria-hidden="true"><path d="M70 40l26 15v30l-26 15-26-15V55z" fill="#f6e3a6" ${L}/><text x="49" y="80" font-family="Fredoka" font-weight="700" font-size="13" fill="${INK}">sugar</text>${[[150,50,18],[180,90,13],[140,110,15]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#c9cdf0" ${L}/><text x="${x-9}" y="${y+5}" font-family="Fredoka" font-weight="700" font-size="12" fill="${INK}">O₂</text>`).join("")}</svg>`,
  `<svg class="scene" viewBox="0 0 220 160" aria-hidden="true"><circle cx="110" cy="80" r="56" fill="#b9d8ea" ${L}/><path d="M70 60q20-14 34 0t26 18-10 30q-26 6-40-10t-10-38z" fill="#c9e2b0" ${L}/><path d="M138 50q16 6 12 22-14 0-12-22z" fill="#c9e2b0" ${L}/></svg>`];
 /* ---------- demo deck (accurate, simplified biology) ---------- */
-const DEMO_DECK={demo:true,title:"Photosynthesis",reels:[
+const DEMO_DECK={demo:true,id:"demo",title:"Photosynthesis",reels:[
  {t:"What is photosynthesis?",a:"#e6f4ec",cap:["Plants make their own food","using sunlight","light → sugar energy"],read:["Plants, algae and some bacteria do it","It turns light energy into chemical energy stored in sugar","It happens mostly in the leaves"],simple:"Plants use sunlight to cook their own food.",story:["Leafy the leaf wakes up hungry.","The sun says: catch my light!","Leafy turns it into a sugar snack."],pod:[["Rotty","So plants just… eat sunlight?"],["Pip","Kind of! They use sunlight to make sugar, which is their food."]],q:["What does photosynthesis make for the plant?",["Food (sugar)","Soil","Rain"],0,"Plants turn light energy into sugar they can use."],jingle:["Sun comes down, the leaf says yum,","light to sugar, here it comes!"],line:1},
  {t:"What goes in",a:"#e6f1f8",cap:["Sunlight","water from the roots","carbon dioxide from the air"],read:["Sunlight: the energy","Water (H₂O): pulled up from the roots","Carbon dioxide (CO₂): enters through tiny leaf pores called stomata"],simple:"Plants need three things: light, water and carbon dioxide.",story:["Roots sip water like a straw.","Tiny leaf doors called stomata open wide.","Carbon dioxide floats right in."],pod:[["Rotty","What's on the shopping list?"],["Pip","Sunlight, water and carbon dioxide. That's it!"]],q:["Which gas does a plant take IN?",["Carbon dioxide","Oxygen","Helium"],0,"Plants take in carbon dioxide through stomata."],jingle:["Light and water, CO₂,","that's the recipe, through and through!"],line:2},
  {t:"Where it happens",a:"#f1eaf7",cap:["Inside chloroplasts","full of chlorophyll","that's why leaves look green"],read:["Chloroplasts are tiny parts inside plant cells","They contain chlorophyll, a green pigment","Chlorophyll absorbs mostly red and blue light and reflects green"],simple:"Little green kitchens called chloroplasts do the cooking.",story:["Inside each leaf are tiny green kitchens.","Their chef is called chlorophyll.","It loves red and blue light, and bounces green away."],pod:[["Rotty","Why are leaves green, though?"],["Pip","Chlorophyll soaks up red and blue light and reflects green back to your eyes."]],q:["Why are most leaves green?",["Chlorophyll reflects green light","They're painted","Water is green"],0,"Chlorophyll absorbs red and blue light and reflects green."],jingle:["Chloroplast, a kitchen green,","chlorophyll's the cooking team!"],line:3},
@@ -39,6 +39,13 @@ DEMO_DECK.sort=SORT;DEMO_DECK.steps=STEPS;
 let DECK=DEMO_DECK;
 const REEL_BG=["#e6f4ec","#e6f1f8","#f1eaf7","#fcf3d6","#fbe5e5","#fbe9dc","#eceefb"];
 function useDeck(d){DECK=d;DECK.reels.forEach((r,i)=>{if(!r.a)r.a=REEL_BG[i%REEL_BG.length]})}
+const did=()=>DECK.id||"demo";
+const later=i=>{addReview(S,did(),i);S.later.add(i);saveSettings(S)};
+const missed=i=>{addReview(S,did(),i);if(!S.wrong.includes(i))S.wrong.push(i);saveSettings(S)};
+const learned=i=>{S.got.add(i);S.later.delete(i);if(passReview(S,did(),i))toast("🔁 Review done! It'll come back later to keep it fresh.");saveSettings(S)};
+const pileN=()=>(S.review||[]).length,dueN=()=>(S.review||[]).filter(x=>x.due<=dayKey()).length;
+/* today's feed: reels due for review come first, then the rest, up to the daily limit */
+function feedOrder(){const due=dueToday(S,did()).filter(i=>i<DECK.reels.length),rest=DECK.reels.map((_,i)=>i).filter(i=>!due.includes(i));return due.concat(rest).slice(0,Math.max(1,S.limit||5))}
 const hasSteps=()=>Array.isArray(DECK.steps)&&DECK.steps.length>=3;
 /* where a reel came from: "your notes, line 3" / "slides.pdf, page 4" */
 function srcRef(r){
@@ -56,7 +63,7 @@ const NOTES=`Photosynthesis (Bio Ch. 4)
 5. Plants are producers; food chains start with them.`;
 
 /* ---------- state ---------- */
-const S={onboarded:false,lastDay:null,tapQuiz:false,night:false,pet:"chick",petName:"Mochi",vibe:"chill",learn:new Set(["watch"]),hard:new Set(),mode:"watch",calm:false,dys:false,bionic:false,ruler:false,tint:"none",big:false,notimer:false,sound:true,voice:false,lang:"English",jr:false,
+const S={review:[],limit:5,deckId:"demo",onboarded:false,lastDay:null,tapQuiz:false,night:false,pet:"chick",petName:"Mochi",vibe:"chill",learn:new Set(["watch"]),hard:new Set(),mode:"watch",calm:false,dys:false,bionic:false,ruler:false,tint:"none",big:false,notimer:false,sound:true,voice:false,lang:"English",jr:false,
  src:"your notes",idx:0,seen:new Set(),got:new Set(),later:new Set(),wrong:[],xp:0,streak:3,tab:"feed",hist:[],test:null,story:false,simple:new Set(),built:false};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],screen=$("#screen");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -142,9 +149,9 @@ $("#backBtn").onclick=goBack;
 /* ---------- make a feed ---------- */
 function renderMake(){
   P().innerHTML=`<h2>Make a feed</h2><span class="muted" style="margin-top:-8px">Give Rotty anything. Get 5 bite-size reels.</span>
-   <div class="input-tabs" role="tablist">${[["pdf","📄","PDF"],["notes","📝","Notes"],["link","🔗","Link"],["photo","📷","Photo"]].map(([k,e,t],i)=>`<button class="tile" role="tab" data-in="${k}" aria-pressed="${i===0}"><span class="em">${e}</span>${t}</button>`).join("")}</div>
+   <div class="input-tabs" role="group" aria-label="What are you giving Rotty?">${[["pdf","📄","PDF"],["notes","📝","Notes"],["link","🔗","Link"],["photo","📷","Photo"]].map(([k,e,t],i)=>`<button class="tile" data-in="${k}" aria-pressed="${i===0}"><span class="em">${e}</span>${t}</button>`).join("")}</div>
    <div id="inBox"></div>
-   <div class="card" style="background:var(--lilac2)"><b>🗓 Test coming up?</b><div class="row2"><input class="in" id="tName" placeholder="Bio quiz" value="${S.test?esc(S.test.n):""}"><input class="in" id="tDate" type="date" value="${S.test?S.test.d:""}"></div><small class="muted">Rotty spreads your reels out so you review a little each day.</small></div>
+   <div class="card" style="background:var(--lilac2)"><b>🗓 Test coming up?</b><div class="row2"><input class="in" id="tName" placeholder="Bio quiz" aria-label="Test name" value="${S.test?esc(S.test.n):""}"><input class="in" id="tDate" type="date" aria-label="Test date" value="${S.test?S.test.d:""}"></div><small class="muted">Rotty spreads your reels out so you review a little each day.</small></div>
    <button class="cta pink" id="go">Cook my feed 🍳</button>`;
   let mode="pdf";const box=()=>{$("#inBox").innerHTML={pdf:`<label class="cta alt" style="text-align:center;cursor:pointer;display:block">📄 Upload a PDF<br><small class="muted">Slides, class notes or a textbook chapter</small><input type="file" accept="application/pdf" id="inPdf" hidden></label><div id="pdfOut"></div>`,notes:`<textarea class="in" id="inT" aria-label="Your notes">${NOTES}</textarea>`,
     link:`<input class="in" id="inL" value="https://en.wikipedia.org/wiki/Photosynthesis" aria-label="Link"><small class="muted">🔥 Firecrawl reads the page and turns it into clean text. Each reel links back to it.</small>`,
@@ -177,7 +184,7 @@ async function readPdf(f){if(!f)return;const out=$("#pdfOut");S.pdf=null;
    if(n>PDF_MAX_PAGES){out.innerHTML=`<div class="card" style="box-shadow:none;background:var(--blush2)"><b>${n} pages is a lot!</b><span>Rotty reads up to ${PDF_MAX_PAGES} pages for now. Try splitting it into chapters.</span></div>`;return}
    for(let k=1;k<=n;k++){const pg=await doc.getPage(k),tc=await pg.getTextContent();pages.push(tc.items.map(x=>x.str).join(" ").replace(/\s+/g," ").trim());const pr=$("#pdfProg");if(pr)pr.textContent=`📖 Reading page ${k} of ${n}…`}
    const all=pages.join(" "),words=all.split(" ").filter(Boolean).length;
-   const empty=pages.filter(t=>t.split(" ").filter(Boolean).length<3).length,scanned=empty>n/2; // most pages have no text layerS.pdf={name:f.name,pages,n,scanned};
+   const empty=pages.filter(t=>t.split(" ").filter(Boolean).length<3).length,scanned=empty>n/2;/* most pages have no text layer */S.pdf={name:f.name,pages,n,scanned};
    if(scanned){const m=Math.min(n,SCAN_MAX),images=[];
      for(let k=1;k<=m;k++){const pr=$("#pdfProg");if(pr)pr.textContent=`📷 No text layer. Snapping page ${k} of ${m} for Rotty to read…`;
        const pg=await doc.getPage(k),vp0=pg.getViewport({scale:1}),sc=Math.min(2,1400/Math.max(vp0.width,vp0.height)),vp=pg.getViewport({scale:sc}),c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;
@@ -192,14 +199,14 @@ function cook(req){const o=document.createElement("div");o.className="ov";o.inne
   const rows=[...o.querySelectorAll(".cook div")];let k=0,anim=false,result=null;
   const finish=()=>{if(!anim||!result)return;o.remove();
     if(result.err){toast(result.err);return}
-    useDeck(result.deck);S.src=DECK.sourceLabel||S.src;S.built=true;S.idx=0;S.got=new Set();S.later=new Set();S.wrong=[];S.simple=new Set();S.seen=new Set();
+    if(!result.deck.id)result.deck.id="d"+Date.now();useDeck(result.deck);S.deckId=DECK.id;S.src=DECK.sourceLabel||S.src;S.built=true;S.idx=0;S.got=new Set();S.later=new Set();S.wrong=[];S.simple=new Set();S.seen=new Set();
     saveDeck(DECK);saveSettings(S);yay();show("feed");toast(result.note||"Your feed is ready! Swipe up 👆")};
   const t=setInterval(()=>{if(k>0)rows[k-1].className="ok";if(k<rows.length-1||(k===rows.length-1&&result)){rows[k].className="on";beep(500+k*90);k++}else if(k>=rows.length){clearInterval(t);anim=true;setTimeout(finish,350)}},S.calm?700:520);
   buildDeck(req,msg=>{const c=$("#cookNote");if(c)c.textContent=msg}).then(r=>{result=r;if(k>=rows.length){anim=true;finish()}});
 }
 /* Make -> /api/source -> /api/deck. Falls back to the sample deck in DEMO_MODE or offline. */
 async function buildDeck(req,note){
-  const demo=(why)=>({deck:{...DEMO_DECK,reels:DEMO_DECK.reels.map(r=>({...r}))},note:why});
+  const demo=(why)=>({deck:{...DEMO_DECK,id:"demo",reels:DEMO_DECK.reels.map(r=>({...r}))},note:why});
   let src;
   if(req.type==="pdf-scan"){ // scanned PDF: Claude vision copies each page, one page per request
     const all=[];for(const [k,img] of req.data.images.entries()){note(`📷 Reading page ${img.n} of ${req.data.images.length}…`);
@@ -238,23 +245,23 @@ function renderFeed(keep){
   const V=$("#feedV");if(!V)return;
   if(!S.built){V.innerHTML=`<div class="pad" style="align-items:center;text-align:center;padding-top:110px">${rotty("sleepy",110)}<h2>No feed yet</h2><p class="muted" style="margin:0">Drop your notes, a link or a photo and Rotty makes one.</p><button class="cta pink" onclick="show('make')">➕ Make my feed</button><button class="cta alt" onclick="S.built=true;renderFeed()">Try the sample (Photosynthesis)</button></div>`;return}
   const top=keep?V.scrollTop:0;
-  const slots=[];DECK.reels.forEach((r,i)=>{slots.push(reel(r,i));if(i===2)slots.push(gameSlot())});slots.push(limitSlot());
+  const ord=feedOrder(),due=dueToday(S,did()),slots=[];ord.forEach((i,pos)=>{slots.push(reel(DECK.reels[i],i,pos,ord,due.includes(i)));if(pos===2)slots.push(gameSlot())});slots.push(limitSlot(ord.length));
   V.innerHTML=slots.join("");V.scrollTop=top;bindFeed();tickCaps();
 }
-function reel(r,i){const n=DECK.reels[i+1];return `<article class="slot" data-i="${i}" style="--a:${r.a}">
+function reel(r,i,pos=i,ord=DECK.reels.map((_,k)=>k),isRev=false){const n=DECK.reels[ord[pos+1]];return `<article class="slot" data-i="${i}" style="--a:${r.a}">
   <div class="modes" role="group" aria-label="How do you want to learn this?">${[["watch","👀"],["listen","🎧"],["read","📖"],["play","🎮"]].map(([k,e])=>`<button data-m="${k}" aria-pressed="${S.mode===k}">${e} ${k[0].toUpperCase()+k.slice(1)}</button>`).join("")}</div>
-  <div class="dots3" aria-hidden="true">${DECK.reels.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>
+  <div class="dots3" aria-hidden="true">${ord.map((_,k)=>`<i class="${k<=pos?"on":""}"></i>`).join("")}</div>
   <div class="stage">${stage(r,i)}</div>
-  <div class="info"><span class="num">${i+1} of ${DECK.reels.length} · ${esc(DECK.title)}</span><h3>${esc(r.t)}</h3><span class="src">📎 From ${srcRef(r)}</span>${S.calm&&n?`<span class="next">Next: ${esc(n.t)}</span>`:""}</div>
+  <div class="info"><span class="num">${pos+1} of ${ord.length} · ${esc(DECK.title)}${isRev?" · 🔁 Review":""}</span><h3>${esc(r.t)}</h3><span class="src">📎 From ${srcRef(r)}</span>${S.calm&&n?`<span class="next">Next: ${esc(n.t)}</span>`:""}</div>
   <div class="rail"><button class="rb ${S.got.has(i)?"on":""}" data-a="got"><span class="o">✅</span>Got it</button><button class="rb" data-a="g3"><span class="o">🎮</span>3D quiz</button><button class="rb" data-a="ask"><span class="o">💬</span>Ask</button><button class="rb" data-a="more"><span class="o">⋯</span>More</button></div></article>`}
 function gameSlot(){return `<article class="slot" data-game style="--a:#f1eaf7"><div class="pad" style="padding-top:64px;padding-right:16px">
   <div style="display:flex;gap:8px;align-items:center">${sq("frog",54)}<div><h2 style="font-size:26px">Game time! 🎮</h2><span class="muted" style="font-size:14px">Real 3D games made from your ${esc(S.src)}.</span></div></div>
   <button class="card" data-g="run" style="text-align:left;cursor:pointer;background:var(--butter2)"><b>🏃 Quiz Run 3D</b><span>Dash down the track and run through the gate with the right answer.</span>${ROAD}</button>
   ${hasSteps()?`<button class="card" data-g="tower" style="text-align:left;cursor:pointer;background:var(--mint2)"><b>🧱 Step Tower 3D</b><span>Stack the steps of ${esc(DECK.title.toLowerCase())} in the right order. Tall tower = you know it!</span></button>`:""}
   <small class="muted">Use ← → keys, swipe, or tap the answer buttons. ${S.notimer?"No-timer mode is on: the game waits for you.":""}</small></div></article>`}
-function limitSlot(){const rv=S.later.size+S.wrong.length;return `<article class="slot" data-limit style="--a:#fcf3d6"><div class="pad" style="align-items:center;text-align:center;padding-top:90px">${rotty("sleepy",120)}<h2>That's your ${DECK.reels.length} for today! 🎉</h2>
+function limitSlot(cnt=DECK.reels.length){const rv=pileN();return `<article class="slot" data-limit style="--a:#fcf3d6"><div class="pad" style="align-items:center;text-align:center;padding-top:90px">${rotty("sleepy",120)}<h2>That's your ${cnt} for today! 🎉</h2>
   <p class="muted" style="margin:0">You showed up for your brain today. Rotty's napping now. Brains need breaks too.</p>
-  <div class="stats" style="width:100%"><div><b>${S.xp}</b><small>XP</small></div><div><b>${S.streak}</b><small>day streak</small></div><div><b>${rv}</b><small>to review tomorrow</small></div></div>
+  <div class="stats" style="width:100%"><div><b>${S.xp}</b><small>XP</small></div><div><b>${S.streak}</b><small>day streak</small></div><div><b>${rv}</b><small>in review pile</small></div></div>
   <div style="width:100%;text-align:left">${petCard()}</div><button class="cta" onclick="show('me')">🧸 See my buddy</button><button class="cta alt" onclick="toast('Shared! Your friend gets the same 5 reels to beat your score.')">⚔️ Duel a friend</button></div></article>`}
 let capK=0;function tickCaps(){$$("[data-cap]").forEach(el=>{const r=DECK.reels[+el.dataset.cap],lines=S.story?r.story:r.cap,l=lines[capK%lines.length];el.innerHTML=l.split(" ").map((w,k)=>`<span style="animation-delay:${k*.07}s">${esc(w)}</span>`).join(" ")})}
 setInterval(()=>{capK++;tickCaps()},S.calm?3600:2700);
@@ -276,8 +283,8 @@ function bindFeed(){
     const an=ev.target.closest("[data-ans]");if(an)return answer(slot,r,i,+an.dataset.ans);
     if(ev.target.closest("[data-vans]")){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast("Voice isn't supported here. Try Chrome.");const rec=new SR();rec.onresult=e=>{const heard=e.results[0][0].transcript.toLowerCase(),k=r.q[1].findIndex(o=>heard.includes(o.toLowerCase().split(" ")[0]));toast("Heard: “"+heard+"”");answer(slot,r,i,k<0?99:k)};try{rec.start();toast("Listening…")}catch(e){}return}
     const a=ev.target.closest("[data-a]")?.dataset.a;if(!a)return;
-    if(a==="got"){S.got.add(i);S.later.delete(i);S.xp+=5;ev.target.closest(".rb").classList.add("on");yay();toast("Nice! +5 XP");return}
-    if(a==="later"){S.later.add(i);ev.target.closest(".rb").classList.add("on");toast("Saved. It'll come back tomorrow 🔁");return}
+    if(a==="got"){learned(i);S.xp+=5;ev.target.closest(".rb").classList.add("on");yay();toast("Nice! +5 XP");return}
+    if(a==="later"){later(i);ev.target.closest(".rb").classList.add("on");toast("Saved. It'll come back tomorrow 🔁");return}
     if(a==="jingle")return jingle(r);
     if(a==="ask")return ask(r);
     if(a==="g3")return quizRun(i);
@@ -289,7 +296,7 @@ function bindFeed(){
 }
 function answer(slot,r,i,k){const ok=k===r.q[2];slot.querySelectorAll("[data-ans]").forEach(b=>{b.disabled=true;if(+b.dataset.ans===r.q[2])b.classList.add("right");else if(+b.dataset.ans===k)b.classList.add("wrong")});
   const box=slot.querySelector("[data-quiz]");box.insertAdjacentHTML("beforeend",`<div class="opt ${ok?"right":"wrong"}" style="display:block"><b>${ok?"🎉 Yes!":"💛 Not quite, that's okay."}</b> <small>${esc(r.q[3])}</small></div>${ok?"":`<button class="cta alt" style="padding:10px" data-retry>Try again</button>`}`);
-  if(ok){S.xp+=10;S.got.add(i);yay()}else{if(!S.wrong.includes(i))S.wrong.push(i);beep(330,.15,"triangle")}
+  if(ok){S.xp+=10;learned(i);yay()}else{missed(i);beep(330,.15,"triangle")}
   const rt=box.querySelector("[data-retry]");if(rt)rt.onclick=()=>{slot.querySelector(".stage").innerHTML=stage(r,i)}}
 let podT;function podcast(slot,r,i,rate){const box=slot.querySelector("[data-pod]");clearTimeout(podT);hush();box.classList.add("on");
   const words=[...box.querySelectorAll("w")];words.forEach(w=>w.classList.remove("on"));const all=r.pod.map(p=>p[1]).join(" ");
@@ -360,7 +367,7 @@ function more(r,i){openSheet(`<h4 id="sheetTitle">More</h4><p class="sub">${esc(
     if(k==="story"){S.story=!S.story;S.mode="watch";renderFeed(true);toast(S.story?"📖 Story mode on":"Story mode off")}
     if(k==="teach")return teach(r);
     if(k==="jingle")return jingle(r);
-    if(k==="later"){S.later.add(i);return toast("Saved. It'll come back tomorrow 🔁")}
+    if(k==="later"){later(i);return toast("Saved. It'll come back tomorrow 🔁")}
     if(k==="simple"){S.simple.add(i);S.mode="read";renderFeed(true)}
     if(k==="src")openSheet(`<h4 id="sheetTitle">📎 Source</h4><p class="sub">Every reel is checked against where it came from.</p>${DECK.demo?`<div class="card"><b>${esc(S.src)}</b><span>${S.src==="your notes"?esc(NOTES.split("\n")[r.line]):"“"+esc(r.read[0])+"…”"}</span></div>`:`<div class="card"><b>📎 ${srcRef(r)}</b>${lineText(r.line)?`<span>${esc(lineText(r.line))}</span>`:""}${(r.quotes||[]).length?`<small class="muted">Quotes this reel is built on:</small>${r.quotes.map(q=>`<span class="bot" style="font-size:14px">“${esc(q)}”</span>`).join("")}`:""}</div>`}`);
     if(k==="class")toast("Class link copied. Teachers see the deck and class progress (built with Lovable).");
@@ -386,7 +393,7 @@ function renderFocus(){
    <div class="card" style="background:var(--mint2)"><b>👯 Study with Rotty</b><span class="muted" style="font-size:14px">Rotty studies next to you, so it's easier to stay on track.</span>
     <div class="row2">${[5,10,15].map(m=>`<button class="tile" data-bd="${m}"><span class="em">${m===5?"🌱":m===10?"🌿":"🌳"}</span>${m} min</button>`).join("")}</div></div>
    <div class="card" style="background:var(--lilac2)"><b>🗓 Test countdown</b>${S.test?`<span><b>${esc(S.test.n)}</b> in <b>${days}</b> day${days===1?"":"s"}</span><span class="muted" style="font-size:14px">Plan: 5 reels a day + your review pile. Rotty reminds you gently.</span>`:`<span class="muted">Add a test date in Make, and Rotty plans your days.</span>`}</div>
-   <div class="card"><b>🔁 Review pile</b><span>${S.later.size+S.wrong.length} reel${S.later.size+S.wrong.length===1?"":"s"} coming back tomorrow (things you saved or missed).</span></div>
+   <div class="card"><b>🔁 Review pile</b><span>${pileN()} reel${pileN()===1?"":"s"} in your pile (things you saved or missed). ${dueN()} due today.</span></div>
    <button class="cta alt" onclick="breathe()">😮‍💨 I'm overwhelmed</button>`;
   $("#one").onclick=()=>{if(!S.built)S.built=true;show("feed");toast("Just this one. You've got it 💪")};
   P().querySelectorAll("[data-bd]").forEach(b=>b.onclick=()=>buddy(+b.dataset.bd));
@@ -409,7 +416,9 @@ function renderMe(){const lead=S.learn.has("listen")?"🎧 Audio Explorer":S.lea
   P().innerHTML=`<div style="display:flex;gap:10px;align-items:center">${rotty("proud",70)}<div><h2>My brain</h2><span class="muted">${lead}</span></div></div>
    <div class="stats"><div><b>${S.xp}</b><small>XP</small></div><div><b>${S.streak}</b><small>day streak · breaks are OK</small></div><div><b>${S.got.size}</b><small>reels mastered</small></div></div>
    ${petCard()}
-   <details class="more"><summary>🎯 Focus tools</summary><div class="in"><button class="opt" onclick="S.built=true;show('feed');toast('Just this one. You\'ve got it 💪')">▶ Just 1 reel <small>when starting is hard</small></button><button class="opt" onclick="buddy(10)">👯 Study with Rotty, 10 min <small>a body double</small></button><button class="opt" onclick="breathe()">😮‍💨 I'm overwhelmed <small>breathe, then one tiny step</small></button><span>${S.test?`🗓 <b>${esc(S.test.n)}</b>: Rotty spreads your reels out until then.`:"🗓 Add a test date in Make."}</span><span>🔁 ${S.later.size+S.wrong.length} reel(s) coming back tomorrow.</span></div></details>
+   <details class="more"><summary>🎯 Focus tools</summary><div class="in"><button class="opt" onclick="S.built=true;show('feed');toast('Just this one. You\'ve got it 💪')">▶ Just 1 reel <small>when starting is hard</small></button><button class="opt" onclick="buddy(10)">👯 Study with Rotty, 10 min <small>a body double</small></button><button class="opt" onclick="breathe()">😮‍💨 I'm overwhelmed <small>breathe, then one tiny step</small></button><span>${S.test?`🗓 <b>${esc(S.test.n)}</b>: Rotty spreads your reels out until then.`:"🗓 Add a test date in Make."}</span><span>🔁 ${pileN()} reel${pileN()===1?"":"s"} in your review pile, ${dueN()} due today. Missed reels come back tomorrow, then in 3 days, then a week.</span>
+     <div class="tgl" style="border:0"><span>📏 Reels per day<small>Rotty stops after this many. Brains need breaks.</small></span><div class="chips" style="flex:none">${[3,5].map(n=>`<button data-limit="${n}" aria-pressed="${S.limit===n}" style="${S.limit===n?"background:var(--pink)":""}">${n}</button>`).join("")}</div></div></div></details>
+   <details class="more" id="decksFold"><summary>📚 My decks</summary><div class="in" id="deckList"><span class="muted">Loading…</span></div></details>
    <details class="more"><summary>🧠 Brain modes</summary><div class="in">
     ${T("night","🌗 Night look","Navy doodle notebook instead of pastel")}
     ${T("calm","🍃 Calm mode","No motion or sounds, softer colors, shows what's next")}
@@ -430,7 +439,16 @@ function renderMe(){const lead=S.learn.has("listen")?"🎧 Audio Explorer":S.lea
   P().querySelectorAll("[data-pet2]").forEach(b=>b.onclick=()=>{S.pet=b.dataset.pet2;S.petName=PETS.find(x=>x[0]===S.pet)[1];renderMe();toast("Say hi to "+S.petName+"!")});
   P().querySelectorAll("[data-set]").forEach(b=>b.onclick=()=>{const k=b.dataset.set;S[k]=!S[k];b.setAttribute("aria-checked",S[k]);if(k==="jr"){S.big=S.jr}apply();toast(b.getAttribute("aria-label")+(S[k]?" on":" off"))});
   P().querySelectorAll("[data-tint]").forEach(b=>b.onclick=()=>{S.tint=b.dataset.tint;P().querySelectorAll("[data-tint]").forEach(x=>x.setAttribute("aria-pressed",x===b));apply()});
-  $("#redo").onclick=()=>{S.xp=0;onboard()}}
+  $("#redo").onclick=()=>{S.xp=0;onboard()};
+  P().querySelectorAll("[data-limit]").forEach(b=>b.onclick=()=>{S.limit=+b.dataset.limit;saveSettings(S);P().querySelectorAll("[data-limit]").forEach(x=>{x.setAttribute("aria-pressed",x===b);x.style.background=x===b?"var(--pink)":""});toast(`${S.limit} reels a day`)});
+  drawDecks()}
+async function drawDecks(){const el=$("#deckList");if(!el)return;const ds=await listDecks();if(!$("#deckList"))return;
+  if(!ds.length){el.innerHTML=`<span class="muted">No saved decks yet. Make one and it stays on this device.</span>`;return}
+  el.innerHTML=ds.map(d=>`<div class="opt" style="cursor:default"><span>${d.id===did()&&S.built?"▶ ":""}${esc(d.title)}<small>${esc(d.sourceLabel||(d.demo?"sample deck":""))} · ${d.n} reels${d.savedAt?" · "+new Date(d.savedAt).toLocaleDateString():""}</small></span>
+    <span class="chips" style="flex:none"><button data-open="${esc(d.id)}" aria-label="Open ${esc(d.title)}">Open</button><button data-del="${esc(d.id)}" aria-label="Delete ${esc(d.title)}">🗑</button></span></div>`).join("");
+  el.querySelectorAll("[data-open]").forEach(b=>b.onclick=async()=>{const d=await loadDeck(b.dataset.open);if(!d)return toast("Couldn't open that deck");useDeck(d);S.deckId=d.id;S.src=d.sourceLabel||(d.demo?"your notes":S.src);S.built=true;S.got=new Set();S.later=new Set();S.wrong=[];S.simple=new Set();saveSettings(S);show("feed");toast("📚 "+d.title)});
+  el.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{const d=ds.find(x=>x.id===b.dataset.del);if(!confirm(`Delete "${d.title}" from this device? This can't be undone.`))return;
+    await deleteDeck(d.id);dropDeckReviews(S,d.id);if(d.id===did()){useDeck(DEMO_DECK);S.deckId="demo";S.built=false}saveSettings(S);toast("Deleted");drawDecks()})}
 
 /* ---------- help explainers ---------- */
 $("#helpBtn").onclick=()=>{const H={feed:["👀 Watch, 🎧 Listen, 📖 Read or 🎮 Play: tap at the top to switch.","🎮 3D quiz turns any reel into a runner game.","💬 Ask only uses your notes. ⋯ More has jingles, story mode and Teach Rotty."],make:["Upload a PDF, paste notes or a link, or snap a photo.","Rotty makes 5 reels and 3D games, each linked to its page.","Add a test date and Rotty spreads it out."],me:["Turn on any brain mode, anytime.","Calm mode, easy-read, bionic, ruler, tints, no-timer.","Collect critter stickers as you learn."]}[S.tab]||[];
@@ -467,7 +485,7 @@ function critter3D(color){const g=new THREE.Group(),m=new THREE.MeshStandardMate
 const PASTELS=[0xbfe0cf,0xf6e3a6,0xf3b9c6,0xc9cdf0,0xb9d8ea,0xf3cfb4];
 function quizRun(start){
   const G=g3shell("Quiz Run");if(!G)return;const {sc,cam,tickers,msg}=G;let pts=0,right=0;
-  const queue=DECK.reels.map((r,i)=>i).slice(start).concat(DECK.reels.map((r,i)=>i).slice(0,start)),missed=new Set();
+  const queue=DECK.reels.map((r,i)=>i).slice(start).concat(DECK.reels.map((r,i)=>i).slice(0,start)),missedQ=new Set();
   const LX=[-2.2,0,2.2];
   const road=new THREE.Mesh(new THREE.BoxGeometry(7.4,.4,140),new THREE.MeshStandardMaterial({color:S.night?0x3a3566:0xc4ade0,roughness:.85}));road.position.set(0,-.2,-50);road.receiveShadow=true;sc.add(road);
   const grass=new THREE.Mesh(new THREE.PlaneGeometry(80,160),new THREE.MeshStandardMaterial({color:S.night?0x23304f:0x9fcb85,roughness:1}));grass.rotation.x=-Math.PI/2;grass.position.set(0,-.39,-50);grass.receiveShadow=true;sc.add(grass);
@@ -484,13 +502,13 @@ function quizRun(start){
       const panel=new THREE.Mesh(new THREE.BoxGeometry(2,1.2,.25),mats);panel.position.set(LX[k],1.5,0);panel.castShadow=true;gate.add(panel);
       [-.95,.95].forEach(dx=>{const post=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,1.6,8),new THREE.MeshStandardMaterial({color:0x4a3f3a}));post.position.set(LX[k]+dx,.6,0);gate.add(post)})});
     gz=-46;gate.position.z=gz;sc.add(gate);locked=false;
-    $("#g3q").textContent=r.q[0];pad.innerHTML=order.map((opt,k)=>`<button>${["⬅","⬆","➡"][k]} ${esc(r.q[1][opt])}</button>`).join("");pad.querySelectorAll("button").forEach((b,k)=>b.onclick=()=>setLane(k));setLane(lane);
+    $("#g3q").textContent=r.q[0];pad.innerHTML=order.map((opt,k)=>`<button>${["⬅","⬆","➡"][k]} ${esc(r.q[1][opt])}</button>`).join("");pad.querySelectorAll("button").forEach((b,k)=>b.onclick=()=>setLane(k));setLane(lane);locked=false;
     if(S.notimer)msg("Pick a lane. The gate waits for you 🌱",1800)}
   function resolve(){busy=true;const r=DECK.reels[qi],pick=order[lane],ok=pick===r.q[2];const panel=gate.children.find(c=>c.geometry&&c.geometry.type==="BoxGeometry"&&Math.abs(c.position.x-LX[lane])<.1);
-    if(ok){pts+=10;right++;S.xp+=10;S.got.add(qi);G.score(pts);msg("🎉 Yes! +10");yay();if(panel)panel.material[4].color.set(0xbfffc8)}
-    else{missed.add(qi);if(!S.wrong.includes(qi))S.wrong.push(qi);queue.push(qi);msg(`💛 Not quite.<br><small>${esc(r.q[3])}</small>`,2600);beep(300,.2,"triangle");if(panel)panel.material[4].color.set(0xffc9c9);me.rotation.z=.4}
+    if(ok){pts+=10;right++;S.xp+=10;learned(qi);G.score(pts);msg("🎉 Yes! +10");yay();if(panel)panel.material[4].color.set(0xbfffc8)}
+    else{missedQ.add(qi);missed(qi);queue.push(qi);msg(`💛 Not quite.<br><small>${esc(r.q[3])}</small>`,2600);beep(300,.2,"triangle");if(panel)panel.material[4].color.set(0xffc9c9);me.rotation.z=.4}
     setTimeout(()=>{sc.remove(gate);gate=null;me.rotation.z=0;busy=false;spawn()},ok?900:2400)}
-  function finish(){const pct=Math.round(right/Math.max(1,right+missed.size)*100);msg(`<b style="font-family:var(--head);font-size:24px">Run complete! 🏁</b><br>⭐ ${pts} · ${right} right${missed.size?` · ${missed.size} to review`:""}<br><button class="cta" style="margin-top:10px;padding:10px" onclick="this.closest('.g3').querySelector('.back').click()">Done</button>`,0);yay();$("#g3q").textContent="You did it!";pad.innerHTML=""}
+  function finish(){const pct=Math.round(right/Math.max(1,right+missedQ.size)*100);msg(`<b style="font-family:var(--head);font-size:24px">Run complete! 🏁</b><br>⭐ ${pts} · ${right} right${missedQ.size?` · ${missedQ.size} to review`:""}<br><button class="cta" style="margin-top:10px;padding:10px" onclick="this.closest('.g3').querySelector('.back').click()">Done</button>`,0);yay();$("#g3q").textContent="You did it!";pad.innerHTML=""}
   let tx=0;G.o.addEventListener("pointerdown",e=>{tx=e.clientX});G.o.addEventListener("pointerup",e=>{const d=e.clientX-tx;if(Math.abs(d)>40&&!e.target.closest("button"))setLane(lane+(d>0?1:-1))});
   G.setKey(e=>{if(e.key==="ArrowLeft")setLane(lane-1);if(e.key==="ArrowRight")setLane(lane+1);if(["1","2","3"].includes(e.key))setLane(+e.key-1)});
   tickers.push((dt,t)=>{const mv=busy?speed*.15:speed;stripes.forEach(st=>{st.position.z+=mv*dt;if(st.position.z>8)st.position.z-=120});props.forEach(p=>{p.position.z+=mv*dt;if(p.position.z>10)p.position.z-=128});
@@ -544,6 +562,8 @@ if(!had)S.streak=1;
 if(S.lastDay!==today){S.streak=S.lastDay===new Date(Date.now()-864e5).toDateString()?(S.streak||0)+1:1;S.lastDay=today}
 S.tab="feed";S.hist=[];
 apply();show("feed");if(!S.onboarded)onboard();
-loadDeck().then(d=>{if(d&&d.reels&&d.reels.length){useDeck(d);S.src=d.sourceLabel||S.src;if(S.tab==="feed")renderFeed()}});
+(async()=>{let d=await loadDeck(S.deckId||"demo");
+  if(!d){const old=await loadDeck("current");if(old){old.id=old.demo?"demo":"d"+(old.savedAt||Date.now());await saveDeck(old);await deleteDeck("current");d=old;S.deckId=old.id}}
+  if(d&&d.reels&&d.reels.length){useDeck(d);S.src=d.sourceLabel||S.src;if(S.tab==="feed")renderFeed()}})();
 window.addEventListener("pagehide",()=>saveSettings(S));
 document.addEventListener("visibilitychange",()=>{if(document.hidden)saveSettings(S)});
