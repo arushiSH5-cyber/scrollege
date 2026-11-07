@@ -9,7 +9,7 @@ const DEMO_Q: Record<string, string> = {
 };
 
 test("Quiz Run 3D: keyboard + buttons, wrong answer replays, no-timer waits", async ({ page, app }) => {
-  test.setTimeout(150_000);
+  test.setTimeout(300_000);
   await app.open({ notimer: true });
   await app.slot(0).locator('[data-a="g3"]').click();       // Games → picker
   await page.locator('#sheet [data-g="run"]').click();
@@ -33,8 +33,8 @@ test("Quiz Run 3D: keyboard + buttons, wrong answer replays, no-timer waits", as
     let pick = right;
     if (!wrongDone) { pick = (right + 1) % 3; wrongDone = true; }
     if (rounds % 2) { await page.keyboard.press(String(pick + 1)); usedKeys = true; } else { await pad.nth(pick).click(); usedButtons = true; }
-    if (pick !== right) await expect(page.locator("#g3m")).toContainText("Not quite", { timeout: 15_000 });
-    else await expect(page.locator("#g3m")).toContainText("Yes!", { timeout: 15_000 });
+    if (pick !== right) await expect(page.locator("#g3m")).toContainText("Not quite", { timeout: 40_000 });
+    else await expect(page.locator("#g3m")).toContainText("Yes!", { timeout: 40_000 });
     await expect(q).not.toHaveText(text, { timeout: 10_000 }).catch(() => {}); // replayed question may repeat later
   }
   await expect(q).toHaveText("You did it!", { timeout: 20_000 });

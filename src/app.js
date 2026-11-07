@@ -102,11 +102,11 @@ const NOTES=`ML Basics (CS lecture 2)
 5. Classification = predict a category. Regression = predict a number.`;
 
 /* ---------- state ---------- */
-const S={feed:"mine",review:[],limit:5,deckId:"demo",onboarded:false,lastDay:null,tapQuiz:false,night:false,theme:"sky",music:true,haptics:true,vol:.8,cards:[],pet:"chick",petName:"Mochi",vibe:"chill",learn:new Set(["watch"]),hard:new Set(),mode:"watch",calm:false,dys:false,bionic:false,ruler:false,tint:"none",big:false,notimer:false,sound:true,voice:false,lang:"English",jr:false,
+const S={natVoice:true,feed:"mine",review:[],limit:5,deckId:"demo",onboarded:false,lastDay:null,tapQuiz:false,night:false,theme:"sky",music:true,haptics:true,vol:.8,cards:[],pet:"chick",petName:"Mochi",vibe:"chill",learn:new Set(["watch"]),hard:new Set(),mode:"watch",calm:false,dys:false,bionic:false,ruler:false,tint:"none",big:false,notimer:false,sound:true,voice:false,lang:"English",jr:false,
  src:"your notes",idx:0,seen:new Set(),got:new Set(),later:new Set(),wrong:[],xp:0,streak:3,tab:"feed",hist:[],test:null,story:false,simple:new Set(),built:false};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],screen=$("#screen");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const hush=()=>{try{speechSynthesis.cancel()}catch(e){}};
+const hush=()=>{VOX.gen++;try{VOX.audio&&VOX.audio.pause()}catch(e){}try{speechSynthesis.cancel()}catch(e){}};
 function toast(m){$$(".toast").forEach(x=>x.remove());const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=m;screen.appendChild(t);setTimeout(()=>t.remove(),2600)}
 /* ---------- sound: soft synth SFX + lo-fi game music (WebAudio, no files) ---------- */
 let AC,MST,FX;
@@ -120,6 +120,9 @@ function noise(d=.1,vol=.15,freq=2000,when=0,to=0,q=1,dest){try{const a=actx(),t
   const s=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();s.buffer=b;f.type="bandpass";f.Q.value=q;f.frequency.setValueAtTime(freq,t);if(to)f.frequency.exponentialRampToValueAtTime(to,t+d);g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(f).connect(g).connect(dest||FX);s.start(t)}catch(e){}}
 const SFXL={
  tap:()=>tone(620,.05,"sine",.05),
+ click:()=>{const P=[523.3,587.3,659.3,784,880,1046.5],f=P[Math.floor(Math.random()*P.length)];tone(f,.09,"sine",.045,0,f*1.02);tone(f*2,.05,"sine",.012)},
+ on:()=>{tone(523.3,.07,"sine",.045);tone(784,.1,"sine",.045,.06)},
+ off:()=>{tone(784,.07,"sine",.04);tone(523.3,.1,"sine",.04,.06)},
  open:()=>noise(.18,.06,600,0,1800,.8),
  close:()=>noise(.15,.05,1600,0,500,.8),
  pop:()=>{noise(.06,.22,2600,0,0,2);tone(700,.07,"sine",.08,0,1500)},
@@ -136,7 +139,8 @@ const SFXL={
  cheer:()=>{[523,659,784,1047].forEach((f,k)=>tone(f,.25,"triangle",.06,k*.09));noise(.6,.05,4000,.3,0,.5)},
  cast:()=>{noise(.25,.1,2400,0,700,1);tone(1200,.25,"sine",.03,0,500)},
  tick:()=>tone(1800,.02,"square",.02)};
-function sfx(k){if(!sndOn())return;SFXL[k]&&SFXL[k]();if(S.haptics&&navigator.vibrate)try{navigator.vibrate(k==="wrong"?[18,40,18]:k==="right"||k==="combo"?12:6)}catch(e){}}
+let lastSfx=0;
+function sfx(k){lastSfx=performance.now();if(!sndOn())return;SFXL[k]&&SFXL[k]();if(S.haptics&&navigator.vibrate)try{navigator.vibrate(k==="wrong"?[18,40,18]:k==="right"||k==="combo"?12:6)}catch(e){}}
 /* old beep() calls now play through the same soft synth */
 function beep(f=660,d=.09,type="sine",when=0){if(!sndOn())return;if(type==="triangle"&&f<=340)return sfx("wrong");tone(f,d+.04,type==="sine"?"triangle":type,.06,when)}
 /* lo-fi loop: soft chords, plucky pentatonic melody, gentle hat. 76 bpm */
@@ -152,7 +156,25 @@ function musicStart(){if(MUS.on||!S.music||!sndOn())return;const a=actx();MUS.bu
 function musicStop(){if(!MUS.on)return;MUS.on=false;clearInterval(MUS.t);try{const b=MUS.bus;b.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+.6);setTimeout(()=>b.disconnect(),800)}catch(e){}}
 
 function yay(){beep(660);beep(880,.1,"sine",.08);beep(1100,.12,"sine",.16);if(S.calm||RM)return;const c=$("#confetti"),cols=["#f6e3a6","#f6cdb0","#bfe0cf","#c9cdf0","#b9d8ea","#f3cfb4"];for(let i=0;i<26;i++){const x=document.createElement("i");x.style.left=(20+Math.random()*60)+"%";x.style.top="18%";x.style.background=cols[i%6];x.style.setProperty("--dx",(Math.random()*240-120)+"px");x.style.animationDelay=Math.random()*.2+"s";c.appendChild(x);setTimeout(()=>x.remove(),1800)}}
-function say(t,rate){if(S.calm&&!rate)rate=.9;try{hush();const u=new SpeechSynthesisUtterance(t);u.rate=rate||1;speechSynthesis.speak(u);return u}catch(e){return null}}
+/* ---------- voice ----------
+   Natural voice (Cartesia, via /api/tts so the key stays on the server) when it's set up and on in Me.
+   Otherwise the most natural voice this device has. say() returns a handle with .onend like an utterance. */
+const VOX={on:false,gen:0,audio:null,cache:new Map(),dev:null};
+fetch("/api/tts").then(r=>r.ok?r.json():{on:false}).then(j=>{VOX.on=!!j.on}).catch(()=>{});
+function deviceVoice(){if(VOX.dev!==null)return VOX.dev;try{const vs=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));if(!vs.length)return null;
+  const rank=v=>(/natural|neural|premium|enhanced|siri/i.test(v.name)?4:0)+(/samantha|ava|allison|serena|karen|moira|google us english|aria|jenny/i.test(v.name)?2:0)+(v.localService?0:1)+(/en-us/i.test(v.lang)?1:0);
+  VOX.dev=vs.sort((a,b)=>rank(b)-rank(a))[0];return VOX.dev}catch(e){return null}}
+try{speechSynthesis.onvoiceschanged=()=>{VOX.dev=null}}catch(e){}
+function speakDevice(t,rate,h){try{const u=new SpeechSynthesisUtterance(t);u.rate=rate;const v=deviceVoice();if(v)u.voice=v;if(h){u.pitch=h.pitch||1;u.onend=()=>h.onend&&h.onend();u.onboundary=e=>h.onboundary&&h.onboundary(e)}speechSynthesis.speak(u);return u}catch(e){return null}}
+function say(t,rate,mood){if(S.calm&&!rate)rate=.9;rate=rate||1;hush();
+  if(!(VOX.on&&S.natVoice!==false&&navigator.onLine!==false))return speakDevice(t,rate);
+  const g=VOX.gen,h={pitch:1,onend:null,onboundary:null},m=S.calm?"calm":mood||"content",key=m+"|"+rate.toFixed(2)+"|"+t;
+  const play=url=>{if(g!==VOX.gen)return;VOX.audio=VOX.audio||new Audio();const a=VOX.audio;a.src=url;a.volume=Math.min(1,Math.max(.1,S.vol??.8));a.onended=()=>h.onend&&h.onend();a.play().catch(()=>{if(g===VOX.gen)speakDevice(t,rate,h)})};
+  const hit=VOX.cache.get(key);if(hit){play(hit);return h}
+  fetch("/api/tts",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({text:t,speed:rate,mood:m})})
+    .then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>{const u=URL.createObjectURL(b);VOX.cache.set(key,u);play(u)})
+    .catch(()=>{if(g===VOX.gen)speakDevice(t,rate,h)});
+  return h}
 function openSheet(h){sfx("open");$("#sheet").innerHTML='<div class="grab"></div><button class="x" aria-label="Close">✕</button>'+h;$("#sheet .x").onclick=closeSheet;$("#sheet").classList.add("on");$("#scrim").classList.add("on")}
 function closeSheet(){hush();$("#sheet").classList.remove("on");$("#scrim").classList.remove("on")}
 $("#scrim").onclick=closeSheet;
@@ -392,7 +414,7 @@ function answer(slot,r,i,k){const ok=k===r.q[2];slot.querySelectorAll("[data-ans
 let podT;function podcast(slot,r,i,rate){const box=slot.querySelector("[data-pod]");clearTimeout(podT);hush();box.classList.add("on");
   const words=[...box.querySelectorAll("w")];words.forEach(w=>w.classList.remove("on"));const all=r.pod.map(p=>p[1]).join(" ");
   const V={chill:[1,1],hype:[1.15,1.25],cozy:[.9,.85],gamer:[1.1,1.4]}[S.vibe]||[1,1];const intro={hype:"Let's GO! ",cozy:"Okay, get comfy. ",gamer:"New quest unlocked. ",chill:""}[S.vibe]||"";
-  const u=say(intro+all,rate*V[0]);if(u)u.pitch=V[1];let n=0;const step=()=>{words.forEach(w=>w.classList.remove("on"));if(n<words.length){words[n].classList.add("on");n++;podT=setTimeout(step,330/rate)}else box.classList.remove("on")};step();
+  const u=say(intro+all,rate*V[0],{chill:"content",hype:"excited",cozy:"calm",gamer:"enthusiastic"}[S.vibe]);if(u)u.pitch=V[1];let n=0;const step=()=>{words.forEach(w=>w.classList.remove("on"));if(n<words.length){words[n].classList.add("on");n++;podT=setTimeout(step,330/rate)}else box.classList.remove("on")};step();
   if(u){u.onboundary=e=>{if(e.name!=="word")return;clearTimeout(podT);const idx=(intro+all).slice(0,e.charIndex).split(" ").length-1-(intro?intro.trim().split(" ").length:0);words.forEach((w,k)=>w.classList.toggle("on",k===idx))};u.onend=()=>{clearTimeout(podT);box.classList.remove("on");words.forEach(w=>w.classList.remove("on"))}}}
 function game(ev,slot){
   const it=ev.target.closest("[data-it]");if(it){slot.querySelectorAll("[data-it]").forEach(x=>x.setAttribute("aria-pressed",x===it));beep(620);return}
@@ -539,7 +561,7 @@ function breathe(){hush();const o=document.createElement("div");o.className="ov 
   function run([k,n,d,c,ik,steps]){stop();if(k==="wrap")return wrap();let s=0,left=steps[0][1],paused=false;const total=steps.reduce((a,x)=>a+x[1],0);let gone=0;
     o.innerHTML=`<button class="back" aria-label="Back">←</button><div class="rbar"><i id="rb"></i></div><div class="rstage ${k}" style="--c:${c}"><div class="rbuddy">${rotty(k==="eyes"?"thinking":k==="squeeze"?"excited":"proud",120)}</div>${k==="box"?'<div class="rbox"><i></i></div>':""}</div>
       <h3 id="rt" aria-live="polite"></h3><div class="rsec" id="rs"></div><div class="row2" style="max-width:300px;width:100%"><button class="cta alt" id="rp">⏸ Pause</button><button class="cta" id="rn">Next →</button></div>`;
-    const show1=()=>{$("#rt").textContent=steps[s][0];left=steps[s][1];$("#rs").textContent=left+"s";o.querySelector(".rstage").dataset.step=s%4;if(S.sound&&!S.calm)say(steps[s][0],.9);sfx("tick")};
+    const show1=()=>{$("#rt").textContent=steps[s][0];left=steps[s][1];$("#rs").textContent=left+"s";o.querySelector(".rstage").dataset.step=s%4;if(S.sound&&!S.calm)say(steps[s][0],.9,"calm");sfx("tick")};
     const nxt=()=>{s++;if(s>=steps.length)return done();show1()};
     show1();T=setInterval(()=>{if(paused)return;left--;gone++;const b=$("#rb");if(b)b.style.width=Math.min(100,gone/total*100)+"%";const r=$("#rs");if(r)r.textContent=Math.max(0,left)+"s";if(left<=0)nxt()},1000);
     o.querySelector(".back").onclick=()=>{stop();menu()};$("#rn").onclick=()=>{gone+=left;nxt()};$("#rp").onclick=e=>{paused=!paused;e.target.textContent=paused?"▶ Resume":"⏸ Pause";if(paused)hush()}}
@@ -643,8 +665,9 @@ function renderMe(){const lead=S.learn.has("listen")?"🎧 Audio Explorer":S.lea
     ${T("sound","🔈 Sounds","Soft pops, chimes and swooshes")}
     ${T("music","♫ Game music","A chill lo-fi loop while you play")}
     ${T("haptics","📳 Haptics","Tiny buzz on phones")}
+    ${VOX.on?T("natVoice","🗣 Natural voice","Scrolly reads aloud with a warm, real-sounding voice"):""}
     <div class="tgl"><span>🔊 Volume<small>${Math.round(S.vol*100)}%</small></span><input type="range" min="0" max="1" step=".05" value="${S.vol}" id="volR" aria-label="Volume" style="width:120px;accent-color:var(--pop2)"></div>
-    <div class="row2" style="gap:6px;flex-wrap:wrap">${["pop","right","wrong","swish","splash","cheer"].map(k=>`<button class="chipb" data-try-s="${k}">▶ ${k}</button>`).join("")}</div>
+    <div class="row2" style="gap:6px;flex-wrap:wrap">${["click","pop","right","wrong","swish","splash","cheer"].map(k=>`<button class="chipb" data-try-s="${k}">▶ ${k}</button>`).join("")}</div>
     <div class="tgl"><span>🎨 Color tint<small>Some readers find a tint easier</small></span><div class="row2" style="flex:none">${[["none","#fffdf8"],["peach","#f3cfb4"],["blue","#b9d8ea"],["lilac","#d9c6e6"],["mint","#bfe0cf"]].map(([k,c])=>`<button class="swatch" data-tint="${k}" aria-pressed="${S.tint===k}" style="background:${c}" aria-label="${k} tint"></button>`).join("")}</div></div>
    </div></details>
    <details class="more"><summary>🧸 Scrollege Jr</summary><div class="in"><span>Bigger buttons, simpler words and no social features. For younger kids, with a grown-up.</span>${T("jr","Scrollege Jr","Kid mode")}</div></details>
@@ -914,6 +937,10 @@ document.addEventListener("keydown",e=>{
   if(["ArrowDown","PageDown","j"," "].includes(e.key)){e.preventDefault();V.scrollBy({top:V.clientHeight,behavior:RM||S.calm?"auto":"smooth"})}
   if(["ArrowUp","PageUp","k"].includes(e.key)){e.preventDefault();V.scrollBy({top:-V.clientHeight,behavior:RM||S.calm?"auto":"smooth"})}
 });
+
+/* ---------- click sounds ---------- */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("button,summary,[role=tab],a.srcl");if(!b||b.disabled)return;
+  const t0=performance.now();setTimeout(()=>{if(lastSfx>=t0)return;const sw=b.getAttribute("role")==="switch";sfx(sw?(b.getAttribute("aria-checked")==="true"?"on":"off"):"click")},0)},true);
 
 /* ---------- start ---------- */
 Object.assign(window,{S,show,renderFeed,toast,breathe,buddy,say,pullCard,closeSheet,playGame,sfx});

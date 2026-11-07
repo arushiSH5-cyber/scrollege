@@ -1,5 +1,14 @@
 # Decisions
 
+## Voice + click sounds
+- Every button plays a soft note from a happy 5-note scale (switches go up when on, down when off). A button that already has its own sound (pop, flip, cheer) doesn't also click. Follows Sounds, Calm mode and Volume.
+- Read-aloud uses **Cartesia** (`sonic-3.6`, voice "Skylar" by default, `CARTESIA_VOICE_ID` to change) through `/api/tts`, so the key stays on the server.
+  Narrator vibes map to Cartesia emotions (Chill → content, Hype → excited, Cozy → calm, Gamer → enthusiastic); Calm mode and the break activities use "calm".
+  Lines are cached on the device for the session. Daily character caps per visitor and in total protect the key.
+- No Cartesia key (like the public demo) or offline: the app picks the most natural voice the device has (Siri/Premium/Natural/Google voices first) instead of the default robot one.
+- Me → Brain modes shows a 🗣 Natural voice switch when Cartesia is set up.
+- Test browsers run with `--mute-audio`.
+
 ## Scrollege v7 (approved design: reference/scrollege-v7.html)
 - The v7 prompt says "apply after v5 and v6"; those two prompts were never shared, so their changes were taken from the v7 mockup itself:
   hand-drawn doodle icons, redesigned critters, soft WebAudio sound effects + lo-fi game music (Me → volume, music, haptics),

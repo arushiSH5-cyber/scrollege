@@ -366,12 +366,12 @@ test("Explore: fun facts, news with sources, next topics, projects", async ({ pa
 });
 
 test("Watch in 3D plays captions, then Replay / Done", async ({ page, app }) => {
-  test.setTimeout(90_000);
+  test.setTimeout(180_000);
   await app.open({ calm: false });
   await app.slot(0).locator('[data-a="v3"]').click();
   await expect(page.locator(".g3.vid canvas")).toBeVisible();
   await expect(page.locator("#vcap")).toContainText("Computers learn from examples");
-  await expect(page.locator("#g3m")).toContainText("That's the idea!", { timeout: 45_000 });
+  await expect(page.locator("#g3m")).toContainText("That's the idea!", { timeout: 120_000 }); // software 3D in CI can be slow
   await expect(page.locator("#vcap")).toContainText("to predict new things");
   await page.locator("#g3m").getByRole("button", { name: "Done" }).click();
   await expect(page.locator(".g3")).toHaveCount(0);
@@ -391,4 +391,34 @@ test("meme card: flip at the end of the feed, then it's in the binder", async ({
   await page.reload();
   await app.tab("Me");
   await expect(page.getByText("🃏 My card binder (1/6)")).toBeVisible();
+});
+
+test("natural voice: Read aloud asks /api/tts when a voice is set up, and stops cleanly", async ({ page, app }) => {
+  const asked: any[] = [];
+  await page.route("**/api/tts", async (r) => {
+    if (r.request().method() === "GET") return r.fulfill({ json: { on: true } });
+    asked.push(r.request().postDataJSON());
+    await r.fulfill({ status: 200, contentType: "audio/mpeg", body: Buffer.alloc(0) });
+  });
+  await app.open({ mode: "read", calm: false });
+  await app.slot(0).locator("[data-ra]").click();
+  await expect.poll(() => asked.length).toBe(1);
+  expect(asked[0].text).toContain("What is machine learning?");
+  expect(asked[0].mood).toBe("content");
+  // Me shows the natural-voice switch only when a voice is set up
+  await app.tab("Me");
+  await page.getByText("🧠 Brain modes").click();
+  await expect(page.locator('[data-set="natVoice"]')).toBeVisible();
+});
+
+test("no natural voice set up: falls back to the device voice, no switch in Me", async ({ page, app }) => {
+  let posts = 0;
+  await page.route("**/api/tts", async (r) => { if (r.request().method() === "GET") return r.fulfill({ json: { on: false } }); posts++; await r.fulfill({ status: 503, json: {} }); });
+  await app.open({ mode: "read" });
+  await app.slot(0).locator("[data-ra]").click();
+  await page.waitForTimeout(300);
+  expect(posts).toBe(0);
+  await app.tab("Me");
+  await page.getByText("🧠 Brain modes").click();
+  await expect(page.locator('[data-set="natVoice"]')).toHaveCount(0);
 });

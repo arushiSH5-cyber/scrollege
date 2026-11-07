@@ -5,7 +5,7 @@ import { mkdirSync } from "node:fs";
 
 const base = process.argv[2] || "http://localhost:5173";
 mkdirSync("docs/shots", { recursive: true });
-const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--mute-audio"] });
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function phone(name, state, go) {
