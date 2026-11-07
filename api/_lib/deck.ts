@@ -17,8 +17,8 @@ export const ReelSchema = z.object({
   }),
   jingle: z.array(z.string()).describe("2 rhyming lines that keep the facts correct"),
   line: z.number().int().describe("The source line number [n] this reel is mostly based on"),
-  v3: z.enum(["scatter", "overfit", "hill", "net", "tokens", "split", "sort", "cluster"]).describe(
-    "3D video scene that best shows this idea: scatter (dots + best-fit line), overfit (wiggly curve vs simple line), hill (ball rolling downhill), net (layers of nodes), tokens (word blocks one at a time), split (cubes into train/test), sort (balls into two labeled bins), cluster (balls drifting into groups)"),
+  v3: z.enum(["scatter", "overfit", "hill", "net", "tokens", "split", "sort", "cluster", "none"]).describe(
+    "3D video scene. These scenes are for machine learning / data / AI ideas only. For any other subject (biology, history, etc.) use none. Pick a scene only if it clearly shows this idea: scatter (dots + best-fit line), overfit (wiggly curve vs simple line), hill (ball rolling downhill), net (layers of nodes), tokens (word blocks one at a time), split (cubes into train/test), sort (balls into two labeled bins), cluster (balls drifting into groups)"),
 });
 export const CardSchema = z.object({
   title: z.string().describe("Funny card name, 2-4 words"),
@@ -41,7 +41,7 @@ export function toMockupReel(r: Reel) {
   return {
     t: r.t, cap: r.cap.slice(0, 3), read: r.read.slice(0, 3), quotes: r.quotes.slice(0, 3), simple: r.simple,
     story: r.story.slice(0, 3), pod: r.pod.slice(0, 2).map((p) => [String(p[0] || "Pip"), String(p[1] || "")]),
-    q: [r.q.question, r.q.options.slice(0, 3), r.q.answerIndex, r.q.why], jingle: r.jingle.slice(0, 2), line: r.line, v3: r.v3,
+    q: [r.q.question, r.q.options.slice(0, 3), r.q.answerIndex, r.q.why], jingle: r.jingle.slice(0, 2), line: r.line, v3: r.v3 === "none" ? null : r.v3,
   };
 }
 

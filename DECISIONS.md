@@ -1,5 +1,14 @@
 # Decisions
 
+## Tested with a real Claude key (Nov 7, 2026)
+- Notes → deck (water cycle): 5/5 reels passed the quote check, fair quizzes, steps + 3 cards. ~17 s.
+- PDF (3 pages) → deck with correct "page N" chips. Photo of notes → Claude vision read it → accurate deck.
+- Ask (answers + line, and "not in your notes" when it isn't), Teach (kind 1–3 stars), New rhyme, Translate (Spanish) all work.
+- Fixes from that test: the 3D scenes only fit ML/data topics, so the deck now picks `none` for other subjects (button hidden);
+  titles and captions must stay as accurate as the facts (one title had said glucose goes "in").
+- The app's Claude client uses only the key in `.env.local` and the real API address, so other Anthropic settings on the computer can't leak in.
+  After changing `.env.local`, restart `npm run dev` (Vite's auto-restart kept the old key).
+
 ## Scrollege v4 (approved design: reference/scrollege-v4.html)
 - Watercolor + doodles, 3 looks: ☁️ Sky (default), 🌿 Sage, 🌙 Ink night. 🎨 in the header cycles them; also in onboarding and Me → Brain modes.
   Picking a look in Me keeps the section you were in open (the mockup re-drew Me and closed it).

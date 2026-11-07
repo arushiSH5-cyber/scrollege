@@ -14,7 +14,8 @@ Rules you must follow:
 - "line" is the [n] number of the source line the reel mostly comes from.
 - Quiz: one clearly right answer and two clearly wrong ones. No trick questions, no "all of the above".
 - Story and jingle lines must keep the facts correct.
-- Each reel covers a different big idea.`;
+- Each reel covers a different big idea.
+- Titles, captions, story and jingle lines must also be true to the SOURCE. Never trade accuracy for a catchy phrase (for example, don't say something goes "in" when the source says it is made or comes out).`;
 
 function brainHints(b: any): string {
   const h: string[] = [];

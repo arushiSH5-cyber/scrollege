@@ -11,4 +11,4 @@ umask 077
   echo "DEMO_MODE=false"
 } > .env.local
 echo "✓ Saved to .env.local (only on this computer, never committed)."
-echo "Now restart the app: press Ctrl-C in the dev server tab, then run: npm run dev"
+echo "Now restart the app: press Ctrl-C where npm run dev is running, then run it again."
