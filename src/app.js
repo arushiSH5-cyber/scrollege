@@ -540,6 +540,7 @@ function renderMe(){const lead=S.learn.has("listen")?"🎧 Audio Explorer":S.lea
    </div></details>
    <details class="more"><summary>🧸 Scrollege Jr</summary><div class="in"><span>Bigger buttons, simpler words and no social features. For younger kids, with a grown-up.</span>${T("jr","Scrollege Jr","Kid mode")}</div></details>
    <details class="more"><summary>👩‍🏫 Teacher and parent page</summary><div class="in"><span>Share a deck with a class and see progress. Built with Lovable. Students' brain settings stay private.</span><button class="cta alt" onclick="toast('Teacher page link copied (demo)')">Copy class link</button></div></details>
+   <details class="more" id="qrFold"><summary>📱 Open on your phone</summary><div class="in"><span>Scan to open Scrollege on your phone, then "Add to Home Screen" to install it.</span><div id="qrBox" style="display:grid;place-items:center;padding:6px"></div><small class="muted" id="qrUrl"></small></div></details>
    <details class="more"><summary>🔒 Privacy</summary><div class="in"><span>Your notes and brain settings stay yours. No ads. Kids' mode has no accounts or chat.</span></div></details>
    <details class="more"><summary>🐣 Change study buddy</summary><div class="in"><div class="tiles t3">${PETS.map(([k,n])=>`<button class="tile" data-pet2="${k}" aria-pressed="${S.pet===k}">${sq(k,40)}${n}</button>`).join("")}</div></div></details>
    <button class="cta alt" id="redo">🔄 Retake the brain quiz</button>`;
@@ -549,7 +550,10 @@ function renderMe(){const lead=S.learn.has("listen")?"🎧 Audio Explorer":S.lea
   P().querySelectorAll("[data-tint]").forEach(b=>b.onclick=()=>{S.tint=b.dataset.tint;P().querySelectorAll("[data-tint]").forEach(x=>x.setAttribute("aria-pressed",x===b));apply()});
   $("#redo").onclick=()=>{S.xp=0;onboard()};
   P().querySelectorAll("[data-limit]").forEach(b=>b.onclick=()=>{S.limit=+b.dataset.limit;saveSettings(S);P().querySelectorAll("[data-limit]").forEach(x=>{x.setAttribute("aria-pressed",x===b);x.style.background=x===b?"var(--pink)":""});toast(`${S.limit} reels a day`)});
+  const qf=$("#qrFold");if(qf)qf.addEventListener("toggle",()=>{if(qf.open&&!$("#qrBox").firstChild)drawQR()});
   drawDecks()}
+/* QR for whatever address the app is open on (on localhost, scan won't work from a phone: use the Network address Vite prints) */
+async function drawQR(){const url=location.origin+"/",box=$("#qrBox");try{const {default:QR}=await import("qrcode");box.innerHTML=`<img alt="QR code for ${esc(url)}" width="200" height="200" style="border-radius:18px;background:#fff;padding:8px" src="${await QR.toDataURL(url,{width:400,margin:1,color:{dark:"#3b4252",light:"#ffffff"}})}">`;$("#qrUrl").textContent=url+(/localhost|127\.0\.0\.1/.test(url)?" (this only opens on this computer)":"")}catch(e){box.textContent="Couldn't make the QR code."}}
 async function drawDecks(){const el=$("#deckList");if(!el)return;const ds=await listDecks();if(!$("#deckList"))return;
   if(!ds.length){el.innerHTML=`<span class="muted">No saved decks yet. Make one and it stays on this device.</span>`;return}
   el.innerHTML=ds.map(d=>`<div class="opt" style="cursor:default"><span>${d.id===(MINE.id||"demo")&&S.built?"▶ ":""}${esc(d.title)}<small>${esc(d.sourceLabel||(d.demo?"sample deck":""))} · ${d.n} reels${d.savedAt?" · "+new Date(d.savedAt).toLocaleDateString():""}</small></span>

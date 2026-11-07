@@ -1,6 +1,6 @@
 // POST /api/jingle {reel} -> {jingle:[line1, line2]}
 import { z } from "zod";
-import { guard, isDemo, fail, structured, FAST, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, FAST, type Req, type Res } from "./_lib/util";
 
 const J = z.object({ jingle: z.array(z.string()).describe("Exactly 2 short rhyming lines") });
 
@@ -8,6 +8,7 @@ export default async function handler(req: Req, res: Res) {
   const body = guard(req, res, { maxBytes: 20_000, perMin: 30 });
   if (!body) return;
   if (isDemo()) return res.json({ demo: true });
+  if (!aiBudget(req, res, 1)) return;
   const r = body.reel || {};
   try {
     const out = await structured({

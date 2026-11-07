@@ -1,6 +1,6 @@
 // POST /api/teach {reel, explanation} -> {stars 1-3, mentioned[], missing[]}
 import { z } from "zod";
-import { guard, isDemo, fail, structured, FAST, PLAIN, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, FAST, PLAIN, type Req, type Res } from "./_lib/util";
 
 const Grade = z.object({
   stars: z.number().int().describe("1, 2 or 3. 1 = a start, 2 = most key ideas, 3 = all key ideas, correct"),
@@ -12,6 +12,7 @@ export default async function handler(req: Req, res: Res) {
   const body = guard(req, res, { maxBytes: 30_000, perMin: 30 });
   if (!body) return;
   if (isDemo()) return res.json({ demo: true });
+  if (!aiBudget(req, res, 1)) return;
   const r = body.reel || {}, ex = String(body.explanation || "").slice(0, 3000);
   try {
     const g = await structured({

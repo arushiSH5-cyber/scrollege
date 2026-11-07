@@ -1,6 +1,6 @@
 // POST /api/translate {deck, lang} -> {deck} with the same shape, translated.
 import { z } from "zod";
-import { guard, isDemo, fail, structured, FAST, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, FAST, type Req, type Res } from "./_lib/util";
 
 const LANGS = ["Español", "中文", "Tiếng Việt", "हिन्दी", "العربية", "English"];
 const TReel = z.object({
@@ -13,6 +13,7 @@ export default async function handler(req: Req, res: Res) {
   const body = guard(req, res, { maxBytes: 120_000, perMin: 10 });
   if (!body) return;
   if (isDemo()) return res.json({ demo: true });
+  if (!aiBudget(req, res, 2)) return;
   const lang = String(body.lang || "");
   if (!LANGS.includes(lang)) return res.status(400).json({ error: "That language isn't supported yet." });
   const d = body.deck || {};

@@ -1,6 +1,6 @@
 // POST /api/ask {question, deck, lines} -> {answer, line} or {answer:null} when it isn't in the source.
 import { z } from "zod";
-import { guard, isDemo, fail, structured, FAST, PLAIN, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, FAST, PLAIN, type Req, type Res } from "./_lib/util";
 import { sourceBlock } from "./deck";
 
 const Answer = z.object({
@@ -13,6 +13,7 @@ export default async function handler(req: Req, res: Res) {
   const body = guard(req, res, { maxBytes: 300_000, perMin: 30 });
   if (!body) return;
   if (isDemo()) return res.json({ demo: true });
+  if (!aiBudget(req, res, 1)) return;
   const q = String(body.question || "").slice(0, 500).trim();
   if (!q) return res.status(400).json({ error: "Ask a question first." });
   const lines = Array.isArray(body.lines) ? body.lines.slice(0, 2000) : [];

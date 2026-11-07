@@ -14,14 +14,36 @@ let _c: Anthropic | null = null;
 // Use only the key from .env.local: ignore any other Anthropic token or base URL that happens to be set in the shell.
 export const claude = () => (_c ||= new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, authToken: null, baseURL: "https://api.anthropic.com" }));
 
+const ipOf = (req: Req) => String(req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "local").split(",")[0].trim();
+
 /* --- per-IP rate limit (in memory; good enough locally / per instance) --- */
 const hits = new Map<string, number[]>();
 export function limited(req: Req, res: Res, perMin = 20): boolean {
-  const ip = String(req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "local").split(",")[0].trim();
+  const ip = ipOf(req);
   const now = Date.now(), win = (hits.get(ip) || []).filter((t) => now - t < 60_000);
   win.push(now); hits.set(ip, win);
   if (win.length > perMin) { res.status(429).json({ error: "Whoa, slow down a little! Try again in a minute." }); return true; }
   return false;
+}
+
+/* --- AI budget: protects your Anthropic key on a public link ---
+   - AI_ACCESS_CODE (optional): only visitors who opened the link with ?code=... get real AI; everyone else sees the sample decks.
+   - AI_DAILY_PER_PERSON (default 20) and AI_DAILY_TOTAL (default 300) cap AI turns per day. A deck costs 3, everything else 1.
+   These counters live in memory, so they reset when the server restarts. The hard stop is the
+   monthly spend limit you set in the Anthropic Console (see README → "Keep your key safe"). */
+let budgetDay = "", budgetTotal = 0;
+const budgetIp = new Map<string, number>();
+export function aiBudget(req: Req, res: Res, cost = 1): boolean {
+  const today = new Date().toISOString().slice(0, 10);
+  if (today !== budgetDay) { budgetDay = today; budgetTotal = 0; budgetIp.clear(); }
+  const code = process.env.AI_ACCESS_CODE;
+  if (code && req.headers["x-scrollege-code"] !== code) { res.json({ demo: true, locked: true }); return false; }
+  const perMax = Number(process.env.AI_DAILY_PER_PERSON || 20), totMax = Number(process.env.AI_DAILY_TOTAL || 300);
+  const ip = ipOf(req), used = budgetIp.get(ip) || 0;
+  if (used + cost > perMax) { res.status(429).json({ error: "You've used today's AI turns 🌙 The sample decks still work. Come back tomorrow!" }); return false; }
+  if (budgetTotal + cost > totMax) { res.status(429).json({ error: "Scrolly's AI is resting for today 😴 The sample decks still work!" }); return false; }
+  budgetIp.set(ip, used + cost); budgetTotal += cost;
+  return true;
 }
 
 /** Common guard: POST only, size cap, rate limit. Returns the body or null if it already responded. */

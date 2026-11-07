@@ -1,7 +1,7 @@
 // POST /api/deck {text, lines, brain, sourceLabel} -> {deck} in the mockup's DECK shape.
 // Every read bullet must be backed by a word-for-word quote from the source (grounding check).
 import { z } from "zod";
-import { guard, isDemo, fail, structured, SMART, PLAIN, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, SMART, PLAIN, type Req, type Res } from "./_lib/util";
 import { DeckSchema, ReelSchema, groundingProblems, toMockupReel, type Reel } from "./_lib/deck";
 
 type Line = { n: number; text: string; page?: number };
@@ -34,6 +34,7 @@ export default async function handler(req: Req, res: Res) {
   const body = guard(req, res, { maxBytes: 400_000, perMin: 10 });
   if (!body) return;
   if (isDemo()) return res.json({ demo: true });
+  if (!aiBudget(req, res, 3)) return;
   const lines: Line[] = Array.isArray(body.lines) ? body.lines.slice(0, 2000) : [];
   const text: string = typeof body.text === "string" ? body.text : lines.map((l) => l.text).join("\n");
   if (text.trim().length < 80) return res.status(400).json({ error: "There isn't enough in there to make 5 reels yet. Add a bit more?" });

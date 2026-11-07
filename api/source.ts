@@ -1,6 +1,6 @@
 // POST /api/source {type:"notes"|"voice"|"pdf"|"photo", data, page?} -> {text, sourceLabel, lines:[{n,text,page?}]}
 import { z } from "zod";
-import { guard, isDemo, fail, structured, SMART, type Req, type Res } from "./_lib/util";
+import { guard, isDemo, aiBudget, fail, structured, SMART, type Req, type Res } from "./_lib/util";
 
 type Line = { n: number; text: string; page?: number };
 const MAX_CHARS = 60_000;
@@ -49,6 +49,7 @@ export default async function handler(req: Req, res: Res) {
       lines = number(pages.flatMap((p) => chunk(String(p.text || ""), Number(p.n))));
       label = String(data?.name || "your PDF").slice(0, 80);
     } else if (type === "photo") {
+      if (!aiBudget(req, res, 1)) return;
       const text = await readImage(String(data));
       if (!text) return res.status(422).json({ error: "Scrolly couldn't find any words in that photo. Try a clearer, closer one?" });
       const page = Number(body.page) || undefined;
