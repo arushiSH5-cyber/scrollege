@@ -2,14 +2,14 @@
  "id": "ai-fun-facts",
  "title": "AI fun facts",
  "pack": true,
- "label": "Scrollege Explore · AI basics",
- "art": "ai",
+ "label": "🤯 AI fun facts · from 🌍 Around",
+ "stepsOf": "how a chatbot replies",
  "steps": [
-  "Collect data",
-  "Split it into training and test sets",
-  "Train the model to lower its error",
-  "Test it on data it hasn't seen",
-  "Use it to make predictions"
+  "You type a message",
+  "It gets split into tokens",
+  "The model predicts the next token",
+  "It adds that token and repeats",
+  "The reply appears word by word"
  ],
  "chips": [
   "What is a token?",
@@ -62,7 +62,8 @@
     "least squared error, works just fine!"
    ],
    "line": 1,
-   "tryit": true
+   "tryit": true,
+   "v3": "scatter"
   },
   {
    "t": "Gradient descent",
@@ -108,12 +109,13 @@
     "Feel the slope and take a stride,",
     "down the hill the errors slide!"
    ],
-   "line": 2
+   "line": 2,
+   "v3": "hill"
   },
   {
    "t": "Overfitting",
    "sc": 7,
-   "a": "#fbe5e5",
+   "a": "#fdeedd",
    "cap": [
     "Memorizing isn't learning",
     "perfect on practice",
@@ -154,7 +156,8 @@
     "Don't just memorize the test,",
     "learn the pattern, that works best!"
    ],
-   "line": 3
+   "line": 3,
+   "v3": "overfit"
   },
   {
    "t": "Neural networks",
@@ -200,7 +203,8 @@
     "Neurons pass the numbers through,",
     "weights adjust till answers are true!"
    ],
-   "line": 4
+   "line": 4,
+   "v3": "net"
   },
   {
    "t": "How chatbots write",
@@ -246,8 +250,28 @@
     "One more token, then one more,",
     "that's what language models are for!"
    ],
-   "line": 5
+   "line": 5,
+   "v3": "tokens"
   }
  ],
- "stepsOf": "training an AI model"
+ "cards": [
+  [
+   "Gradient Slide",
+   "SPELL CARD",
+   "slide",
+   "Take one tiny step downhill. Your error drops. Your vibes rise."
+  ],
+  [
+   "Next Token, Please",
+   "TRAP CARD",
+   "talk",
+   "Activate when someone finishes your sentence. They are now a language model."
+  ],
+  [
+   "Outlier Alert",
+   "TRAP CARD",
+   "shock",
+   "One weird dot appears. Every best-fit line on the field tilts dramatically."
+  ]
+ ]
 }

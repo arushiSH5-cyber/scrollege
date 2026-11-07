@@ -1,11 +1,11 @@
 import { test, expect } from "./fixtures";
 
 const DEMO_Q: Record<string, string> = {
-  "What does photosynthesis make for the plant?": "Food (sugar)",
-  "Which gas does a plant take IN?": "Carbon dioxide",
-  "Why are most leaves green?": "Chlorophyll reflects green light",
-  "What does a plant release that we breathe?": "Oxygen",
-  "Why do most food chains start with plants?": "They make their own food from light",
+  "What does machine learning learn from?": "Examples (data)",
+  "Predicting house prices: what is the label?": "The price",
+  "Grouping songs by similarity, with no labels, is…": "Unsupervised learning",
+  "Why keep a separate test set?": "To check how it does on new, unseen data",
+  "Predicting tomorrow's temperature is…": "Regression",
 };
 
 test("Quiz Run 3D: keyboard + buttons, wrong answer replays, no-timer waits", async ({ page, app }) => {
@@ -46,7 +46,7 @@ test("Quiz Run 3D: keyboard + buttons, wrong answer replays, no-timer waits", as
 
 test("Step Tower 3D: stack all steps in order", async ({ page, app }) => {
   await app.open();
-  const steps = ["Roots take in water", "Leaves take in CO₂", "Chlorophyll catches sunlight", "The plant makes glucose", "Oxygen is released"];
+  const steps = ["Define the question", "Collect data", "Pick features and labels", "Train on the training set", "Evaluate on the test set"];
   await page.locator(".slot[data-game] [data-g=tower]").click();
   await expect(page.locator(".g3 canvas")).toBeVisible();
   // a wrong block first: it shakes with a hint

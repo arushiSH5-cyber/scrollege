@@ -1,5 +1,21 @@
 # Decisions
 
+## Scrollege v4 (approved design: reference/scrollege-v4.html)
+- Watercolor + doodles, 3 looks: ☁️ Sky (default), 🌿 Sage, 🌙 Ink night. 🎨 in the header cycles them; also in onboarding and Me → Brain modes.
+  Picking a look in Me keeps the section you were in open (the mockup re-drew Me and closed it).
+- Scrolly is now the doodle cat with a sprout (the mockup's `rotty()`); icons are rendered from that same drawing on the Sky gradient.
+- The sample deck is **ML Basics** (5 reels, Step Tower = steps of an ML project). The Explore pack JSON was updated from v4
+  (Step Tower = how a chatbot replies, 3D scene per reel, its 3 meme cards).
+- Feed tabs: 📚 My notes | 🌍 Around. Around has 🤯 AI fun facts, 📰 Fresh in AI, 🧭 Next topics, 🛠 Try a project, exactly as the mockup.
+  - **News is the mockup's 3 demo picks** (real headlines, AI Weekly, Nov 5 2026, with links). `/api/around` with live news needs a
+    news/search API key (Keenable, Exa or Tavily) and is not built yet.
+  - Next-topic chips that exist in the pack jump to that reel; the others show "Cooking a mini feed… (demo)".
+- 🎬 Watch in 3D (`video3d`) ported exactly. The button is hidden when WebGL isn't available or a reel has no scene.
+  AI decks now pick a scene per reel (`v3`) from the 8 kinds.
+- 🃏 Meme cards ported exactly; the AI deck now writes 3 cards per deck (`cards`). Pulled cards are saved with your settings and show in Me → 🃏 My card binder.
+  Save / Share on a card are still the mockup's demo toasts (real PNG + Web Share is a next step).
+- Still no Firecrawl / 🔗 Link.
+
 ## Now Scrollege (new approved design: reference/scrollege.html)
 - Same app, renamed: StudyRot → **Scrollege**, Rotty → **Scrolly** (also in the AI prompts and podcast lines).
 - The soft, bubbly skin from the mockup is used as-is (gradients, no thick outlines, jelly buttons, floating tab bar, drifting critters).

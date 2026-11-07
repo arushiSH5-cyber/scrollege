@@ -3,8 +3,8 @@ import { test, expect, mockAI, MOCK_DECK } from "./fixtures";
 test("onboarding → brain card → buddy → Make", async ({ page, app, theme }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Hi! I'm Scrolly 👋" })).toBeVisible();
-  await page.locator(`[data-th="${theme === "night" ? 1 : 0}"]`).click();
-  await expect(page.locator("html")).toHaveClass(theme === "night" ? /night/ : /^(?!.*night)/);
+  await page.locator(`[data-th="${theme}"]`).click();
+  await expect(page.locator("html")).toHaveClass(theme === "ink" ? /night/ : theme === "sage" ? /th-sage/ : /^(?!.*(night|th-sage))/);
   await page.getByRole("button", { name: "Let's go!" }).click();
   await page.locator('[data-l="listen"]').click();
   await expect(page.locator("#xpN")).toHaveText("10 XP");
@@ -23,7 +23,7 @@ test("onboarding → brain card → buddy → Make", async ({ page, app, theme }
   await page.reload();
   await expect(page.locator(".onb")).toHaveCount(0);
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("scrollege:v1")!));
-  expect(saved).toMatchObject({ onboarded: true, pet: "frog", dys: true, notimer: true, night: theme === "night" });
+  expect(saved).toMatchObject({ onboarded: true, pet: "frog", dys: true, notimer: true, theme });
 });
 
 test("Make: notes → real deck from the (mocked) AI, with line sources", async ({ page, app }) => {
@@ -81,7 +81,7 @@ test("every reel mode works", async ({ page, app }) => {
   await s.locator("[data-rul]").click();
   await expect(s.locator(".box.ruled")).toBeVisible();
   await s.locator("[data-simple]").click();
-  await expect(s.locator("[data-read]")).toContainText("Plants use sunlight to cook their own food.");
+  await expect(s.locator("[data-read]")).toContainText("You show the computer lots of examples, and it learns the pattern.");
   await s.locator('[data-m="play"]').click();
   await expect(s.getByText("Quiz Run 3D")).toBeVisible();
   await s.locator("[data-tapq]").click();
@@ -92,10 +92,10 @@ test("every reel mode works", async ({ page, app }) => {
 test("wrong then right answer, and the miss goes to the review pile", async ({ page, app }) => {
   await app.open({ mode: "play", tapQuiz: true });
   const s = app.slot(1);
-  await s.getByRole("button", { name: "Oxygen" }).click();
+  await s.getByRole("button", { name: "The number of rooms" }).click();
   await expect(s.getByText("Not quite, that's okay.")).toBeVisible();
   await s.getByRole("button", { name: "Try again" }).click();
-  await s.getByRole("button", { name: "Carbon dioxide" }).click();
+  await s.getByRole("button", { name: "The price" }).click();
   await expect(s.getByText("🎉 Yes!")).toBeVisible();
   const review = await page.evaluate(() => JSON.parse(localStorage.getItem("scrollege:v1")!).review);
   expect(review).toEqual([expect.objectContaining({ d: "demo", i: 1, step: 0 })]);
@@ -111,9 +111,9 @@ test("jingle, Ask (in notes vs not) and Teach Scrolly", async ({ page, app }) =>
   await page.locator("#sheet .x").click();
 
   await s.locator('[data-a="ask"]').click();
-  await page.getByRole("button", { name: "Why are leaves green?" }).click();
-  await expect(page.locator("#chat .bot").last()).toContainText("reflects green");
-  await expect(page.locator("#chat .bot .src").last()).toContainText("line 3");
+  await page.getByRole("button", { name: "What is a label?" }).click();
+  await expect(page.locator("#chat .bot").last()).toContainText("The label is what we want to predict");
+  await expect(page.locator("#chat .bot .src").last()).toContainText("line 2");
   await page.locator("#aq").fill("Who was Darwin?");
   await page.locator("#aq").press("Enter");
   await expect(page.locator("#chat .bot").last()).toContainText("not in your notes");
@@ -121,7 +121,7 @@ test("jingle, Ask (in notes vs not) and Teach Scrolly", async ({ page, app }) =>
 
   await s.locator('[data-a="more"]').click();
   await page.locator('[data-mo="teach"]').click();
-  await page.locator("#tb").fill("Plants use light energy and turn it into chemical energy stored in sugar, mostly in the leaves.");
+  await page.locator("#tb").fill("Machine learning means the computer learns patterns from data and examples so it can make predictions.");
   await page.locator("#tbGo").click();
   await expect(page.locator("#tbR")).toContainText("⭐");
 });
@@ -182,7 +182,7 @@ test("daily limit: 3 reels then the celebration", async ({ page, app }) => {
 test("spaced review: a reel due today comes first", async ({ page, app }) => {
   const today = new Date(); today.setHours(12); const k = today.toISOString().slice(0, 10);
   await app.open({ review: [{ d: "demo", i: 3, due: k, step: 0 }] });
-  await expect(app.slot(0).locator("h3")).toHaveText("What comes out");
+  await expect(app.slot(0).locator("h3")).toHaveText("Training and test sets");
   await expect(app.slot(0).locator(".num")).toContainText("🔁 Review");
   await app.slot(0).locator('[data-a="got"]').click();
   const review = await page.evaluate(() => JSON.parse(localStorage.getItem("scrollege:v1")!).review);
@@ -208,8 +208,10 @@ test("Me toggles, tint and back navigation", async ({ page, app, theme }) => {
     await sw.click();
     await expect(sw).not.toHaveAttribute("aria-checked", before!);
   }
-  await page.locator('[data-set="night"]').click();
-  await expect(page.locator("html")).toHaveClass(theme === "night" ? /^(?!.*night)/ : /night/);
+  await page.locator('[data-look="sage"]').click();
+  await expect(page.locator("html")).toHaveClass(/th-sage/);
+  await page.locator('[data-look="ink"]').click();
+  await expect(page.locator("html")).toHaveClass(/night/);
   await page.locator('[data-tint="blue"]').click();
   await expect(page.locator("#tint")).toHaveCSS("background-color", "rgba(185, 216, 234, 0.35)");
   await app.noHorizontalScroll();
@@ -251,13 +253,14 @@ test("no horizontal scroll on any screen at 390px", async ({ page, app }) => {
   await app.noHorizontalScroll();
 });
 
-test("Explore tab: AI fun facts pack, Ask from the pack, fit-the-line lab", async ({ page, app }) => {
+test("Around → AI fun facts pack, Ask from the pack, fit-the-line lab", async ({ page, app }) => {
   await app.open({ built: false });
-  await page.getByRole("tab", { name: "✨ Explore" }).click();
+  await page.getByRole("tab", { name: "🌍 Around" }).click();
+  await page.locator("[data-xp]").click();
   await expect(app.slot(0).locator("h3")).toHaveText("Linear regression");
   await expect(page.locator(".slot[data-i] h3")).toHaveText(["Linear regression", "Gradient descent", "Overfitting", "Neural networks", "How chatbots write"]);
-  await expect(app.slot(0).locator(".src")).toHaveText("✨ Scrollege Explore · AI basics");
-  await expect(page.locator(".slot[data-game]")).toContainText("Stack the steps of training an AI model");
+  await expect(app.slot(0).locator(".src")).toHaveText("🤯 AI fun facts · from 🌍 Around");
+  await expect(page.locator(".slot[data-game]")).toContainText("Stack the steps of how a chatbot replies");
   // fit-the-line lab: real least-squares on the starting dots
   await app.slot(0).locator("[data-try]").click();
   await expect(page.locator("#eq")).toHaveText("y = 0.81x + 0.99");
@@ -283,4 +286,54 @@ test("Explore tab: AI fun facts pack, Ask from the pack, fit-the-line lab", asyn
   await expect(app.slot(0).locator("h3")).toHaveText("Linear regression");
   await page.getByRole("tab", { name: "📚 My notes" }).click();
   await expect(page.getByRole("heading", { name: "No feed yet" })).toBeVisible();
+});
+
+test("Around: fun facts, news with sources, next topics, projects", async ({ page, app }) => {
+  await app.open();
+  await page.getByRole("tab", { name: "🌍 Around" }).click();
+  await expect(page.getByRole("heading", { name: "Around ML Basics" })).toBeVisible();
+  await expect(page.locator(".around .lbl")).toHaveText(["📰 Fresh in AI", "🧭 Next topics for you", "🛠 Try a project"]);
+  const news = page.locator(".card.news");
+  await expect(news).toHaveCount(3);
+  for (let k = 0; k < 3; k++) {
+    await expect(news.nth(k).locator(".why")).toContainText("Why it matters");
+    await expect(news.nth(k).locator("a.srcl")).toHaveAttribute("href", /^https:\/\//);
+    await expect(news.nth(k).locator("a.srcl")).toContainText("2026");
+  }
+  await expect(page.locator("[data-nx]")).toHaveCount(6);
+  await page.locator("[data-pj]").first().click();
+  await expect(page.locator("#sheet ol li")).toHaveCount(4);
+  await page.getByRole("button", { name: "Save this project" }).click();
+  // a next-topic chip that exists in the pack jumps to that reel
+  await page.locator("[data-nx]", { hasText: "Linear regression" }).click();
+  await expect(app.slot(0).locator("h3")).toHaveText("Linear regression");
+  await app.noHorizontalScroll();
+});
+
+test("Watch in 3D plays captions, then Replay / Done", async ({ page, app }) => {
+  test.setTimeout(90_000);
+  await app.open({ calm: false });
+  await app.slot(0).locator("[data-v3]").click();
+  await expect(page.locator(".g3.vid canvas")).toBeVisible();
+  await expect(page.locator("#vcap")).toContainText("Computers learn from examples");
+  await expect(page.locator("#g3m")).toContainText("That's the idea!", { timeout: 45_000 });
+  await expect(page.locator("#vcap")).toContainText("to predict new things");
+  await page.locator("#g3m").getByRole("button", { name: "Done" }).click();
+  await expect(page.locator(".g3")).toHaveCount(0);
+});
+
+test("meme card: flip at the end of the feed, then it's in the binder", async ({ page, app }) => {
+  await app.open();
+  await page.locator(".slot[data-limit] .mback").click({ force: true }); // it wobbles on purpose
+  await expect(page.locator("#sheet .mcard")).toBeVisible();
+  await expect(page.locator("#sheet .mfoot")).toHaveText("SCROLLEGE · STUDY CARD");
+  const title = (await page.locator("#sheet .mtitle b").textContent())!;
+  expect(["Overfit Trap", "Test Set Shield", "Label Detective"]).toContain(title);
+  await page.locator("#sheet .x").click();
+  await app.tab("Me");
+  await expect(page.getByText("🃏 My card binder (1/6)")).toBeVisible();
+  await expect(page.locator(".binder .mcard")).toHaveCount(1);
+  await page.reload();
+  await app.tab("Me");
+  await expect(page.getByText("🃏 My card binder (1/6)")).toBeVisible();
 });

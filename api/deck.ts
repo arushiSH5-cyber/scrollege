@@ -44,7 +44,7 @@ export default async function handler(req: Req, res: Res) {
     const deck = await structured({
       model: SMART, schema: DeckSchema, maxTokens: 16000,
       system: SYSTEM + "\n" + brainHints(body.brain),
-      content: `SOURCE (from ${body.sourceLabel || "the student's notes"}):\n<source>\n${src}\n</source>\n\nMake the deck: a title, exactly 5 reels, plus "steps" and "sort" if they fit this topic.`,
+      content: `SOURCE (from ${body.sourceLabel || "the student's notes"}):\n<source>\n${src}\n</source>\n\nMake the deck: a title, exactly 5 reels (each with a v3 scene), plus "steps" and "sort" if they fit this topic, and 3 meme study cards.`,
     });
 
     let good: Reel[] = [], bad: { reel: Reel; problems: string[] }[] = [];
@@ -72,6 +72,8 @@ export default async function handler(req: Req, res: Res) {
         reels: good.slice(0, 5).map((r) => ({ ...toMockupReel(r), line: fixLine(r.line) })),
         steps: steps.length >= 4 ? steps : [],
         sort,
+        stepsOf: deck.title,
+        cards: (deck.cards || []).slice(0, 3).map((c) => [c.title, c.type, c.art, c.effect.slice(0, 160)]),
       },
       dropped: 5 - Math.min(5, good.length),
     });

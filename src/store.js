@@ -3,7 +3,7 @@
 const KEY = "scrollege:v1";
 const SETS = ["learn", "hard", "seen", "got", "later", "simple"];
 const SAVE = ["night","pet","petName","vibe","mode","calm","dys","bionic","ruler","tint","big","notimer","sound","voice","lang","jr",
-  "xp","streak","test","story","built","onboarded","src","wrong","lastDay","tapQuiz","review","limit","deckId","feed", ...SETS];
+  "xp","streak","test","story","built","onboarded","src","wrong","lastDay","tapQuiz","review","limit","deckId","feed","theme","cards", ...SETS];
 
 export function loadSettings(S) {
   try {

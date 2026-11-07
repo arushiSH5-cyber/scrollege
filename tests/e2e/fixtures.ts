@@ -1,7 +1,8 @@
 import { test as base, expect, type Page } from "@playwright/test";
-export type Opts = { theme: "pastel" | "night" };
+export type Look = "sky" | "sage" | "ink";
+export type Opts = { theme: Look };
 export const test = base.extend<Opts & { app: App }>({
-  theme: ["pastel", { option: true }],
+  theme: ["sky", { option: true }],
   app: async ({ page, theme }, use) => {
     page.on("pageerror", (e) => console.log("[pageerror]", e.message));
     await use(new App(page, theme));
@@ -10,14 +11,14 @@ export const test = base.extend<Opts & { app: App }>({
 export { expect };
 
 export class App {
-  constructor(public page: Page, public theme: "pastel" | "night") {}
+  constructor(public page: Page, public theme: Look) {}
   /** Start already onboarded (skips the quiz) with optional saved state. Runs once per tab. */
   async seed(extra: Record<string, unknown> = {}) {
-    await this.page.addInitScript(([night, extra]) => {
+    await this.page.addInitScript(([look, extra]) => {
       if (sessionStorage.getItem("seeded")) return;
       sessionStorage.setItem("seeded", "1");
-      localStorage.setItem("scrollege:v1", JSON.stringify({ onboarded: true, night, built: true, learn: ["watch"], hard: [], sound: false, lastDay: null, ...extra }));
-    }, [this.theme === "night", extra] as const);
+      localStorage.setItem("scrollege:v1", JSON.stringify({ onboarded: true, theme: look, built: true, learn: ["watch"], hard: [], sound: false, lastDay: null, ...extra }));
+    }, [this.theme, extra] as const);
   }
   async open(extra: Record<string, unknown> = {}) { await this.seed(extra); await this.page.goto("/"); await this.ready(); }
   async ready() { await expect(this.page.locator("#nav button")).toHaveCount(3); }
@@ -42,9 +43,9 @@ export const MOCK_DECK = {
     cap: ["cap one", "cap two", "cap three"], read: [`Fact ${k} a`, `Fact ${k} b`, `Fact ${k} c`],
     quotes: ["Cells are the basic unit of life."], simple: `Simple ${k}`, story: ["s1", "s2", "s3"],
     pod: [["Scrolly", "What is it?"], ["Pip", `It is thing ${k}.`]],
-    q: [`Question ${k}?`, [`Right ${k}`, `Wrong ${k}a`, `Wrong ${k}b`], 0, `Because ${k}.`], jingle: ["la la", "la la"], line: k === 1 ? 2 : 1,
+    q: [`Question ${k}?`, [`Right ${k}`, `Wrong ${k}a`, `Wrong ${k}b`], 0, `Because ${k}.`], jingle: ["la la", "la la"], line: k === 1 ? 2 : 1, v3: "sort",
   })),
-  steps: ["Step A", "Step B", "Step C", "Step D"], sort: [],
+  steps: ["Step A", "Step B", "Step C", "Step D"], sort: [], cards: [["Quiz Card", "SPELL CARD", "shield", "Cells are the basic unit of life. Now you know."]],
 };
 export async function mockAI(page: Page, sourceLabel = "your notes", pageNums = false) {
   const lines = [1, 2, 3].map((n) => ({ n, text: ["Cells are the basic unit of life.", "The nucleus holds DNA.", "Mitochondria release energy."][n - 1], ...(pageNums ? { page: n } : {}) }));

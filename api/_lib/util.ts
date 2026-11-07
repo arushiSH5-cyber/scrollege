@@ -11,7 +11,8 @@ export const FAST = "claude-haiku-5-5";
 export const SMART = "claude-sonnet-5-5";
 
 let _c: Anthropic | null = null;
-export const claude = () => (_c ||= new Anthropic());
+// Use only the key from .env.local: ignore any other Anthropic token or base URL that happens to be set in the shell.
+export const claude = () => (_c ||= new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, authToken: null, baseURL: "https://api.anthropic.com" }));
 
 /* --- per-IP rate limit (in memory; good enough locally / per instance) --- */
 const hits = new Map<string, number[]>();
