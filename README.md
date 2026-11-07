@@ -66,6 +66,7 @@ Scrolly turns it into **5 reels**, each with a caption, bullet points, a mini po
 No diagnosis needed. Students pick what's true for them, and can change anything in **🧸 Me**.
 
 ### 🎮 Real 3D games made from your notes
+- **8 tiny 3D games:** Quiz Run, Step Tower, Bubble Pop, Memory Match, Catch & Sort, Gone Fishing, Whack-a-Word and Hoop Shot. Each reel in 🎮 Play mode features a different one.
 - **🏃 Quiz Run 3D:** run through the gate with the right answer. Wrong answers come back at the end (mistake replay).
 - **🧱 Step Tower 3D:** stack the steps of a process in order. The camera rises with your tower.
 - **🎬 Watch in 3D:** a 12-second animated scene with narration for ML ideas (best-fit lines, gradient descent, neural nets, train/test splits…).
@@ -73,7 +74,12 @@ No diagnosis needed. Students pick what's true for them, and can change anything
 
 Every 3D action also has a big on-screen button, so keyboards and screen readers work too.
 
-### 🌍 Around
+### 🫧 Need a break?
+One tap on 🫧 opens real, gentle body breaks: box breathing, a desk stretch, squeeze & let go, a 20-20-20 eye break,
+5-4-3-2-1 grounding, water + wiggle, and a sheet of bubble wrap to pop. Tell Scrolly how you feel and it suggests one.
+Every step can be paused or skipped; nothing is timed against you.
+
+### 🧭 Explore
 What's happening around your topic: 🤯 AI fun facts reels, 📰 fresh news with a "why it matters" line and a source link,
 🧭 next topics to learn, and 🛠 beginner projects with steps.
 

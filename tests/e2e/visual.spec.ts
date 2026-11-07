@@ -1,10 +1,10 @@
-// The built app must look like the approved mockup (reference/scrollege-v4.html): ≤2% pixel difference per screen.
+// The built app must look like the approved mockup (reference/scrollege-v7.html): ≤2% pixel difference per screen.
 import { test, expect } from "./fixtures";
 import { PNG } from "pngjs";
 import pixelmatch from "pixelmatch";
 import path from "node:path";
 
-const MOCKUP = "file://" + path.resolve("reference/scrollege-v4.html");
+const MOCKUP = "file://" + path.resolve("reference/scrollege-v7.html");
 const FREEZE = `*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}.about{display:none!important}`;
 
 async function shot(page: any) {

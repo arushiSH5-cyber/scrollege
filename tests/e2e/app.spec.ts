@@ -9,12 +9,8 @@ test("onboarding → brain card → buddy → Make", async ({ page, app, theme }
   await page.locator('[data-l="listen"]').click();
   await expect(page.locator("#xpN")).toHaveText("10 XP");
   await page.getByRole("button", { name: "Level up →" }).click();
-  await page.locator('[data-h="reading"]').click();
-  await page.locator('[data-h="time"]').click();
-  await page.getByRole("button", { name: /Make my brain card/ }).click();
   await expect(page.getByRole("heading", { name: "Your brain card!" })).toBeVisible();
   await expect(page.locator(".bcard h4")).toContainText("Audio Explorer");
-  await expect(page.locator(".bcard")).toContainText("No-timer mode");
   await page.locator('[data-pet="frog"]').click();
   await page.getByRole("button", { name: /Make my first feed/ }).click();
   await expect(page.getByRole("heading", { name: "Make a feed" })).toBeVisible();
@@ -23,7 +19,7 @@ test("onboarding → brain card → buddy → Make", async ({ page, app, theme }
   await page.reload();
   await expect(page.locator(".onb")).toHaveCount(0);
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("scrollege:v1")!));
-  expect(saved).toMatchObject({ onboarded: true, pet: "frog", dys: true, notimer: true, theme });
+  expect(saved).toMatchObject({ onboarded: true, pet: "frog", theme });
 });
 
 test("Make: notes → real deck from the (mocked) AI, with line sources", async ({ page, app }) => {
@@ -83,7 +79,7 @@ test("every reel mode works", async ({ page, app }) => {
   await s.locator("[data-simple]").click();
   await expect(s.locator("[data-read]")).toContainText("You show the computer lots of examples, and it learns the pattern.");
   await s.locator('[data-m="play"]').click();
-  await expect(s.getByText("Quiz Run 3D")).toBeVisible();
+  await expect(s.locator(".playcard b")).toHaveText("Quiz Run");
   await s.locator("[data-tapq]").click();
   await expect(s.locator("[data-ans]")).toHaveCount(3);
   await app.noHorizontalScroll();
@@ -156,16 +152,75 @@ test("focus timer (study with Scrolly)", async ({ page, app }) => {
   await expect(page.locator(".toast")).toContainText("+15 XP");
 });
 
-test("overwhelmed: breathe, then one tiny step", async ({ page, app }) => {
-  await page.clock.install();
+test("🫧 break menu: 7 activities, a mood suggests one, ← closes it", async ({ page, app }) => {
   await app.open();
   await page.locator("#breakBtn").click();
-  await expect(page.getByRole("heading", { name: "Let's breathe together" })).toBeVisible();
-  await page.clock.runFor(21_000);
-  await expect(page.locator("#bw")).toContainText("You're okay");
-  await page.getByRole("button", { name: "One tiny step: watch 1 reel" }).click();
+  const menu = page.locator(".ov.relax");
+  await expect(menu.getByRole("heading", { name: "Need a break?" })).toBeVisible();
+  await expect(menu.locator("[data-rx]")).toHaveCount(7);
+  await expect(menu).toContainText("talk to someone you trust or your school counselor");
+  for (const [mood, act] of [["box", "box"], ["move", "move"], ["stretch", "stretch"], ["eyes", "eyes"]]) {
+    await menu.locator(`[data-mood="${mood}"]`).click();
+    await expect(menu.locator(`[data-rx="${act}"]`)).toHaveClass(/pick/);
+    await expect(menu.locator(".rcard.pick")).toHaveCount(1);
+  }
+  await menu.locator(".back").click();
+  await expect(page.locator(".ov.relax")).toHaveCount(0);
+});
+
+test("every guided break can pause, skip to the end and says Nice break", async ({ page, app }) => {
+  test.setTimeout(120_000);
+  await app.open();
+  for (const k of ["box", "stretch", "squeeze", "eyes", "ground", "move"]) {
+    await page.locator("#breakBtn").click();
+    const o = page.locator(".ov.relax");
+    await o.locator(`[data-rx="${k}"]`).click();
+    await expect(o.locator("#rt")).not.toBeEmpty();
+    await o.locator("#rp").click();
+    await expect(o.locator("#rp")).toHaveText("▶ Resume");
+    const before = await o.locator("#rs").textContent();
+    await page.waitForTimeout(1300);
+    await expect(o.locator("#rs")).toHaveText(before!); // paused: the countdown stops
+    for (let n = 0; n < 30 && !(await o.getByRole("heading", { name: "Nice break 💛" }).count()); n++) await o.locator("#rn").click();
+    await expect(o.getByRole("heading", { name: "Nice break 💛" })).toBeVisible();
+    await o.locator(".back").click();               // ← goes back to the menu
+    await expect(o.locator("[data-rx]")).toHaveCount(7);
+    await o.locator(".back").click();               // ← on the menu closes it
+    await expect(page.locator(".ov.relax")).toHaveCount(0);
+  }
+  await page.locator("#breakBtn").click();
+  await page.locator('.ov.relax [data-rx="box"]').click();
+  for (let n = 0; n < 30 && !(await page.locator("#tiny").count()); n++) await page.locator("#rn").click();
+  await page.locator("#tiny").click();                // ▶ Watch just 1 reel
   await expect(page.locator(".ov")).toHaveCount(0);
   await expect(app.slot(0)).toBeVisible();
+});
+
+test("bubble wrap counts pops", async ({ page, app }) => {
+  await app.open();
+  await page.locator("#breakBtn").click();
+  await page.locator('.ov.relax [data-rx="wrap"]').click();
+  const bubbles = page.locator(".wrapg .wb");
+  await expect(bubbles).toHaveCount(30);
+  await bubbles.nth(0).click(); await bubbles.nth(1).click(); await bubbles.nth(1).click();
+  await expect(page.locator("#wc")).toHaveText("2 popped");
+  await page.locator(".ov.relax .back").click();
+  await expect(page.locator(".ov.relax [data-rx]")).toHaveCount(7);
+});
+
+test("Play mode: a different game on each reel, Other games, Simple tap quiz", async ({ page, app }) => {
+  await app.open({ mode: "play", tapQuiz: false });
+  const names = await page.locator(".slot[data-i] .playcard b").allTextContents();
+  expect(names).toEqual(["Quiz Run", "Bubble Pop", "Whack-a-Word", "Hoop Shot", "Gone Fishing"]);
+  await app.slot(1).locator(".playcard [data-run]").click();
+  await expect(page.locator(".g3 canvas")).toBeVisible();
+  await page.locator(".g3 .back").click();
+  await expect(page.locator(".g3")).toHaveCount(0);
+  await app.slot(2).locator("[data-gp]").click();
+  await expect(page.locator("#sheet .gtile")).toHaveCount(8);
+  await page.locator("#sheet .x").click();
+  await app.slot(0).locator("[data-tapq]").click();
+  await expect(app.slot(0).locator("[data-ans]")).toHaveCount(3);
 });
 
 test("daily limit: 3 reels then the celebration", async ({ page, app }) => {
@@ -181,10 +236,10 @@ test("daily limit: 3 reels then the celebration", async ({ page, app }) => {
 
 test("spaced review: a reel due today comes first", async ({ page, app }) => {
   const today = new Date(); today.setHours(12); const k = today.toISOString().slice(0, 10);
-  await app.open({ review: [{ d: "demo", i: 3, due: k, step: 0 }] });
+  await app.open({ review: [{ d: "demo", i: 3, due: k, step: 0 }], mode: "play", tapQuiz: true });
   await expect(app.slot(0).locator("h3")).toHaveText("Training and test sets");
-  await expect(app.slot(0).locator(".num")).toContainText("🔁 Review");
-  await app.slot(0).locator('[data-a="got"]').click();
+  await expect(app.slot(0).locator(".info")).toContainText("🔁 Back for review");
+  await app.slot(0).getByRole("button", { name: "To check how it does on new, unseen data" }).click();
   const review = await page.evaluate(() => JSON.parse(localStorage.getItem("scrollege:v1")!).review);
   expect(review[0].step).toBe(1); // comes back in 3 days
   expect(review[0].due > k).toBe(true);
@@ -253,14 +308,14 @@ test("no horizontal scroll on any screen at 390px", async ({ page, app }) => {
   await app.noHorizontalScroll();
 });
 
-test("Around → AI fun facts pack, Ask from the pack, fit-the-line lab", async ({ page, app }) => {
+test("Explore → AI fun facts pack, Ask from the pack, fit-the-line lab", async ({ page, app }) => {
   await app.open({ built: false });
-  await page.getByRole("tab", { name: "🌍 Around" }).click();
+  await page.getByRole("tab", { name: "Explore" }).click();
   await page.locator("[data-xp]").click();
   await expect(app.slot(0).locator("h3")).toHaveText("Linear regression");
   await expect(page.locator(".slot[data-i] h3")).toHaveText(["Linear regression", "Gradient descent", "Overfitting", "Neural networks", "How chatbots write"]);
-  await expect(app.slot(0).locator(".src")).toHaveText("🤯 AI fun facts · from 🌍 Around");
-  await expect(page.locator(".slot[data-game]")).toContainText("Stack the steps of how a chatbot replies");
+  await expect(app.slot(0).locator(".src")).toHaveText("🤯 AI fun facts · from Explore");
+  await expect(page.locator(".slot[data-game] .gtile")).toHaveCount(8);
   // fit-the-line lab: real least-squares on the starting dots
   await app.slot(0).locator("[data-try]").click();
   await expect(page.locator("#eq")).toHaveText("y = 0.81x + 0.99");
@@ -284,14 +339,14 @@ test("Around → AI fun facts pack, Ask from the pack, fit-the-line lab", async 
   // the choice is remembered, and My notes still works
   await page.reload();
   await expect(app.slot(0).locator("h3")).toHaveText("Linear regression");
-  await page.getByRole("tab", { name: "📚 My notes" }).click();
+  await page.getByRole("tab", { name: "My notes" }).click();
   await expect(page.getByRole("heading", { name: "No feed yet" })).toBeVisible();
 });
 
-test("Around: fun facts, news with sources, next topics, projects", async ({ page, app }) => {
+test("Explore: fun facts, news with sources, next topics, projects", async ({ page, app }) => {
   await app.open();
-  await page.getByRole("tab", { name: "🌍 Around" }).click();
-  await expect(page.getByRole("heading", { name: "Around ML Basics" })).toBeVisible();
+  await page.getByRole("tab", { name: "Explore" }).click();
+  await expect(page.getByRole("heading", { name: "Explore ML Basics" })).toBeVisible();
   await expect(page.locator(".around .lbl")).toHaveText(["📰 Fresh in AI", "🧭 Next topics for you", "🛠 Try a project"]);
   const news = page.locator(".card.news");
   await expect(news).toHaveCount(3);
@@ -313,7 +368,7 @@ test("Around: fun facts, news with sources, next topics, projects", async ({ pag
 test("Watch in 3D plays captions, then Replay / Done", async ({ page, app }) => {
   test.setTimeout(90_000);
   await app.open({ calm: false });
-  await app.slot(0).locator("[data-v3]").click();
+  await app.slot(0).locator('[data-a="v3"]').click();
   await expect(page.locator(".g3.vid canvas")).toBeVisible();
   await expect(page.locator("#vcap")).toContainText("Computers learn from examples");
   await expect(page.locator("#g3m")).toContainText("That's the idea!", { timeout: 45_000 });

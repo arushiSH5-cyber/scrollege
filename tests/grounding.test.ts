@@ -9,7 +9,7 @@ Happens in chloroplasts; chlorophyll absorbs red/blue light, reflects green.`;
 const reel = (quotes: string[]) => ({
   t: "Inputs", cap: ["a", "b", "c"], read: ["x", "y", "z"], quotes, simple: "s", story: ["1", "2", "3"],
   pod: [["Scrolly", "hi"], ["Pip", "yo"]], q: { question: "q", options: ["a", "b", "c"], answerIndex: 0, why: "w" },
-  jingle: ["one", "two"], line: 2, v3: "sort" as const,
+  jingle: ["one", "two"], line: 2, v3: "sort" as const, mm: ["Cells", "Basic unit of life"],
 });
 
 test("a reel whose quotes are copied from the source passes", () => {

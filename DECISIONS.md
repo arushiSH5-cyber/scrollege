@@ -1,5 +1,17 @@
 # Decisions
 
+## Scrollege v7 (approved design: reference/scrollege-v7.html)
+- The v7 prompt says "apply after v5 and v6"; those two prompts were never shared, so their changes were taken from the v7 mockup itself:
+  hand-drawn doodle icons, redesigned critters, soft WebAudio sound effects + lo-fi game music (Me → volume, music, haptics),
+  a shorter onboarding (hello → how you learn → brain card), 2 study buddies, 🧭 Explore tab (was 🌍 Around) with a "← Explore" back tab
+  from the fun-facts reels, progress dots, and a rail of Watch 3D · Games · Ask · More ("Got it" left the rail; right answers still count).
+- **Play mode:** each reel features its own game (Quiz Run, Bubble Pop, Whack-a-Word, Hoop Shot, Gone Fishing), with 🎮 Other games and Simple tap quiz.
+  Game time shows all 8 games. Catch & Sort and Step Tower only appear when the deck has the data for them.
+- AI decks now also write a memory-match pair per reel (`mm`) and Catch & Sort groups (`sortG`). Older saved decks get a simple memory-match fallback.
+- Watch 3D on the rail only shows for reels that have a 3D scene (ML/data topics).
+- **🫧 Break menu:** mood faces (never stored), 7 activities, a guided player (pause, next, progress), "Nice break 💛", and the counselor line.
+  Steps are read aloud with the browser's own voice. Cartesia would need its own API key, so it isn't wired in yet.
+
 ## Published (Nov 7, 2026)
 - GitHub: public repo arushiSH5-cyber/scrollege. Commits credited to the owner's GitHub identity; the pre-push block was removed when the owner asked to publish.
 - Vercel: https://scrollege.vercel.app in demo mode (no key on Vercel, so it costs nothing). `.vercelignore` keeps `.env*` from ever being uploaded.

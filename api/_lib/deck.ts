@@ -17,6 +17,7 @@ export const ReelSchema = z.object({
   }),
   jingle: z.array(z.string()).describe("2 rhyming lines that keep the facts correct"),
   line: z.number().int().describe("The source line number [n] this reel is mostly based on"),
+  mm: z.array(z.string()).describe('Memory-match pair: [key term from this reel (1-3 words), its meaning in max 6 words]'),
   v3: z.enum(["scatter", "overfit", "hill", "net", "tokens", "split", "sort", "cluster", "none"]).describe(
     "3D video scene. These scenes are for machine learning / data / AI ideas only. For any other subject (biology, history, etc.) use none. Pick a scene only if it clearly shows this idea: scatter (dots + best-fit line), overfit (wiggly curve vs simple line), hill (ball rolling downhill), net (layers of nodes), tokens (word blocks one at a time), split (cubes into train/test), sort (balls into two labeled bins), cluster (balls drifting into groups)"),
 });
@@ -32,6 +33,11 @@ export const DeckSchema = z.object({
   sort: z.array(z.array(z.string())).describe('4-6 [word, "in"|"out"] pairs if the topic has clear inputs/outputs or two groups, else []'),
   steps: z.array(z.string()).describe("4-6 short steps in the right order if the topic has a process, else []"),
   cards: z.array(CardSchema).describe("Exactly 3 collectible meme study cards about this topic"),
+  sortG: z.object({
+    a: z.string().describe("Name of group A (1-3 words)"),
+    b: z.string().describe("Name of group B (1-3 words)"),
+    items: z.array(z.object({ text: z.string().describe("Short item, max 6 words"), group: z.enum(["a", "b"]), why: z.string().describe("Max 8 words, why it belongs") })),
+  }).describe("Catch & Sort game: two groups the SOURCE clearly separates, with 6 items (3 per group). Every item must come from the SOURCE."),
 });
 export type Reel = z.infer<typeof ReelSchema>;
 export type ModelDeck = z.infer<typeof DeckSchema>;
@@ -41,7 +47,7 @@ export function toMockupReel(r: Reel) {
   return {
     t: r.t, cap: r.cap.slice(0, 3), read: r.read.slice(0, 3), quotes: r.quotes.slice(0, 3), simple: r.simple,
     story: r.story.slice(0, 3), pod: r.pod.slice(0, 2).map((p) => [String(p[0] || "Pip"), String(p[1] || "")]),
-    q: [r.q.question, r.q.options.slice(0, 3), r.q.answerIndex, r.q.why], jingle: r.jingle.slice(0, 2), line: r.line, v3: r.v3 === "none" ? null : r.v3,
+    q: [r.q.question, r.q.options.slice(0, 3), r.q.answerIndex, r.q.why], jingle: r.jingle.slice(0, 2), line: r.line, v3: r.v3 === "none" ? null : r.v3, mm: [String(r.mm?.[0] || r.t), String(r.mm?.[1] || r.cap[0] || "")],
   };
 }
 

@@ -11,7 +11,8 @@ const DEMO_Q: Record<string, string> = {
 test("Quiz Run 3D: keyboard + buttons, wrong answer replays, no-timer waits", async ({ page, app }) => {
   test.setTimeout(150_000);
   await app.open({ notimer: true });
-  await app.slot(0).locator('[data-a="g3"]').click();
+  await app.slot(0).locator('[data-a="g3"]').click();       // Games → picker
+  await page.locator('#sheet [data-g="run"]').click();
   await expect(page.locator(".g3 canvas")).toBeVisible();
   const q = page.locator("#g3q"), pad = page.locator("#g3pad button");
   let wrongDone = false, rounds = 0, usedKeys = false, usedButtons = false;

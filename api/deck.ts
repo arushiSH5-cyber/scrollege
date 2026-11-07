@@ -46,7 +46,7 @@ export default async function handler(req: Req, res: Res) {
     const deck = await structured({
       model: SMART, schema: DeckSchema, maxTokens: 16000,
       system: SYSTEM + "\n" + brainHints(body.brain),
-      content: `SOURCE (from ${body.sourceLabel || "the student's notes"}):\n<source>\n${src}\n</source>\n\nMake the deck: a title, exactly 5 reels (each with a v3 scene), plus "steps" and "sort" if they fit this topic, and 3 meme study cards.`,
+      content: `SOURCE (from ${body.sourceLabel || "the student's notes"}):\n<source>\n${src}\n</source>\n\nMake the deck: a title, exactly 5 reels (each with a v3 scene), plus "steps" and "sort" if they fit this topic, 3 meme study cards, a memory-match pair per reel, and the Catch & Sort groups.`,
     });
 
     let good: Reel[] = [], bad: { reel: Reel; problems: string[] }[] = [];
@@ -76,6 +76,9 @@ export default async function handler(req: Req, res: Res) {
         sort,
         stepsOf: deck.title,
         cards: (deck.cards || []).slice(0, 3).map((c) => [c.title, c.type, c.art, c.effect.slice(0, 160)]),
+        sortG: deck.sortG && deck.sortG.items?.length >= 4
+          ? { a: deck.sortG.a, b: deck.sortG.b, items: deck.sortG.items.slice(0, 6).map((it) => [it.text, it.group === "a" ? 0 : 1, it.why]) }
+          : null,
       },
       dropped: 5 - Math.min(5, good.length),
     });

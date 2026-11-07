@@ -2,7 +2,7 @@
  "id": "ai-fun-facts",
  "title": "AI fun facts",
  "pack": true,
- "label": "🤯 AI fun facts · from 🌍 Around",
+ "label": "🤯 AI fun facts · from Explore",
  "stepsOf": "how a chatbot replies",
  "steps": [
   "You type a message",
@@ -63,7 +63,11 @@
    ],
    "line": 1,
    "tryit": true,
-   "v3": "scatter"
+   "v3": "scatter",
+   "mm": [
+    "Linear regression",
+    "The best-fit straight line"
+   ]
   },
   {
    "t": "Gradient descent",
@@ -110,7 +114,11 @@
     "down the hill the errors slide!"
    ],
    "line": 2,
-   "v3": "hill"
+   "v3": "hill",
+   "mm": [
+    "Gradient descent",
+    "Tiny steps downhill to less error"
+   ]
   },
   {
    "t": "Overfitting",
@@ -157,7 +165,11 @@
     "learn the pattern, that works best!"
    ],
    "line": 3,
-   "v3": "overfit"
+   "v3": "overfit",
+   "mm": [
+    "Overfitting",
+    "Great on practice, bad on new data"
+   ]
   },
   {
    "t": "Neural networks",
@@ -204,7 +216,11 @@
     "weights adjust till answers are true!"
    ],
    "line": 4,
-   "v3": "net"
+   "v3": "net",
+   "mm": [
+    "Neural network",
+    "Layers of units with weights"
+   ]
   },
   {
    "t": "How chatbots write",
@@ -251,9 +267,49 @@
     "that's what language models are for!"
    ],
    "line": 5,
-   "v3": "tokens"
+   "v3": "tokens",
+   "mm": [
+    "Token",
+    "A word or a piece of a word"
+   ]
   }
  ],
+ "sortG": {
+  "a": "Input (goes in)",
+  "b": "Output (comes out)",
+  "items": [
+   [
+    "The words you type",
+    0,
+    "The model reads it."
+   ],
+   [
+    "The next token it predicts",
+    1,
+    "The model makes it."
+   ],
+   [
+    "A house's size",
+    0,
+    "It's a feature the model uses."
+   ],
+   [
+    "The predicted price",
+    1,
+    "It's the model's answer."
+   ],
+   [
+    "A photo's pixels",
+    0,
+    "The model reads them."
+   ],
+   [
+    "The label “cat”",
+    1,
+    "It's the model's answer."
+   ]
+  ]
+ },
  "cards": [
   [
    "Gradient Slide",
