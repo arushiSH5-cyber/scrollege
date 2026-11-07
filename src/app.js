@@ -179,9 +179,11 @@ function say(t,rate,mood){if(S.calm&&!rate)rate=.9;rate=rate||1;hush();VOX.activ
   const g=VOX.gen,h={pitch:1,onend:null,onboundary:null},m=S.calm?"calm":mood||"content",key=m+"|"+rate.toFixed(2)+"|"+t;
   const play=url=>{if(g!==VOX.gen)return;VOX.mode="audio";VOX.audio=VOX.audio||new Audio();const a=VOX.audio;a.src=url;a.volume=Math.min(1,Math.max(.1,S.vol??.8));a.onended=()=>{voxEnd(g);h.onend&&h.onend()};if(!VOX.paused)a.play().catch(()=>{if(g===VOX.gen)speakDevice(t,rate,h)})};
   const hit=VOX.cache.get(key);if(hit){play(hit);return h}
-  fetch("/api/tts",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({text:t,speed:rate,mood:m})})
-    .then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>{const u=URL.createObjectURL(b);VOX.cache.set(key,u);play(u)})
-    .catch(()=>{if(g===VOX.gen)speakDevice(t,rate,h)});
+  /* GET so Vercel can share each clip with everyone; give up after 4.5 s; after 2 failures use the device voice for this visit */
+  const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),4500);
+  fetch("/api/tts?"+new URLSearchParams({text:t.slice(0,400),speed:rate.toFixed(2),mood:m}),{signal:ctl.signal})
+    .then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>{if(!b.size)throw 0;VOX.fails=0;const u=URL.createObjectURL(b);VOX.cache.set(key,u);play(u)})
+    .catch(()=>{if((VOX.fails=(VOX.fails||0)+1)>=2)VOX.on=false;if(g===VOX.gen)speakDevice(t,rate,h)}).finally(()=>clearTimeout(to));
   return h}
 function openSheet(h){sfx("open");$("#sheet").innerHTML='<div class="grab"></div><button class="x" aria-label="Close">✕</button>'+h;$("#sheet .x").onclick=closeSheet;$("#sheet").classList.add("on");$("#scrim").classList.add("on")}
 function closeSheet(){hush();$("#sheet").classList.remove("on");$("#scrim").classList.remove("on")}

@@ -1,5 +1,13 @@
 # Decisions
 
+## Cartesia on the free plan (many testers)
+- Voice clips are GET requests with a long CDN cache: each sentence is generated once and then served to everyone by Vercel.
+- Daily caps lowered to 2,500 characters per visitor and 15,000 in total (only cache misses count).
+- Server: Cartesia errors about credits/limits/auth (401/402/403/429) or 5 failures in a row → natural voice off until tomorrow.
+- App: a clip that takes over 4.5 s or fails falls back to the device voice; after 2 failures in a visit it stops asking.
+- Smaller clips (mp3, 24 kHz, 64 kbps) are plenty for speech.
+- The real guarantee against charges: keep the Cartesia account on the free plan with no payment method.
+
 ## Scrollege v9 (approved design: reference/scrollege-v9.html)
 - v8 was never shared as a prompt; its changes came from the v9 mockup: a **👯 Squad** tab (friends, cheers, duels, study room, class board; hidden in Jr)
   and a **✨ Weekly recap** story (from the end of a feed and from Me). Both show the mockup's **sample** friends and numbers: there are no accounts yet.

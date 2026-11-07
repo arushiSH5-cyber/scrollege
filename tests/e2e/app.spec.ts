@@ -394,10 +394,11 @@ test("meme card: flip at the end of the feed, then it's in the binder", async ({
 
 test("natural voice: Read aloud asks /api/tts when a voice is set up, and stops cleanly", async ({ page, app }) => {
   const asked: any[] = [];
-  await page.route("**/api/tts", async (r) => {
-    if (r.request().method() === "GET") return r.fulfill({ json: { on: true } });
-    asked.push(r.request().postDataJSON());
-    await r.fulfill({ status: 200, contentType: "audio/mpeg", body: Buffer.alloc(0) });
+  await page.route("**/api/tts*", async (r) => {
+    const u = new URL(r.request().url());
+    if (!u.searchParams.get("text")) return r.fulfill({ json: { on: true } });
+    asked.push(Object.fromEntries(u.searchParams));
+    await r.fulfill({ status: 200, contentType: "audio/wav", body: silentWav(1) });
   });
   await app.open({ mode: "read", calm: false });
   await app.slot(0).locator("[data-ra]").click();
@@ -412,7 +413,7 @@ test("natural voice: Read aloud asks /api/tts when a voice is set up, and stops 
 
 test("no natural voice set up: falls back to the device voice, no switch in Me", async ({ page, app }) => {
   let posts = 0;
-  await page.route("**/api/tts", async (r) => { if (r.request().method() === "GET") return r.fulfill({ json: { on: false } }); posts++; await r.fulfill({ status: 503, json: {} }); });
+  await page.route("**/api/tts*", async (r) => { if (!new URL(r.request().url()).searchParams.get("text")) return r.fulfill({ json: { on: false } }); posts++; await r.fulfill({ status: 503, json: {} }); });
   await app.open({ mode: "read" });
   await app.slot(0).locator("[data-ra]").click();
   await page.waitForTimeout(300);
@@ -432,8 +433,8 @@ function silentWav(sec: number) {
 }
 
 test("Read aloud and Listen can pause and resume the voice", async ({ page, app }) => {
-  await page.route("**/api/tts", async (r) => {
-    if (r.request().method() === "GET") return r.fulfill({ json: { on: true } });
+  await page.route("**/api/tts*", async (r) => {
+    if (!new URL(r.request().url()).searchParams.get("text")) return r.fulfill({ json: { on: true } });
     await r.fulfill({ status: 200, contentType: "audio/wav", body: silentWav(3) });
   });
   await app.open({ mode: "read", calm: false, sound: true });
@@ -508,7 +509,7 @@ test.describe("v9 live 3D reels", () => {
   test("full-screen video keeps moving after the voice ends; Replay restarts the voice", async ({ page, app }) => {
     test.setTimeout(240_000);
     // count every line the app speaks (device voice; audio is muted in tests)
-    await page.route("**/api/tts", (r) => r.fulfill({ json: { on: false } }));
+    await page.route("**/api/tts*", (r) => r.fulfill({ json: { on: false } }));
     await page.addInitScript(() => { (window as any).__spoken = 0; const o = speechSynthesis.speak.bind(speechSynthesis); speechSynthesis.speak = (u: any) => { (window as any).__spoken++; o(u); }; });
     await app.open({ calm: false, sound: true });
     await app.slot(0).locator('[data-a="v3"]').click();
@@ -532,4 +533,19 @@ test.describe("v9 live 3D reels", () => {
     await page.locator(".wrapban").click();
     await expect(page.locator(".recap")).toBeVisible();
   });
+});
+
+test("if the natural voice fails twice, the app switches to the device voice", async ({ page, app }) => {
+  let clipAsks = 0;
+  await page.route("**/api/tts*", async (r) => {
+    if (!new URL(r.request().url()).searchParams.get("text")) return r.fulfill({ json: { on: true } });
+    clipAsks++; await r.fulfill({ status: 503, json: { fallback: "device" } });
+  });
+  await page.addInitScript(() => { (window as any).__spoken = 0; const o = speechSynthesis.speak.bind(speechSynthesis); speechSynthesis.speak = (u: any) => { (window as any).__spoken++; o(u); }; });
+  await app.open({ mode: "read", sound: true });
+  for (let n = 1; n <= 3; n++) {
+    await page.evaluate((k) => (window as any).say("Line number " + k), n);
+    await expect.poll(() => page.evaluate(() => (window as any).__spoken)).toBeGreaterThanOrEqual(n);
+  }
+  expect(clipAsks).toBe(2); // after 2 failures it stops asking and just uses the device voice
 });
