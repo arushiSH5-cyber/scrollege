@@ -16,7 +16,7 @@ export default async function handler(req: Req, res: Res) {
   try {
     const g = await structured({
       model: FAST, schema: Grade, maxTokens: 1500, effort: "low",
-      system: `A student is teaching a topic back to Rotty (a cute study buddy). Compare their explanation to the KEY FACTS only. Be kind and encouraging, never shaming. Every student gets at least 1 star for trying. ${PLAIN}`,
+      system: `A student is teaching a topic back to Scrolly (a cute study buddy). Compare their explanation to the KEY FACTS only. Be kind and encouraging, never shaming. Every student gets at least 1 star for trying. ${PLAIN}`,
       content: `TOPIC: ${r.t}\nKEY FACTS:\n- ${(r.read || []).join("\n- ")}\n\nSTUDENT'S EXPLANATION:\n${ex}`,
     });
     return res.json({ stars: Math.max(1, Math.min(3, g.stars)), mentioned: g.mentioned.slice(0, 4), missing: g.missing.slice(0, 3) });

@@ -1,6 +1,6 @@
-# StudyRot 🍃
+# Scrollege 🫧
 
-**Brain rot, but make it learning.** Drop a PDF, notes or a photo. Get a TikTok-style feed and 3D games that fit *your* brain,
+**Doomscrolling, but you actually pass.** Drop a PDF, notes or a photo. Get a TikTok-style feed and 3D games that fit *your* brain,
 built for ADHD, dyslexic and autistic students first. Works on desktop and phone as one installable app (PWA).
 
 > Local only. No remote, pushing is blocked by a git hook. See `DECISIONS.md`.
@@ -42,7 +42,8 @@ src/app.js            the mockup's app, wired to real PDF reading, the API and o
 src/api.js, store.js  API client, localStorage + IndexedDB
 api/*.ts              source, deck, ask, teach, jingle, translate (Vercel-style handlers)
 api/_lib/             Claude helper, deck schema, grounding check
-reference/            the approved mockup (studyrot-v3.html)
+reference/            the approved mockup (scrollege.html); reference/studyrot/ is the older Scrollege design
+public/packs/         ✨ Explore packs as JSON (add more fun-fact packs here)
 ```
 
 ## Why it works (research-backed methods, in plain words)

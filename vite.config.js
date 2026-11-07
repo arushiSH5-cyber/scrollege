@@ -13,17 +13,17 @@ export default defineConfig(({ mode }) => {
       apiDevServer(),
       VitePWA({
         registerType: "autoUpdate",
-        includeAssets: ["icons/*.png"],
+        includeAssets: ["icons/*.png", "packs/*.json"],
         manifest: {
-          name: "StudyRot",
-          short_name: "StudyRot",
-          description: "Brain rot, but make it learning. Your notes become a feed that fits your brain.",
+          name: "Scrollege",
+          short_name: "Scrollege",
+          description: "Doomscrolling, but you actually pass. Your notes become a feed that fits your brain.",
           start_url: "/",
           scope: "/",
           display: "standalone",
           orientation: "any",
-          background_color: "#fbf7ee",
-          theme_color: "#fbf7ee",
+          background_color: "#fff3f9",
+          theme_color: "#fff3f9",
           categories: ["education"],
           icons: [
             { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
-          globPatterns: ["**/*.{js,css,html,png,svg,woff2}"],
+          globPatterns: ["**/*.{js,css,html,png,svg,woff2,json}"],
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
           navigateFallbackDenylist: [/^\/api\//],
           runtimeCaching: [

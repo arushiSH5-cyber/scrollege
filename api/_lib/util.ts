@@ -38,7 +38,7 @@ const safeJson = (s: string) => { try { return JSON.parse(s); } catch { return n
 export function fail(res: Res, e: any) {
   console.error("[api]", e?.status || "", e?.message || e);
   if (e instanceof Anthropic.AuthenticationError) return res.status(500).json({ error: "The Anthropic API key in .env.local isn't working." });
-  if (e instanceof Anthropic.RateLimitError) return res.status(429).json({ error: "Rotty is busy right now. Try again in a minute." });
+  if (e instanceof Anthropic.RateLimitError) return res.status(429).json({ error: "Scrolly is busy right now. Try again in a minute." });
   if (e instanceof Anthropic.APIError) return res.status(502).json({ error: "The AI had a hiccup. Try again?" });
   return res.status(500).json({ error: e?.userMessage || "Something went wrong. Try again?" });
 }
@@ -64,8 +64,8 @@ export async function structured<T extends z.ZodType>(opts: {
     messages: [{ role: "user", content: opts.content }],
     output_config: { format: zodOutputFormat(opts.schema), effort: opts.effort ?? "medium" },
   });
-  if (msg.stop_reason === "refusal") throw Object.assign(new Error("refusal"), { userMessage: "Rotty can't help with that one. Try different notes?" });
-  if (msg.stop_reason === "max_tokens") throw Object.assign(new Error("max_tokens"), { userMessage: "That was too long for Rotty. Try a shorter piece." });
-  if (!msg.parsed_output) throw Object.assign(new Error("no parsed output"), { userMessage: "Rotty got muddled. Try again?" });
+  if (msg.stop_reason === "refusal") throw Object.assign(new Error("refusal"), { userMessage: "Scrolly can't help with that one. Try different notes?" });
+  if (msg.stop_reason === "max_tokens") throw Object.assign(new Error("max_tokens"), { userMessage: "That was too long for Scrolly. Try a shorter piece." });
+  if (!msg.parsed_output) throw Object.assign(new Error("no parsed output"), { userMessage: "Scrolly got muddled. Try again?" });
   return msg.parsed_output as z.infer<T>;
 }

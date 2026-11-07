@@ -27,18 +27,29 @@ const SC=[
  `<svg class="scene" viewBox="0 0 220 160" aria-hidden="true"><circle cx="110" cy="80" r="56" fill="#b9d8ea" ${L}/><path d="M70 60q20-14 34 0t26 18-10 30q-26 6-40-10t-10-38z" fill="#c9e2b0" ${L}/><path d="M138 50q16 6 12 22-14 0-12-22z" fill="#c9e2b0" ${L}/></svg>`];
 /* ---------- demo deck (accurate, simplified biology) ---------- */
 const DEMO_DECK={demo:true,id:"demo",title:"Photosynthesis",reels:[
- {t:"What is photosynthesis?",a:"#e6f4ec",cap:["Plants make their own food","using sunlight","light → sugar energy"],read:["Plants, algae and some bacteria do it","It turns light energy into chemical energy stored in sugar","It happens mostly in the leaves"],simple:"Plants use sunlight to cook their own food.",story:["Leafy the leaf wakes up hungry.","The sun says: catch my light!","Leafy turns it into a sugar snack."],pod:[["Rotty","So plants just… eat sunlight?"],["Pip","Kind of! They use sunlight to make sugar, which is their food."]],q:["What does photosynthesis make for the plant?",["Food (sugar)","Soil","Rain"],0,"Plants turn light energy into sugar they can use."],jingle:["Sun comes down, the leaf says yum,","light to sugar, here it comes!"],line:1},
- {t:"What goes in",a:"#e6f1f8",cap:["Sunlight","water from the roots","carbon dioxide from the air"],read:["Sunlight: the energy","Water (H₂O): pulled up from the roots","Carbon dioxide (CO₂): enters through tiny leaf pores called stomata"],simple:"Plants need three things: light, water and carbon dioxide.",story:["Roots sip water like a straw.","Tiny leaf doors called stomata open wide.","Carbon dioxide floats right in."],pod:[["Rotty","What's on the shopping list?"],["Pip","Sunlight, water and carbon dioxide. That's it!"]],q:["Which gas does a plant take IN?",["Carbon dioxide","Oxygen","Helium"],0,"Plants take in carbon dioxide through stomata."],jingle:["Light and water, CO₂,","that's the recipe, through and through!"],line:2},
- {t:"Where it happens",a:"#f1eaf7",cap:["Inside chloroplasts","full of chlorophyll","that's why leaves look green"],read:["Chloroplasts are tiny parts inside plant cells","They contain chlorophyll, a green pigment","Chlorophyll absorbs mostly red and blue light and reflects green"],simple:"Little green kitchens called chloroplasts do the cooking.",story:["Inside each leaf are tiny green kitchens.","Their chef is called chlorophyll.","It loves red and blue light, and bounces green away."],pod:[["Rotty","Why are leaves green, though?"],["Pip","Chlorophyll soaks up red and blue light and reflects green back to your eyes."]],q:["Why are most leaves green?",["Chlorophyll reflects green light","They're painted","Water is green"],0,"Chlorophyll absorbs red and blue light and reflects green."],jingle:["Chloroplast, a kitchen green,","chlorophyll's the cooking team!"],line:3},
- {t:"What comes out",a:"#fcf3d6",cap:["Glucose: plant food","oxygen: into the air","we breathe that oxygen!"],read:["Glucose (C₆H₁₂O₆) stores energy for the plant","Oxygen (O₂) is released into the air","Word equation: carbon dioxide + water → glucose + oxygen, using light"],simple:"Out comes sugar for the plant and oxygen for us.",story:["The kitchen bakes a sugar treat.","Leftover oxygen floats out the door.","A kid nearby takes a big breath. Thanks, leaf!"],pod:[["Rotty","And what comes out of the kitchen?"],["Pip","Glucose for the plant, and oxygen, which we breathe."]],q:["What does a plant release that we breathe?",["Oxygen","Carbon dioxide","Glucose"],0,"Oxygen is released as a by-product."],jingle:["Sugar stays and oxygen goes,","every breath, a leaf bestows!"],line:4},
- {t:"Why it matters",a:"#fbe5e5",cap:["Food chains start with plants","they add oxygen to the air","and take in carbon dioxide"],read:["Plants are producers: most food chains start with them","Photosynthesis puts oxygen into the air","It removes carbon dioxide from the air"],simple:"No photosynthesis means no food and much less oxygen.",story:["A rabbit eats the leaf.","A fox, well… you get it.","It all started with sunshine."],pod:[["Rotty","Why should I care?"],["Pip","Almost every food chain starts with a plant making food from light!"]],q:["Why do most food chains start with plants?",["They make their own food from light","They eat animals","They sleep a lot"],0,"Plants are producers: they make food from light."],jingle:["From the sun to the plant to you,","that's the chain, and now you knew!"],line:5}]};
+ {t:"What is photosynthesis?",a:"#e6f4ec",cap:["Plants make their own food","using sunlight","light → sugar energy"],read:["Plants, algae and some bacteria do it","It turns light energy into chemical energy stored in sugar","It happens mostly in the leaves"],simple:"Plants use sunlight to cook their own food.",story:["Leafy the leaf wakes up hungry.","The sun says: catch my light!","Leafy turns it into a sugar snack."],pod:[["Scrolly","So plants just… eat sunlight?"],["Pip","Kind of! They use sunlight to make sugar, which is their food."]],q:["What does photosynthesis make for the plant?",["Food (sugar)","Soil","Rain"],0,"Plants turn light energy into sugar they can use."],jingle:["Sun comes down, the leaf says yum,","light to sugar, here it comes!"],line:1},
+ {t:"What goes in",a:"#e6f1f8",cap:["Sunlight","water from the roots","carbon dioxide from the air"],read:["Sunlight: the energy","Water (H₂O): pulled up from the roots","Carbon dioxide (CO₂): enters through tiny leaf pores called stomata"],simple:"Plants need three things: light, water and carbon dioxide.",story:["Roots sip water like a straw.","Tiny leaf doors called stomata open wide.","Carbon dioxide floats right in."],pod:[["Scrolly","What's on the shopping list?"],["Pip","Sunlight, water and carbon dioxide. That's it!"]],q:["Which gas does a plant take IN?",["Carbon dioxide","Oxygen","Helium"],0,"Plants take in carbon dioxide through stomata."],jingle:["Light and water, CO₂,","that's the recipe, through and through!"],line:2},
+ {t:"Where it happens",a:"#f1eaf7",cap:["Inside chloroplasts","full of chlorophyll","that's why leaves look green"],read:["Chloroplasts are tiny parts inside plant cells","They contain chlorophyll, a green pigment","Chlorophyll absorbs mostly red and blue light and reflects green"],simple:"Little green kitchens called chloroplasts do the cooking.",story:["Inside each leaf are tiny green kitchens.","Their chef is called chlorophyll.","It loves red and blue light, and bounces green away."],pod:[["Scrolly","Why are leaves green, though?"],["Pip","Chlorophyll soaks up red and blue light and reflects green back to your eyes."]],q:["Why are most leaves green?",["Chlorophyll reflects green light","They're painted","Water is green"],0,"Chlorophyll absorbs red and blue light and reflects green."],jingle:["Chloroplast, a kitchen green,","chlorophyll's the cooking team!"],line:3},
+ {t:"What comes out",a:"#fcf3d6",cap:["Glucose: plant food","oxygen: into the air","we breathe that oxygen!"],read:["Glucose (C₆H₁₂O₆) stores energy for the plant","Oxygen (O₂) is released into the air","Word equation: carbon dioxide + water → glucose + oxygen, using light"],simple:"Out comes sugar for the plant and oxygen for us.",story:["The kitchen bakes a sugar treat.","Leftover oxygen floats out the door.","A kid nearby takes a big breath. Thanks, leaf!"],pod:[["Scrolly","And what comes out of the kitchen?"],["Pip","Glucose for the plant, and oxygen, which we breathe."]],q:["What does a plant release that we breathe?",["Oxygen","Carbon dioxide","Glucose"],0,"Oxygen is released as a by-product."],jingle:["Sugar stays and oxygen goes,","every breath, a leaf bestows!"],line:4},
+ {t:"Why it matters",a:"#fbe5e5",cap:["Food chains start with plants","they add oxygen to the air","and take in carbon dioxide"],read:["Plants are producers: most food chains start with them","Photosynthesis puts oxygen into the air","It removes carbon dioxide from the air"],simple:"No photosynthesis means no food and much less oxygen.",story:["A rabbit eats the leaf.","A fox, well… you get it.","It all started with sunshine."],pod:[["Scrolly","Why should I care?"],["Pip","Almost every food chain starts with a plant making food from light!"]],q:["Why do most food chains start with plants?",["They make their own food from light","They eat animals","They sleep a lot"],0,"Plants are producers: they make food from light."],jingle:["From the sun to the plant to you,","that's the chain, and now you knew!"],line:5}]};
 const ROAD=`<svg viewBox="0 0 220 120" style="width:200px" aria-hidden="true"><path d="M80 10h60l60 110H20z" fill="#d9c6e6" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M100 10L80 120M120 10l20 110" stroke="#fffaf0" stroke-width="3" stroke-dasharray="8 8"/>${[[88,40,"#bfe0cf"],[110,40,"#f6e3a6"],[132,40,"#f3b9c6"]].map(([x,y,c])=>`<rect x="${x-10}" y="${y}" width="20" height="14" rx="3" fill="${c}" stroke="${INK}" stroke-width="2"/>`).join("")}<rect x="98" y="86" width="24" height="22" rx="6" fill="#f6e3a6" stroke="${INK}" stroke-width="2.4"/><circle cx="106" cy="96" r="1.8" fill="${INK}"/><circle cx="114" cy="96" r="1.8" fill="${INK}"/></svg>`;
 const SORT=[["Sunlight","in"],["Water","in"],["CO₂","in"],["Oxygen","out"],["Glucose","out"]];
 const STEPS=["Roots take in water","Leaves take in CO₂","Chlorophyll catches sunlight","The plant makes glucose","Oxygen is released"];
-DEMO_DECK.sort=SORT;DEMO_DECK.steps=STEPS;
-let DECK=DEMO_DECK;
+const XSC=[
+ `<svg class="scene" viewBox="0 0 220 160" aria-hidden="true"><path d="M30 20v115h170" fill="none" ${L}/>${[[50,118],[70,104],[92,100],[110,84],[128,80],[150,62],[172,50],[188,40]].map(([x,y],k)=>`<circle cx="${x}" cy="${y}" r="6" fill="${["#f3b9c6","#c9cdf0","#f6e3a6","#bfe0cf"][k%4]}" ${L}/>`).join("")}<path d="M38 124L200 32" stroke="#e86f9e" stroke-width="4" stroke-linecap="round"/><text x="140" y="140" font-family="Fredoka" font-weight="700" font-size="14" fill="${INK}">y = mx + b</text></svg>`,
+ `<svg class="scene" viewBox="0 0 220 160" aria-hidden="true"><path d="M10 40 Q60 40 90 100 T150 132 Q190 120 210 60" fill="#c9e2b0" ${L}/><circle cx="64" cy="52" r="11" fill="#f6e3a6" ${L}/><path d="M80 62 l18 22" ${L} stroke-dasharray="4 5"/><path d="M98 84l-2-9M98 84l-9-1" ${L}/><text x="120" y="152" font-family="Fredoka" font-weight="700" font-size="12" fill="${INK}">lowest error ⭐</text></svg>`,
+ `<svg class="scene" viewBox="0 0 220 160" aria-hidden="true"><path d="M20 20v120h185" fill="none" ${L}/>${[[45,110],[70,96],[95,104],[120,72],[145,80],[170,52],[192,58]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5.5" fill="#c9cdf0" ${L}/>`).join("")}<path d="M45 110 L70 96 L95 104 L120 72 L145 80 L170 52 L192 58" fill="none" stroke="#e86f9e" stroke-width="3" stroke-linejoin="round"/><path d="M40 112 L198 50" stroke="#7fc79f" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 6"/></svg>`,
+ `<svg class="scene" viewBox="0 0 220 160" aria-hidden="true">${(()=>{const L1=[40,80,120],L2=[30,65,100,135],L3=[60,100];let e="";L1.forEach(a=>L2.forEach(b=>e+=`<path d="M40 ${a}L110 ${b}" stroke="#c9b8d6" stroke-width="1.6"/>`));L2.forEach(a=>L3.forEach(b=>e+=`<path d="M110 ${a}L180 ${b}" stroke="#c9b8d6" stroke-width="1.6"/>`));return e+L1.map(y=>`<circle cx="40" cy="${y}" r="11" fill="#bfe0cf" ${L}/>`).join("")+L2.map(y=>`<circle cx="110" cy="${y}" r="11" fill="#f6e3a6" ${L}/>`).join("")+L3.map(y=>`<circle cx="180" cy="${y}" r="11" fill="#f3b9c6" ${L}/>`).join("")})()}</svg>`,
+ `<svg class="scene" viewBox="0 0 220 160" aria-hidden="true"><rect x="16" y="30" width="188" height="80" rx="22" fill="#fffaf0" ${L}/><path d="M50 110l-8 22 26-22" fill="#fffaf0" ${L}/>${[["The",28,"#c9cdf0"],["cat",76,"#bfe0cf"],["sat",118,"#f6e3a6"],["…?",160,"#f3b9c6"]].map(([t,x,c])=>`<rect x="${x}" y="54" width="${t==="The"?42:36}" height="30" rx="9" fill="${c}" ${L}/><text x="${x+(t==="The"?21:18)}" y="75" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="15" fill="${INK}">${t}</text>`).join("")}</svg>`];
+SC.push(...XSC);
+DEMO_DECK.sort=SORT;DEMO_DECK.steps=STEPS;DEMO_DECK.chips=["Why are leaves green?","What goes in?","What comes out?","Who was Darwin?"];
+/* MINE = the student's own deck (My notes). DECK = whatever the feed shows right now (mine or an Explore pack). */
+let MINE=DEMO_DECK,DECK=DEMO_DECK,PACK=null;
+const local=()=>DECK.demo||DECK.pack; /* sample deck and Explore packs answer offline, without the AI */
 const REEL_BG=["#e6f4ec","#e6f1f8","#f1eaf7","#fcf3d6","#fbe5e5","#fbe9dc","#eceefb"];
-function useDeck(d){DECK=d;DECK.reels.forEach((r,i)=>{if(!r.a)r.a=REEL_BG[i%REEL_BG.length]})}
+function useDeck(d){MINE=d;MINE.reels.forEach((r,i)=>{if(!r.a)r.a=REEL_BG[i%REEL_BG.length]});if(S.feed!=="explore")DECK=MINE}
+function showing(){DECK=S.feed==="explore"&&PACK?PACK:MINE;return DECK}
+async function loadPack(){try{const ix=await (await fetch("/packs/index.json")).json(),f=ix.packs[0];PACK=await (await fetch("/packs/"+f.file)).json();PACK.id=PACK.id||f.id;if(S.tab==="feed"&&S.feed==="explore")renderFeed()}catch(e){}}
 const did=()=>DECK.id||"demo";
 const later=i=>{addReview(S,did(),i);S.later.add(i);saveSettings(S)};
 const missed=i=>{addReview(S,did(),i);if(!S.wrong.includes(i))S.wrong.push(i);saveSettings(S)};
@@ -49,6 +60,7 @@ function feedOrder(){const due=dueToday(S,did()).filter(i=>i<DECK.reels.length),
 const hasSteps=()=>Array.isArray(DECK.steps)&&DECK.steps.length>=3;
 /* where a reel came from: "your notes, line 3" / "slides.pdf, page 4" */
 function srcRef(r){
+  if(DECK.pack)return "Explore: "+esc(r.t);
   if(DECK.demo)return esc(S.src)+(S.src==="your notes"?`, line ${r.line}`:S.pdf&&S.src===S.pdf.name?`, page ${Math.min(S.pdf.n,r.line)}`:"");
   const L=(DECK.lines||[]).find(l=>l.n===r.line);
   if(L&&L.page)return esc(DECK.sourceLabel)+`, page ${L.page}`;
@@ -63,7 +75,7 @@ const NOTES=`Photosynthesis (Bio Ch. 4)
 5. Plants are producers; food chains start with them.`;
 
 /* ---------- state ---------- */
-const S={review:[],limit:5,deckId:"demo",onboarded:false,lastDay:null,tapQuiz:false,night:false,pet:"chick",petName:"Mochi",vibe:"chill",learn:new Set(["watch"]),hard:new Set(),mode:"watch",calm:false,dys:false,bionic:false,ruler:false,tint:"none",big:false,notimer:false,sound:true,voice:false,lang:"English",jr:false,
+const S={feed:"mine",review:[],limit:5,deckId:"demo",onboarded:false,lastDay:null,tapQuiz:false,night:false,pet:"chick",petName:"Mochi",vibe:"chill",learn:new Set(["watch"]),hard:new Set(),mode:"watch",calm:false,dys:false,bionic:false,ruler:false,tint:"none",big:false,notimer:false,sound:true,voice:false,lang:"English",jr:false,
  src:"your notes",idx:0,seen:new Set(),got:new Set(),later:new Set(),wrong:[],xp:0,streak:3,tab:"feed",hist:[],test:null,story:false,simple:new Set(),built:false};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],screen=$("#screen");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -78,9 +90,10 @@ $("#scrim").onclick=closeSheet;
 const bion=t=>t.split(" ").map(w=>{const n=Math.ceil(w.length/2);return `<b>${esc(w.slice(0,n))}</b>${esc(w.slice(n))}`}).join(" ");
 const txt=t=>S.bionic?bion(t):esc(t);
 $("#tm").innerHTML=rotty("happy",26);
+$("#deco").innerHTML=[["chick",8,14,0],["frog",80,22,1.2],["bunny",6,58,2.1],["penguin",82,66,.6],["cat",44,86,1.7]].map(([k,x,y,d])=>`<span style="left:${x}%;top:${y}%;animation-delay:${d}s">${sq(k,44)}</span>`).join("");
 
 /* ---------- settings appliers ---------- */
-function apply(){document.documentElement.classList.toggle("night",S.night);document.querySelector('meta[name=theme-color]').content=S.night?"#151b36":"#fbf7ee";screen.classList.toggle("calm",S.calm);screen.classList.toggle("dys",S.dys);screen.classList.toggle("big",S.big);$("#calmBtn").setAttribute("aria-pressed",S.calm);
+function apply(){document.documentElement.classList.toggle("night",S.night);document.querySelector('meta[name=theme-color]').content=S.night?"#1d2148":"#fff3f9";screen.classList.toggle("calm",S.calm);screen.classList.toggle("dys",S.dys);screen.classList.toggle("big",S.big);$("#calmBtn").setAttribute("aria-pressed",S.calm);
  $("#tint").style.background={none:"transparent",peach:"rgba(243,207,180,.35)",blue:"rgba(185,216,234,.35)",lilac:"rgba(217,198,230,.35)",mint:"rgba(191,224,207,.35)"}[S.tint];saveSettings(S)}
 $("#themeBtn").onclick=()=>{S.night=!S.night;apply();toast(S.night?"🌙 Night notebook":"☀️ Pastel notebook");beep(S.night?440:660)};
 $("#calmBtn").onclick=()=>{S.calm=!S.calm;apply();toast(S.calm?"🍃 Calm mode: no motion, no sounds, softer colors":"Calm mode off");if(S.tab==="feed")renderFeed(true)};
@@ -93,24 +106,24 @@ const STAGES=[[0,"🥚 Egg","Hatches at 30 XP"],[30,"🍼 Baby","Grows at 80 XP"
 const stageOf=x=>[...STAGES].reverse().find(s=>x>=s[0]);
 function petCard(){const st=stageOf(S.xp),i=STAGES.indexOf(st),nx=STAGES[i+1],pct=nx?Math.round((S.xp-st[0])/(nx[0]-st[0])*100):100;
   return `<div class="card" style="background:var(--mint2)"><div class="pet"><div class="bob" style="position:relative">${sq(S.pet,68)}${i===3?'<span style="position:absolute;top:-8px;left:22px;font-size:24px">🎓</span>':""}</div><div style="flex:1;display:grid;gap:4px"><b style="font-family:var(--head);font-size:19px">${esc(S.petName)} · ${st[1]}</b><div class="bar"><i style="width:${pct}%"></i></div><small class="muted">${st[2]}. Every reel you learn feeds ${esc(S.petName)}. ${esc(S.petName)} naps when you're away, never sad.</small></div></div></div>`}
-const ONS={start:["Just 1 reel start button","Study with Rotty (body double)"],reading:["Listen first, with karaoke words","Easy-read font + line ruler"],noise:["Calm mode: no motion or sounds"],numbers:["Step-by-step reels + Stack the Steps"],writing:["Answer by voice"],time:["No-timer mode"],english:["Translate any reel"],bored:["Game breaks more often"]};
+const ONS={start:["Just 1 reel start button","Study with Scrolly (body double)"],reading:["Listen first, with karaoke words","Easy-read font + line ruler"],noise:["Calm mode: no motion or sounds"],numbers:["Step-by-step reels + Stack the Steps"],writing:["Answer by voice"],time:["No-timer mode"],english:["Translate any reel"],bored:["Game breaks more often"]};
 function onboard(){
   const o=document.createElement("div");o.className="onb";screen.appendChild(o);let step=0;
   const xpbar=()=>`<div class="xprow"><span>⭐</span><div class="xp"><i id="xpI" style="width:${Math.min(100,S.xp*2)}%"></i></div><span id="xpN">${S.xp} XP</span></div>`;
   const gain=(el,n)=>{S.xp=Math.max(0,S.xp+n);const r=el.getBoundingClientRect(),q=o.getBoundingClientRect(),f=document.createElement("span");f.className="plus";f.textContent=(n>0?"+":"")+n;f.style.left=(r.left-q.left+r.width/2-10)+"px";f.style.top=(r.top-q.top+o.scrollTop)+"px";o.appendChild(f);setTimeout(()=>f.remove(),900);const I=$("#xpI"),N=$("#xpN");if(I)I.style.width=Math.min(100,S.xp*2)+"%";if(N)N.textContent=S.xp+" XP";beep(n>0?760:420)};
   const draw=()=>{
-    if(step===0){o.innerHTML=`<div class="hello"><div class="bob">${rotty("excited",120)}</div><h3>Hi! I'm Rotty.</h3><p class="muted" style="margin:0;max-width:30ch">I turn your notes into a feed that fits <b>your</b> brain.</p><div class="parade">${["chick","frog","penguin","bunny","bear"].map(k=>`<span>${sq(k,46)}</span>`).join("")}</div></div>
+    if(step===0){o.innerHTML=`<div class="hello"><div class="bob">${rotty("excited",120)}</div><h3>Hi! I'm Scrolly 👋</h3><p class="muted" style="margin:0;max-width:28ch">Let's turn boring notes into a fun feed.</p><div class="parade">${["chick","frog","penguin","bunny","bear"].map(k=>`<span>${sq(k,46)}</span>`).join("")}</div></div>
       <div class="lbl" style="text-align:center">Pick your look</div><div class="tiles"><button class="tile" data-th="0" aria-pressed="${!S.night}"><span class="em">☀️</span>Pastel</button><button class="tile" data-th="1" aria-pressed="${S.night}"><span class="em">🌙</span>Night</button></div>
-      <button class="cta" id="nx">Let's go!</button><button class="cta alt" id="jrBtn" style="margin-top:0">🧸 StudyRot Jr (for kids)</button>`;
+      <button class="cta" id="nx">Let's go!</button><button class="cta alt" id="jrBtn" style="margin-top:0">🧸 Scrollege Jr (for kids)</button>`;
       o.querySelectorAll("[data-th]").forEach(b=>b.onclick=()=>{S.night=b.dataset.th==="1";apply();o.querySelectorAll("[data-th]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
-      $("#nx").onclick=()=>{step=1;draw()};$("#jrBtn").onclick=()=>{S.jr=true;S.calm=false;toast("StudyRot Jr: bigger buttons, simpler words");S.big=true;apply();step=1;draw()};return}
+      $("#nx").onclick=()=>{step=1;draw()};$("#jrBtn").onclick=()=>{S.jr=true;S.calm=false;toast("Scrollege Jr: bigger buttons, simpler words");S.big=true;apply();step=1;draw()};return}
     const back=`<button class="back" id="obBack" aria-label="Back">←</button>`;
-    if(step===1){o.innerHTML=`${back}<div class="prog"><i class="on"></i><i></i><i></i></div>${xpbar()}<div style="display:flex;gap:8px;align-items:center">${sq("chick",56)}<div><h3>How does your brain like to learn?</h3><span class="muted" style="font-size:14px">Pick all that feel good. +10 XP each!</span></div></div>
+    if(step===1){o.innerHTML=`${back}<div class="prog"><i class="on"></i><i></i><i></i></div>${xpbar()}<div style="display:flex;gap:8px;align-items:center">${sq("chick",56)}<div><h3>How do you like to learn?</h3><span class="muted" style="font-size:14px">Tap all that feel good ✨</span></div></div>
       <div class="tiles">${LEARN.map(([k,e,t,d])=>`<button class="tile" data-l="${k}" aria-pressed="${S.learn.has(k)}"><span class="em">${e}</span>${t}<small>${d}</small></button>`).join("")}</div>
       <button class="cta" id="nx">Level up →</button>`;
       o.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{const k=b.dataset.l,on=!S.learn.has(k);on?S.learn.add(k):S.learn.delete(k);b.setAttribute("aria-pressed",on);gain(b,on?10:-10)});
       $("#nx").onclick=()=>{if(!S.learn.size)return toast("Pick at least one!");yay();toast("⭐ Level 2!");step=2;draw()}}
-    else if(step===2){o.innerHTML=`${back}<div class="prog"><i class="on"></i><i class="on"></i><i></i></div>${xpbar()}<div style="display:flex;gap:8px;align-items:center">${sq("cat",56)}<div><h3>What makes studying hard?</h3><span class="muted" style="font-size:14px">No diagnosis needed. Just pick what's true.</span></div></div>
+    else if(step===2){o.innerHTML=`${back}<div class="prog"><i class="on"></i><i class="on"></i><i></i></div>${xpbar()}<div style="display:flex;gap:8px;align-items:center">${sq("cat",56)}<div><h3>What makes studying hard?</h3><span class="muted" style="font-size:14px">Pick any. No pressure 💛</span></div></div>
       <div class="tiles">${HARD.map(([k,e,t])=>`<button class="tile" data-h="${k}" aria-pressed="${S.hard.has(k)}"><span class="em">${e}</span>${t}</button>`).join("")}</div>
       <button class="cta" id="nx">Make my brain card ✨</button>`;
       o.querySelectorAll("[data-h]").forEach(b=>b.onclick=()=>{const k=b.dataset.h,on=!S.hard.has(k);on?S.hard.add(k):S.hard.delete(k);b.setAttribute("aria-pressed",on);gain(b,on?5:-5)});
@@ -148,10 +161,10 @@ $("#backBtn").onclick=goBack;
 
 /* ---------- make a feed ---------- */
 function renderMake(){
-  P().innerHTML=`<h2>Make a feed</h2><span class="muted" style="margin-top:-8px">Give Rotty anything. Get 5 bite-size reels.</span>
-   <div class="input-tabs" role="group" aria-label="What are you giving Rotty?">${[["pdf","📄","PDF"],["notes","📝","Notes"],["photo","📷","Photo"]].map(([k,e,t],i)=>`<button class="tile" data-in="${k}" aria-pressed="${i===0}"><span class="em">${e}</span>${t}</button>`).join("")}</div>
+  P().innerHTML=`<h2>Make a feed</h2><span class="muted" style="margin-top:-8px">Drop anything. Get 5 snack-size reels 🍪</span>
+   <div class="input-tabs" role="group" aria-label="What are you giving Scrolly?">${[["pdf","📄","PDF"],["notes","📝","Notes"],["photo","📷","Photo"]].map(([k,e,t],i)=>`<button class="tile" data-in="${k}" aria-pressed="${i===0}"><span class="em">${e}</span>${t}</button>`).join("")}</div>
    <div id="inBox"></div>
-   <div class="card" style="background:var(--lilac2)"><b>🗓 Test coming up?</b><div class="row2"><input class="in" id="tName" placeholder="Bio quiz" aria-label="Test name" value="${S.test?esc(S.test.n):""}"><input class="in" id="tDate" type="date" aria-label="Test date" value="${S.test?S.test.d:""}"></div><small class="muted">Rotty spreads your reels out so you review a little each day.</small></div>
+   <details class="more"><summary>🗓 Got a test coming up?</summary><div class="in"><div class="row2"><input class="in" id="tName" placeholder="Bio quiz" aria-label="Test name" value="${S.test?esc(S.test.n):""}"><input class="in" id="tDate" type="date" aria-label="Test date" value="${S.test?S.test.d:""}"></div><small class="muted">Scrolly spreads your reels out so you review a little each day.</small></div></details>
    <button class="cta pink" id="go">Cook my feed 🍳</button>`;
   let mode="pdf";const box=()=>{$("#inBox").innerHTML={pdf:`<label class="cta alt" style="text-align:center;cursor:pointer;display:block">📄 Upload a PDF<br><small class="muted">Slides, class notes or a textbook chapter</small><input type="file" accept="application/pdf" id="inPdf" hidden></label><div id="pdfOut"></div>`,notes:`<textarea class="in" id="inT" aria-label="Your notes">${NOTES}</textarea>`,
     photo:`<label class="cta alt" style="text-align:center;cursor:pointer">📷 Snap your notes or a textbook page<input type="file" accept="image/*" capture="environment" id="inP" hidden></label><div id="pPrev"></div>`,
@@ -175,30 +188,30 @@ function shrinkImage(file,max=1600){return new Promise((res,rej)=>{const img=new
 const PDF_MAX_PAGES=40,PDF_MAX_MB=15,SCAN_MAX=20;
 async function readPdf(f){if(!f)return;const out=$("#pdfOut");S.pdf=null;
   if(!window.pdfjsLib){out.innerHTML='<span class="muted">PDF reader is still loading. Try again in a second.</span>';return}
-  if(f.size>PDF_MAX_MB*1024*1024){out.innerHTML=`<div class="card" style="box-shadow:none;background:var(--blush2)"><b>That PDF is a big one (${(f.size/1048576).toFixed(1)} MB)</b><span>Rotty can read up to ${PDF_MAX_MB} MB for now. Try one chapter at a time.</span></div>`;return}
+  if(f.size>PDF_MAX_MB*1024*1024){out.innerHTML=`<div class="card" style="box-shadow:none;background:var(--blush2)"><b>That PDF is a big one (${(f.size/1048576).toFixed(1)} MB)</b><span>Scrolly can read up to ${PDF_MAX_MB} MB for now. Try one chapter at a time.</span></div>`;return}
   out.innerHTML=`<div class="card" style="box-shadow:none"><span class="muted" id="pdfProg">📖 Reading ${esc(f.name)}…</span></div>`;
   try{
    const doc=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise,n=doc.numPages,pages=[];
-   if(n>PDF_MAX_PAGES){out.innerHTML=`<div class="card" style="box-shadow:none;background:var(--blush2)"><b>${n} pages is a lot!</b><span>Rotty reads up to ${PDF_MAX_PAGES} pages for now. Try splitting it into chapters.</span></div>`;return}
+   if(n>PDF_MAX_PAGES){out.innerHTML=`<div class="card" style="box-shadow:none;background:var(--blush2)"><b>${n} pages is a lot!</b><span>Scrolly reads up to ${PDF_MAX_PAGES} pages for now. Try splitting it into chapters.</span></div>`;return}
    for(let k=1;k<=n;k++){const pg=await doc.getPage(k),tc=await pg.getTextContent();pages.push(tc.items.map(x=>x.str).join(" ").replace(/\s+/g," ").trim());const pr=$("#pdfProg");if(pr)pr.textContent=`📖 Reading page ${k} of ${n}…`}
    const all=pages.join(" "),words=all.split(" ").filter(Boolean).length;
    const empty=pages.filter(t=>t.split(" ").filter(Boolean).length<3).length,scanned=empty>n/2;/* most pages have no text layer */S.pdf={name:f.name,pages,n,scanned};
    if(scanned){const m=Math.min(n,SCAN_MAX),images=[];
-     for(let k=1;k<=m;k++){const pr=$("#pdfProg");if(pr)pr.textContent=`📷 No text layer. Snapping page ${k} of ${m} for Rotty to read…`;
+     for(let k=1;k<=m;k++){const pr=$("#pdfProg");if(pr)pr.textContent=`📷 No text layer. Snapping page ${k} of ${m} for Scrolly to read…`;
        const pg=await doc.getPage(k),vp0=pg.getViewport({scale:1}),sc=Math.min(2,1400/Math.max(vp0.width,vp0.height)),vp=pg.getViewport({scale:sc}),c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;
        await pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;images.push({n:k,dataUrl:c.toDataURL("image/jpeg",.8)})}
      S.pdf.images=images;
-     out.innerHTML=`<div class="card" style="box-shadow:none;background:var(--butter2)"><b>📷 ${esc(f.name)}</b><span>${n} page${n===1?"":"s"} · scanned (no text layer)</span><small class="muted">Rotty will read ${m===n?"the pages":"the first "+m+" pages"} with AI vision when you cook. Only the page pictures are sent, nothing else.</small></div>`;beep(700);return}
+     out.innerHTML=`<div class="card" style="box-shadow:none;background:var(--butter2)"><b>📷 ${esc(f.name)}</b><span>${n} page${n===1?"":"s"} · scanned (no text layer)</span><small class="muted">Scrolly will read ${m===n?"the pages":"the first "+m+" pages"} with AI vision when you cook. Only the page pictures are sent, nothing else.</small></div>`;beep(700);return}
    out.innerHTML=`<div class="card" style="box-shadow:none;background:var(--mint2)"><b>✓ ${esc(f.name)}</b><span>${n} page${n===1?"":"s"} · ${words.toLocaleString()} words</span><div class="box" style="max-width:none;box-shadow:none;font-size:13.5px">${esc(all.slice(0,280))}…</div><small class="muted">Each reel will link to its page number. Only the text is sent, never the file.</small></div>`;beep(880)}
   catch(e){out.innerHTML=e&&e.name==="PasswordException"?`<div class="card" style="box-shadow:none;background:var(--blush2)"><b>🔒 This PDF has a password</b><span>Open it, save a copy without the password, then upload that.</span></div>`:`<span class="muted">Couldn't read that PDF. Is it a real PDF file?</span>`}}
-function cook(req){const o=document.createElement("div");o.className="ov";o.innerHTML=`<div class="bob">${rotty("thinking",100)}</div><h3>Rotty is cooking your feed…</h3>
+function cook(req){const o=document.createElement("div");o.className="ov";o.innerHTML=`<div class="bob">${rotty("thinking",100)}</div><h3>Scrolly is cooking your feed…</h3>
   <div class="cook">${["📖 Reading "+(req.type.startsWith("pdf")&&S.pdf?S.pdf.n+" PDF pages":req.type==="photo"?"your photo":"your notes"),"🔑 Finding the 5 big ideas","🎬 Making reels: watch, listen, read","🎮 Building games","📎 Checking every reel against your source"].map(x=>`<div>${x}</div>`).join("")}</div>
   <small class="muted" id="cookNote" aria-live="polite"></small>`;screen.appendChild(o);
   const rows=[...o.querySelectorAll(".cook div")];let k=0,anim=false,result=null;
   const finish=()=>{if(!anim||!result)return;o.remove();
     if(result.err){toast(result.err);return}
-    if(!result.deck.id)result.deck.id="d"+Date.now();useDeck(result.deck);S.deckId=DECK.id;S.src=DECK.sourceLabel||S.src;S.built=true;S.idx=0;S.got=new Set();S.later=new Set();S.wrong=[];S.simple=new Set();S.seen=new Set();
-    saveDeck(DECK);saveSettings(S);yay();show("feed");toast(result.note||"Your feed is ready! Swipe up 👆")};
+    if(!result.deck.id)result.deck.id="d"+Date.now();S.feed="mine";useDeck(result.deck);S.deckId=MINE.id;S.src=MINE.sourceLabel||S.src;S.built=true;S.idx=0;S.got=new Set();S.later=new Set();S.wrong=[];S.simple=new Set();S.seen=new Set();
+    saveDeck(MINE);saveSettings(S);yay();show("feed");toast(result.note||"Your feed is ready! Swipe up 👆")};
   const t=setInterval(()=>{if(k>0)rows[k-1].className="ok";if(k<rows.length-1||(k===rows.length-1&&result)){rows[k].className="on";beep(500+k*90);k++}else if(k>=rows.length){clearInterval(t);anim=true;setTimeout(finish,350)}},S.calm?700:520);
   buildDeck(req,msg=>{const c=$("#cookNote");if(c)c.textContent=msg}).then(r=>{result=r;if(k>=rows.length){anim=true;finish()}});
 }
@@ -210,7 +223,7 @@ async function buildDeck(req,note){
     const all=[];for(const [k,img] of req.data.images.entries()){note(`📷 Reading page ${img.n} of ${req.data.images.length}…`);
       const r=await post("source",{type:"photo",data:img.dataUrl,page:img.n,name:req.data.name},{timeoutMs:120000});
       if(r.demo||r.offline||(r.error&&k===0)){src=r;break}if(!r.error)all.push(...r.lines)}
-    if(!src)src=all.length?{text:all.map(l=>l.text).join("\n"),lines:all.map((l,i)=>({...l,n:i+1})),sourceLabel:req.data.name}:{error:"Rotty couldn't read any of those pages."};
+    if(!src)src=all.length?{text:all.map(l=>l.text).join("\n"),lines:all.map((l,i)=>({...l,n:i+1})),sourceLabel:req.data.name}:{error:"Scrolly couldn't read any of those pages."};
   }else src=await post("source",req);
   if(src.offline)return demo("📴 Offline, so here's the sample deck. Your real one cooks when you're back online.");
   if(src.error)return {err:"😕 "+src.error};
@@ -233,32 +246,36 @@ function stage(r,i){
     <div class="vibes chips">${[["chill","😌 Chill"],["hype","📣 Hype coach"],["cozy","🧸 Cozy"],["gamer","🎮 Gamer"]].map(([k,t])=>`<button data-vibe="${k}" style="${S.vibe===k?"background:var(--pink)":""}">${t}</button>`).join("")}</div></div>`;
   if(m==="read"){const simple=S.simple.has(i);return `<div class="box ${S.ruler?"ruled":""}" data-read="${i}"><span class="ruler" aria-hidden="true"></span><b style="font-family:var(--head);font-size:19px">${esc(r.t)}</b>
     ${simple?`<p style="margin:0;font-size:17px">${txt(r.simple)}</p>`:`<ul>${r.read.map(x=>`<li>${txt(x)}</li>`).join("")}</ul>`}
-    <div class="chips"><button data-simple>${simple?"↩ Full version":"🧸 Simpler please"}</button><button data-bion>${S.bionic?"✓ ":""}Bionic</button><button data-rul>${S.ruler?"✓ ":""}Ruler</button><button data-ra>🔊 Read aloud</button></div></div>`}
+    ${r.tryit?`<button class="cta pink" style="padding:10px" data-try>🧪 Try it: fit the line yourself</button>`:""}<div class="chips"><button data-simple>${simple?"↩ Full version":"🧸 Simpler please"}</button><button data-bion>${S.bionic?"✓ ":""}Bionic</button><button data-rul>${S.ruler?"✓ ":""}Ruler</button><button data-ra>🔊 Read aloud</button></div></div>`}
   if(m==="play"&&!S.tapQuiz)return `<div class="box" style="text-align:center;justify-items:center">${ROAD}<b style="font-family:var(--head);font-size:20px">Quiz Run 3D</b><span class="muted" style="font-size:14px">Run through the gate with the right answer!${S.notimer?" The gates wait for you.":""}</span><button class="cta pink" data-run>▶ Play</button><button class="cta alt" style="padding:9px" data-tapq>Prefer a simple tap quiz?</button></div>`;
   if(m==="play"){return `<div class="box" data-quiz="${i}"><b style="font-family:var(--head);font-size:18px">${esc(r.q[0])}</b><div class="opts">${r.q[1].map((o,k)=>`<button class="opt" data-ans="${k}">${esc(o)}</button>`).join("")}</div>
     ${S.voice?`<button class="cta alt" data-vans style="padding:10px">🎤 Say your answer</button>`:""}<small class="muted">${S.notimer?"No timer. Take your time.":"No rush. Retries are free."}</small><button class="chips" style="justify-self:start" data-run><span>🎮 Play it in 3D instead</span></button></div>`}
-  const lines=S.story?r.story:r.cap;return `<div style="width:100%;text-align:center">${DECK.demo?SC[i]:`<div class="gen-scene bob">${sq(PETS[i%PETS.length][0],130)}</div>`}<div class="cap" data-cap="${i}" aria-live="polite"></div>${S.story?'<div class="chips" style="justify-content:center;margin-top:6px"><span>📖 Story mode</span></div>':""}</div>`;
+  const lines=S.story?r.story:r.cap;return `<div style="width:100%;text-align:center">${(DECK.demo||DECK.pack)&&SC[r.sc??i]?SC[r.sc??i]:`<div class="gen-scene bob">${sq(PETS[i%PETS.length][0],130)}</div>`}<div class="cap" data-cap="${i}" aria-live="polite"></div>${r.tryit?`<button class="cta pink" style="padding:9px;margin-top:8px;width:auto;padding-inline:18px" data-try>🧪 Try it yourself</button>`:""}${S.story?'<div class="chips" style="justify-content:center;margin-top:6px"><span>📖 Story mode</span></div>':""}</div>`;
 }
 function renderFeed(keep){
-  const V=$("#feedV");if(!V)return;
-  if(!S.built){V.innerHTML=`<div class="pad" style="align-items:center;text-align:center;padding-top:110px">${rotty("sleepy",110)}<h2>No feed yet</h2><p class="muted" style="margin:0">Drop your notes, a PDF or a photo and Rotty makes one.</p><button class="cta pink" onclick="show('make')">➕ Make my feed</button><button class="cta alt" onclick="S.built=true;renderFeed()">Try the sample (Photosynthesis)</button></div>`;return}
+  const V=$("#feedV");if(!V)return;showing();
+  const tabs=`<div class="ftabs" role="tablist" aria-label="Feed"><button role="tab" data-ft="mine" aria-selected="${S.feed!=="explore"}">📚 My notes</button><button role="tab" data-ft="explore" aria-selected="${S.feed==="explore"}">✨ Explore</button></div>`;
+  const putTabs=()=>{$$("#views .ftabs").forEach(x=>x.remove());$("#views").insertAdjacentHTML("beforeend",tabs);bindTabs()};
+  if(S.feed!=="explore"&&!S.built){putTabs();V.innerHTML=`<div class="pad" style="align-items:center;text-align:center;padding-top:110px">${rotty("sleepy",110)}<h2>No feed yet</h2><p class="muted" style="margin:0">Drop your notes, a PDF or a photo and Scrolly makes one.</p><button class="cta pink" onclick="show('make')">➕ Make my feed</button><button class="cta alt" onclick="S.feed='explore';renderFeed()">✨ Explore AI fun facts</button><button class="cta alt" onclick="S.built=true;renderFeed()">Try a sample (Photosynthesis)</button></div>`;return}
+  if(S.feed==="explore"&&!PACK){putTabs();V.innerHTML=`<div class="pad" style="align-items:center;text-align:center;padding-top:110px">${rotty("thinking",100)}<h2>Loading Explore…</h2></div>`;loadPack();return}
   const top=keep?V.scrollTop:0;
   const ord=feedOrder(),due=dueToday(S,did()),slots=[];ord.forEach((i,pos)=>{slots.push(reel(DECK.reels[i],i,pos,ord,due.includes(i)));if(pos===2)slots.push(gameSlot())});slots.push(limitSlot(ord.length));
-  V.innerHTML=slots.join("");V.scrollTop=top;bindFeed();tickCaps();
+  putTabs();V.innerHTML=slots.join("");V.scrollTop=top;bindFeed();tickCaps();
 }
+function bindTabs(){$$("[data-ft]").forEach(b=>b.onclick=e=>{e.stopPropagation();S.feed=b.dataset.ft;saveSettings(S);hush();renderFeed();beep(640);if(S.feed==="explore")toast("✨ Explore: bite-size AI fun facts")})}
 function reel(r,i,pos=i,ord=DECK.reels.map((_,k)=>k),isRev=false){const n=DECK.reels[ord[pos+1]];return `<article class="slot" data-i="${i}" style="--a:${r.a}">
   <div class="modes" role="group" aria-label="How do you want to learn this?">${[["watch","👀"],["listen","🎧"],["read","📖"],["play","🎮"]].map(([k,e])=>`<button data-m="${k}" aria-pressed="${S.mode===k}">${e} ${k[0].toUpperCase()+k.slice(1)}</button>`).join("")}</div>
   <div class="dots3" aria-hidden="true">${ord.map((_,k)=>`<i class="${k<=pos?"on":""}"></i>`).join("")}</div>
   <div class="stage">${stage(r,i)}</div>
-  <div class="info"><span class="num">${pos+1} of ${ord.length} · ${esc(DECK.title)}${isRev?" · 🔁 Review":""}</span><h3>${esc(r.t)}</h3><span class="src">📎 From ${srcRef(r)}</span>${S.calm&&n?`<span class="next">Next: ${esc(n.t)}</span>`:""}</div>
+  <div class="info"><span class="num">${pos+1} of ${ord.length} · ${esc(DECK.title)}${isRev?" · 🔁 Review":""}</span><h3>${esc(r.t)}</h3><span class="src">${DECK.pack?"✨ "+esc(DECK.label||DECK.title):"📎 From "+srcRef(r)}</span>${S.calm&&n?`<span class="next">Next: ${esc(n.t)}</span>`:""}</div>
   <div class="rail"><button class="rb ${S.got.has(i)?"on":""}" data-a="got"><span class="o">✅</span>Got it</button><button class="rb" data-a="g3"><span class="o">🎮</span>3D quiz</button><button class="rb" data-a="ask"><span class="o">💬</span>Ask</button><button class="rb" data-a="more"><span class="o">⋯</span>More</button></div></article>`}
 function gameSlot(){return `<article class="slot" data-game style="--a:#f1eaf7"><div class="pad" style="padding-top:64px;padding-right:16px">
-  <div style="display:flex;gap:8px;align-items:center">${sq("frog",54)}<div><h2 style="font-size:26px">Game time! 🎮</h2><span class="muted" style="font-size:14px">Real 3D games made from your ${esc(S.src)}.</span></div></div>
+  <div style="display:flex;gap:8px;align-items:center">${sq("frog",54)}<div><h2 style="font-size:26px">Game time! 🎮</h2><span class="muted" style="font-size:14px">Real 3D games made from ${DECK.pack?"these "+esc(DECK.title):"your "+esc(S.src)}.</span></div></div>
   <button class="card" data-g="run" style="text-align:left;cursor:pointer;background:var(--butter2)"><b>🏃 Quiz Run 3D</b><span>Dash down the track and run through the gate with the right answer.</span>${ROAD}</button>
-  ${hasSteps()?`<button class="card" data-g="tower" style="text-align:left;cursor:pointer;background:var(--mint2)"><b>🧱 Step Tower 3D</b><span>Stack the steps of ${esc(DECK.title.toLowerCase())} in the right order. Tall tower = you know it!</span></button>`:""}
+  ${hasSteps()?`<button class="card" data-g="tower" style="text-align:left;cursor:pointer;background:var(--mint2)"><b>🧱 Step Tower 3D</b><span>Stack the steps of ${esc(DECK.stepsOf||DECK.title.toLowerCase())} in the right order. Tall tower = you know it!</span></button>`:""}
   <small class="muted">Use ← → keys, swipe, or tap the answer buttons. ${S.notimer?"No-timer mode is on: the game waits for you.":""}</small></div></article>`}
 function limitSlot(cnt=DECK.reels.length){const rv=pileN();return `<article class="slot" data-limit style="--a:#fcf3d6"><div class="pad" style="align-items:center;text-align:center;padding-top:90px">${rotty("sleepy",120)}<h2>That's your ${cnt} for today! 🎉</h2>
-  <p class="muted" style="margin:0">You showed up for your brain today. Rotty's napping now. Brains need breaks too.</p>
+  <p class="muted" style="margin:0">You showed up for your brain today. Scrolly's napping now. Brains need breaks too.</p>
   <div class="stats" style="width:100%"><div><b>${S.xp}</b><small>XP</small></div><div><b>${S.streak}</b><small>day streak</small></div><div><b>${rv}</b><small>in review pile</small></div></div>
   <div style="width:100%;text-align:left">${petCard()}</div><button class="cta" onclick="show('me')">🧸 See my buddy</button><button class="cta alt" onclick="toast('Shared! Your friend gets the same 5 reels to beat your score.')">⚔️ Duel a friend</button></div></article>`}
 let capK=0;function tickCaps(){$$("[data-cap]").forEach(el=>{const r=DECK.reels[+el.dataset.cap],lines=S.story?r.story:r.cap,l=lines[capK%lines.length];el.innerHTML=l.split(" ").map((w,k)=>`<span style="animation-delay:${k*.07}s">${esc(w)}</span>`).join(" ")})}
@@ -276,6 +293,7 @@ function bindFeed(){
     if(ev.target.closest("[data-bion]")){S.bionic=!S.bionic;slot.querySelector(".stage").innerHTML=stage(r,i);return}
     if(ev.target.closest("[data-rul]")){S.ruler=!S.ruler;slot.querySelector(".stage").innerHTML=stage(r,i);return}
     if(ev.target.closest("[data-ra]"))return say(S.simple.has(i)?r.simple:r.t+". "+r.read.join(". "));
+    if(ev.target.closest("[data-try]"))return fitLab();
     if(ev.target.closest("[data-run]"))return quizRun(i);
     if(ev.target.closest("[data-tapq]")){S.tapQuiz=true;slot.querySelector(".stage").innerHTML=stage(r,i);return}
     const an=ev.target.closest("[data-ans]");if(an)return answer(slot,r,i,+an.dataset.ans);
@@ -316,7 +334,7 @@ function jingle(r){let beat="lofi",T=[];const stop=()=>{T.forEach(clearTimeout);
    <div class="chips" style="margin-bottom:10px">${[["lofi","☁️ Lo-fi"],["pop","✨ Pop"],["lull","🌙 Lullaby"]].map(([k,t])=>`<button data-bt="${k}" style="${k===beat?"background:var(--pink)":""}">${t}</button>`).join("")}</div>
    <div class="card" style="text-align:center">${r.jingle.map((l,k)=>`<div class="lyric" data-ly="${k}">${esc(l)}</div>`).join("")}</div>
    <div class="row2" style="margin-top:10px"><button class="cta" id="jPlay">▶ Play jingle</button><button class="cta alt" id="jSave">💾 Save to Me</button></div>
-   ${DECK.demo?"":`<button class="cta alt" id="jNew" style="margin-top:8px;padding:10px">✨ New rhyme</button>`}`);
+   ${local()?"":`<button class="cta alt" id="jNew" style="margin-top:8px;padding:10px">✨ New rhyme</button>`}`);
   const jn=$("#jNew");if(jn)jn.onclick=async()=>{jn.disabled=true;jn.textContent="✍️ Writing…";const j=await post("jingle",{reel:{t:r.t,read:r.read,jingle:r.jingle}});jn.disabled=false;jn.textContent="✨ New rhyme";
     if(j.error||j.demo||!j.jingle)return toast(j.error?"😕 "+j.error:"Needs an API key");r.jingle=j.jingle;saveDeck(DECK);$("#sheet").querySelectorAll("[data-ly]").forEach((x,k)=>x.textContent=r.jingle[k]||"")};
   $("#sheet").querySelectorAll("[data-bt]").forEach(b=>b.onclick=()=>{beat=b.dataset.bt;$("#sheet").querySelectorAll("[data-bt]").forEach(x=>x.style.background=x===b?"var(--pink)":"")});
@@ -326,20 +344,33 @@ function jingle(r){let beat="lofi",T=[];const stop=()=>{T.forEach(clearTimeout);
     r.jingle.forEach((l,k)=>T.push(setTimeout(()=>{$$("[data-ly]").forEach(x=>x.classList.toggle("on",+x.dataset.ly===k));say(l,beat==="lull"?.85:beat==="pop"?1.15:1)},k*sp*8*1000)));
     T.push(setTimeout(()=>$$("[data-ly]").forEach(x=>x.classList.remove("on")),r.jingle.length*sp*8*1000))}}
 
+function fitLab(){let pts=[[1,2],[2,2.6],[3,3.1],[4,4.4],[5,4.8],[6,6.1]];
+  openSheet(`<h4 id="sheetTitle">🧪 Fit the line</h4><p class="sub">Tap the graph to add dots. Watch the best-fit line move!</p><canvas id="fit" width="600" height="420" style="width:100%;border-radius:22px;background:var(--card);touch-action:none;cursor:crosshair" aria-label="Scatter plot. Tap to add points."></canvas>
+   <div class="card" style="margin-top:10px;text-align:center"><b id="eq" style="font-size:22px">y = …</b><span id="err" class="muted"></span></div><div class="row2" style="margin-top:8px"><button class="cta alt" id="fitClear">🧹 Clear</button><button class="cta alt" id="fitOut">🙃 Add a weird dot</button></div>
+   <small class="muted">This is real least-squares math, running in your browser.</small>`);
+  const c=$("#fit"),x=c.getContext("2d"),W=600,H=420,P=40,X=v=>P+v/8*(W-2*P),Y=v=>H-P-v/8*(H-2*P);
+  const draw=()=>{x.clearRect(0,0,W,H);x.strokeStyle="#d9cbe0";x.lineWidth=2;for(let k=0;k<=8;k++){x.beginPath();x.moveTo(X(k),Y(0));x.lineTo(X(k),Y(8));x.moveTo(X(0),Y(k));x.lineTo(X(8),Y(k));x.stroke()}
+    const n=pts.length;let m=0,b=0,err=0;if(n>=2){const mx=pts.reduce((a,p)=>a+p[0],0)/n,my=pts.reduce((a,p)=>a+p[1],0)/n,sxx=pts.reduce((a,p)=>a+(p[0]-mx)**2,0),sxy=pts.reduce((a,p)=>a+(p[0]-mx)*(p[1]-my),0);m=sxx?sxy/sxx:0;b=my-m*mx;err=pts.reduce((a,p)=>a+(p[1]-(m*p[0]+b))**2,0)/n;
+      pts.forEach(p=>{x.strokeStyle="#f3b9c6";x.lineWidth=3;x.setLineDash([6,6]);x.beginPath();x.moveTo(X(p[0]),Y(p[1]));x.lineTo(X(p[0]),Y(m*p[0]+b));x.stroke();x.setLineDash([])});
+      x.strokeStyle="#e86f9e";x.lineWidth=6;x.lineCap="round";x.beginPath();x.moveTo(X(0),Y(b));x.lineTo(X(8),Y(m*8+b));x.stroke()}
+    pts.forEach(p=>{x.fillStyle="#c9cdf0";x.strokeStyle="#5b4b45";x.lineWidth=3;x.beginPath();x.arc(X(p[0]),Y(p[1]),10,0,7);x.fill();x.stroke()});
+    $("#eq").textContent=n>=2?`y = ${m.toFixed(2)}x ${b<0?"−":"+"} ${Math.abs(b).toFixed(2)}`:"Add 2+ dots";$("#err").textContent=n>=2?`Average squared error: ${err.toFixed(2)} (smaller = better fit)`:""};
+  c.onpointerdown=e=>{const r=c.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W,py=(e.clientY-r.top)/r.height*H;const vx=(px-P)/(W-2*P)*8,vy=(H-P-py)/(H-2*P)*8;if(vx<0||vx>8||vy<0||vy>8)return;pts.push([vx,vy]);beep(700);draw()};
+  $("#fitClear").onclick=()=>{pts=[];draw()};$("#fitOut").onclick=()=>{pts.push([7,1]);beep(300,.15,"triangle");draw();toast("See how one weird dot (an outlier) pulls the line?")};draw();S.xp+=5}
 /* ---------- ask (grounded) ---------- */
 function localAsk(q){const words=q.toLowerCase().match(/[a-z]{4,}/g)||[];let best=null,score=0;
   DECK.reels.forEach(rr=>rr.read.concat(rr.simple).forEach(line=>{const s=words.filter(w=>line.toLowerCase().includes(w.replace(/s$/,""))).length;if(s>score){score=s;best={line,rr}}}));
   if(DECK.demo&&/green/.test(q.toLowerCase())){best={line:DECK.reels[2].read[2],rr:DECK.reels[2]};score=2}
   return score?{answer:best.line,line:best.rr.line,ref:srcRef(best.rr)}:{answer:null}}
-function ask(r){const chips=DECK.demo?["Why are leaves green?","What goes in?","What comes out?","Who was Darwin?"]:DECK.reels.slice(0,3).map(x=>x.t.replace(/[?.!]*$/,"?"));
-  openSheet(`<h4 id="sheetTitle">💬 Ask Rotty</h4><p class="sub">I only answer from your ${DECK.demo?"notes":esc(DECK.sourceType==="pdf"?"PDF":"notes")}, and I show where it came from.</p>
+function ask(r){const chips=DECK.chips?DECK.chips.concat(DECK.pack?["Who invented the iPhone?"]:[]):DECK.reels.slice(0,3).map(x=>x.t.replace(/[?.!]*$/,"?"));
+  openSheet(`<h4 id="sheetTitle">💬 Ask Scrolly</h4><p class="sub">I only answer from ${DECK.pack?"this feed":DECK.sourceType==="pdf"?"your PDF":"your notes"}, and I show where it came from.</p>
   <div class="chips">${chips.map(q=>`<button data-q>${esc(q)}</button>`).join("")}</div>
   <div class="chat" id="chat" aria-live="polite"></div><form class="ask" id="af"><input id="aq" placeholder="Ask about ${esc(DECK.title)}…" aria-label="Your question"><button>Ask</button></form>`);
   const go=async q=>{$("#chat").insertAdjacentHTML("beforeend",`<div class="me">${esc(q)}</div>`);
-    let res=null;if(!DECK.demo){const j=await post("ask",{question:q,deck:{title:DECK.title,reels:DECK.reels.map(x=>({t:x.t,read:x.read,line:x.line}))},lines:DECK.lines||[]});if(!j.error&&!j.demo)res={answer:j.answer,line:j.line,ref:j.line?srcAt(j.line):esc(DECK.sourceLabel)}}
+    let res=null;if(!local()){const j=await post("ask",{question:q,deck:{title:DECK.title,reels:DECK.reels.map(x=>({t:x.t,read:x.read,line:x.line}))},lines:DECK.lines||[]});if(!j.error&&!j.demo)res={answer:j.answer,line:j.line,ref:j.line?srcAt(j.line):esc(DECK.sourceLabel)}}
     if(!res){await new Promise(r=>setTimeout(r,400));res=localAsk(q)}
     const c=$("#chat");if(!c)return;
-    c.insertAdjacentHTML("beforeend",res.answer?`<div class="bot">${esc(res.answer)}<br><span class="src" style="display:inline-block;margin-top:6px">📎 ${res.ref}</span></div>`:`<div class="bot">That's not in your notes, so I won't guess. 🙈</div>`)};
+    c.insertAdjacentHTML("beforeend",res.answer?`<div class="bot">${esc(res.answer)}<br><span class="src" style="display:inline-block;margin-top:6px">📎 ${res.ref}</span></div>`:`<div class="bot">That's not in ${DECK.pack?"this feed":"your notes"}, so I won't guess. 🙈</div>`)};
   $("#sheet").querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>go(b.textContent));$("#af").onsubmit=e=>{e.preventDefault();const q=$("#aq").value.trim();if(q){$("#aq").value="";go(q)}}}
 function srcAt(n){const L=(DECK.lines||[]).find(l=>l.n===n);if(L&&L.page)return esc(DECK.sourceLabel)+", page "+L.page;return esc(DECK.sourceLabel)+(DECK.sourceType==="notes"?", line "+n:"")}
 
@@ -348,14 +379,14 @@ function more(r,i){openSheet(`<h4 id="sheetTitle">More</h4><p class="sub">${esc(
   <button class="opt" data-mo="story">📖 ${S.story?"Turn off story mode":"Story mode: tell it as a story"}</button>
   <button class="opt" data-mo="jingle">🎵 Make it a jingle</button>
   <button class="opt" data-mo="later">🔁 Review this tomorrow</button>
-  <button class="opt" data-mo="teach">🧑‍🏫 Teach it back to Rotty</button>
+  <button class="opt" data-mo="teach">🧑‍🏫 Teach it back to Scrolly</button>
   <button class="opt" data-mo="simple">🧸 Explain it simpler</button>
   <div class="opt">🌎 Translate <select id="lang" style="border:2px solid ${INK};border-radius:10px;padding:4px;background:var(--card)">${["English","Español","中文","Tiếng Việt","हिन्दी","العربية"].map(l=>`<option ${l===S.lang?"selected":""}>${l}</option>`).join("")}</select></div>
   <button class="opt" data-mo="src">📎 See the source</button>
   <button class="opt" data-mo="class">👩‍🏫 Share with my class (teacher page)</button>
   <button class="opt" data-mo="flag">🚩 Report a mistake</button></div>`);
   $("#lang").onchange=async e=>{const lang=e.target.value;closeSheet();
-    if(DECK.demo){S.lang=lang;return toast("Reels will play in "+lang+" (demo)")}
+    if(local()){S.lang=lang;return toast("Reels will play in "+lang+" (demo)")}
     if(!DECK.original)DECK.original=JSON.parse(JSON.stringify({title:DECK.title,reels:DECK.reels,steps:DECK.steps,sort:DECK.sort}));
     if(lang==="English"){Object.assign(DECK,DECK.original);S.lang=lang;saveDeck(DECK);renderFeed(true);return toast("Back to English")}
     toast("🌎 Translating to "+lang+"…");const j=await post("translate",{deck:DECK.original,lang},{timeoutMs:120000});
@@ -369,15 +400,15 @@ function more(r,i){openSheet(`<h4 id="sheetTitle">More</h4><p class="sub">${esc(
     if(k==="simple"){S.simple.add(i);S.mode="read";renderFeed(true)}
     if(k==="src")openSheet(`<h4 id="sheetTitle">📎 Source</h4><p class="sub">Every reel is checked against where it came from.</p>${DECK.demo?`<div class="card"><b>${esc(S.src)}</b><span>${S.src==="your notes"?esc(NOTES.split("\n")[r.line]):"“"+esc(r.read[0])+"…”"}</span></div>`:`<div class="card"><b>📎 ${srcRef(r)}</b>${lineText(r.line)?`<span>${esc(lineText(r.line))}</span>`:""}${(r.quotes||[]).length?`<small class="muted">Quotes this reel is built on:</small>${r.quotes.map(q=>`<span class="bot" style="font-size:14px">“${esc(q)}”</span>`).join("")}`:""}</div>`}`);
     if(k==="class")toast("Class link copied. Teachers see the deck and class progress (built with Lovable).");
-    if(k==="flag")toast("Thanks! Rotty will double-check this reel.")})}
+    if(k==="flag")toast("Thanks! Scrolly will double-check this reel.")})}
 
 function teach(r){const keys=[...new Set(r.read.join(" ").toLowerCase().match(/[a-zé₂₆₁]{5,}/g))].filter(w=>!["their","there","about","which","mostly","called","inside","plants","contain","tiny"].includes(w)).slice(0,8);
-  openSheet(`<h4 id="sheetTitle">🧑‍🏫 Teach Rotty</h4><p class="sub">Explain “${esc(r.t)}” like Rotty is 5. Teaching it is the best way to remember it!</p>
+  openSheet(`<h4 id="sheetTitle">🧑‍🏫 Teach Scrolly</h4><p class="sub">Explain “${esc(r.t)}” like Scrolly is 5. Teaching it is the best way to remember it!</p>
    <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">${rotty("thinking",56)}<span class="bot" style="flex:1">I'm listening! What is it? 🤔</span></div>
    <textarea class="in" id="tb" placeholder="Type or tap 🎤 and say it…"></textarea><div class="row2" style="margin-top:8px"><button class="cta alt" id="tbMic">🎤 Say it</button><button class="cta" id="tbGo">Teach!</button></div><div id="tbR" style="margin-top:10px"></div>`);
   $("#tbMic").onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast("Voice isn't supported here. Try Chrome.");const rec=new SR();rec.onresult=e=>{$("#tb").value=e.results[0][0].transcript};try{rec.start();toast("Listening…")}catch(e){}};
-  $("#tbGo").onclick=async()=>{const raw=$("#tb").value,t=raw.toLowerCase();if(t.length<8)return toast("Tell Rotty a bit more!");
-    if(!DECK.demo){$("#tbR").innerHTML=`<span class="muted">🤔 Rotty is thinking…</span>`;const j=await post("teach",{reel:{t:r.t,read:r.read,simple:r.simple},explanation:raw});
+  $("#tbGo").onclick=async()=>{const raw=$("#tb").value,t=raw.toLowerCase();if(t.length<8)return toast("Tell Scrolly a bit more!");
+    if(!local()){$("#tbR").innerHTML=`<span class="muted">🤔 Scrolly is thinking…</span>`;const j=await post("teach",{reel:{t:r.t,read:r.read,simple:r.simple},explanation:raw});
       if(!j.error&&!j.demo&&j.stars){const st=Math.max(1,Math.min(3,j.stars));S.xp+=st*5;if(st===3)yay();else beep(700);
         $("#tbR").innerHTML=`<div class="card" style="box-shadow:none"><b>${"⭐".repeat(st)}${"☆".repeat(3-st)} ${["","Good start!","Nice teaching!","You're a pro teacher!"][st]}</b>${(j.mentioned||[]).length?`<span>✓ You mentioned: ${esc(j.mentioned.slice(0,4).join(", "))}</span>`:""}${(j.missing||[]).length?`<span>💡 Try adding: ${esc(j.missing.slice(0,3).join(", "))}</span>`:""}</div>`;return}}
     const hit=keys.filter(k=>t.includes(k.slice(0,5))),miss=keys.filter(k=>!hit.includes(k)).slice(0,3),stars=Math.min(3,Math.max(1,Math.ceil(hit.length/Math.max(1,keys.length)*3+(t.length>60?1:0))));
@@ -388,25 +419,25 @@ function renderFocus(){
   const days=S.test?Math.max(0,Math.ceil((new Date(S.test.d)-new Date())/864e5)):null;
   P().innerHTML=`<h2>Focus</h2><span class="muted" style="margin-top:-8px">Small steps. No guilt.</span>${petCard()}
    <button class="card" id="one" style="background:var(--butter);text-align:left;cursor:pointer"><b>▶ Just 1 reel</b><span>Starting is the hardest part. Do one, then decide.</span></button>
-   <div class="card" style="background:var(--mint2)"><b>👯 Study with Rotty</b><span class="muted" style="font-size:14px">Rotty studies next to you, so it's easier to stay on track.</span>
+   <div class="card" style="background:var(--mint2)"><b>👯 Study with Scrolly</b><span class="muted" style="font-size:14px">Scrolly studies next to you, so it's easier to stay on track.</span>
     <div class="row2">${[5,10,15].map(m=>`<button class="tile" data-bd="${m}"><span class="em">${m===5?"🌱":m===10?"🌿":"🌳"}</span>${m} min</button>`).join("")}</div></div>
-   <div class="card" style="background:var(--lilac2)"><b>🗓 Test countdown</b>${S.test?`<span><b>${esc(S.test.n)}</b> in <b>${days}</b> day${days===1?"":"s"}</span><span class="muted" style="font-size:14px">Plan: 5 reels a day + your review pile. Rotty reminds you gently.</span>`:`<span class="muted">Add a test date in Make, and Rotty plans your days.</span>`}</div>
+   <div class="card" style="background:var(--lilac2)"><b>🗓 Test countdown</b>${S.test?`<span><b>${esc(S.test.n)}</b> in <b>${days}</b> day${days===1?"":"s"}</span><span class="muted" style="font-size:14px">Plan: 5 reels a day + your review pile. Scrolly reminds you gently.</span>`:`<span class="muted">Add a test date in Make, and Scrolly plans your days.</span>`}</div>
    <div class="card"><b>🔁 Review pile</b><span>${pileN()} reel${pileN()===1?"":"s"} in your pile (things you saved or missed). ${dueN()} due today.</span></div>
    <button class="cta alt" onclick="breathe()">😮‍💨 I'm overwhelmed</button>`;
   $("#one").onclick=()=>{if(!S.built)S.built=true;show("feed");toast("Just this one. You've got it 💪")};
   P().querySelectorAll("[data-bd]").forEach(b=>b.onclick=()=>buddy(+b.dataset.bd));
 }
 function buddy(min){const o=document.createElement("div");o.className="ov";let sec=min*60,pause=false;
-  o.innerHTML=`<button class="back" aria-label="Stop">←</button><div class="bob">${rotty("thinking",120)}</div><h3>Rotty is studying with you</h3>
-   <div style="font-family:var(--head);font-size:48px" id="bt">${S.notimer?"🌱":min+":00"}</div><span class="muted">${S.notimer?"No timer. Rotty taps you gently when time's up.":"Phone down, brain on. You can do this."}</span>
+  o.innerHTML=`<button class="back" aria-label="Stop">←</button><div class="bob">${rotty("thinking",120)}</div><h3>Scrolly is studying with you</h3>
+   <div style="font-family:var(--head);font-size:48px" id="bt">${S.notimer?"🌱":min+":00"}</div><span class="muted">${S.notimer?"No timer. Scrolly taps you gently when time's up.":"Phone down, brain on. You can do this."}</span>
    <div class="row2" style="width:100%;max-width:300px"><button class="cta alt" id="bp">⏸ Pause</button><button class="cta" id="bdone">I'm done</button></div>`;screen.appendChild(o);
   const t=setInterval(()=>{if(pause)return;sec--;const e=$("#bt");if(e&&!S.notimer)e.textContent=Math.floor(sec/60)+":"+String(sec%60).padStart(2,"0");if(sec<=0)fin()},1000);
   const fin=()=>{clearInterval(t);o.remove();S.xp+=15;yay();toast("Focus level complete! +15 XP 🌳")};
   o.querySelector(".back").onclick=()=>{clearInterval(t);o.remove()};$("#bp").onclick=e=>{pause=!pause;e.target.textContent=pause?"▶ Resume":"⏸ Pause"};$("#bdone").onclick=fin}
 function breathe(){const o=document.createElement("div");o.className="ov";o.innerHTML=`<button class="back" aria-label="Close">←</button><h3>Let's breathe together</h3><div class="breath">${rotty("proud",90)}</div><div style="font-family:var(--head);font-size:24px" id="bw">Breathe in…</div><span class="muted">3 slow breaths. Nothing else matters right now.</span><button class="cta" id="tiny" hidden style="max-width:300px">One tiny step: watch 1 reel</button><button class="cta alt" id="rest" hidden style="max-width:300px">Take a real break instead</button>`;screen.appendChild(o);
   let k=0;const t=setInterval(()=>{k++;const w=$("#bw");if(w)w.textContent=k%2?"Breathe out…":"Breathe in…";if(k>=5){clearInterval(t);if(w)w.textContent="Nice. You're okay. 💛";$("#tiny").hidden=false;$("#rest").hidden=false}},S.calm?4000:4000);
-  o.querySelector(".back").onclick=()=>{clearInterval(t);o.remove()};$("#tiny").onclick=()=>{o.remove();S.built=true;show("feed")};$("#rest").onclick=()=>{o.remove();toast("Good call. Rotty will be here when you're back 🌙")}}
-$("#ovBtn").onclick=breathe;
+  o.querySelector(".back").onclick=()=>{clearInterval(t);o.remove()};$("#tiny").onclick=()=>{o.remove();S.built=true;show("feed")};$("#rest").onclick=()=>{o.remove();toast("Good call. Scrolly will be here when you're back 🌙")}}
+$("#ovBtn").onclick=breathe;$("#breakBtn").onclick=breathe;
 
 /* ---------- me ---------- */
 function renderMe(){const lead=S.learn.has("listen")?"🎧 Audio Explorer":S.learn.has("play")?"🎮 Game Brain":S.learn.has("read")?"📖 Page Turner":"👀 Visual Thinker";
@@ -414,8 +445,8 @@ function renderMe(){const lead=S.learn.has("listen")?"🎧 Audio Explorer":S.lea
   P().innerHTML=`<div style="display:flex;gap:10px;align-items:center">${rotty("proud",70)}<div><h2>My brain</h2><span class="muted">${lead}</span></div></div>
    <div class="stats"><div><b>${S.xp}</b><small>XP</small></div><div><b>${S.streak}</b><small>day streak · breaks are OK</small></div><div><b>${S.got.size}</b><small>reels mastered</small></div></div>
    ${petCard()}
-   <details class="more"><summary>🎯 Focus tools</summary><div class="in"><button class="opt" onclick="S.built=true;show('feed');toast('Just this one. You\'ve got it 💪')">▶ Just 1 reel <small>when starting is hard</small></button><button class="opt" onclick="buddy(10)">👯 Study with Rotty, 10 min <small>a body double</small></button><button class="opt" onclick="breathe()">😮‍💨 I'm overwhelmed <small>breathe, then one tiny step</small></button><span>${S.test?`🗓 <b>${esc(S.test.n)}</b>: Rotty spreads your reels out until then.`:"🗓 Add a test date in Make."}</span><span>🔁 ${pileN()} reel${pileN()===1?"":"s"} in your review pile, ${dueN()} due today. Missed reels come back tomorrow, then in 3 days, then a week.</span>
-     <div class="tgl" style="border:0"><span>📏 Reels per day<small>Rotty stops after this many. Brains need breaks.</small></span><div class="chips" style="flex:none">${[3,5].map(n=>`<button data-limit="${n}" aria-pressed="${S.limit===n}" style="${S.limit===n?"background:var(--pink)":""}">${n}</button>`).join("")}</div></div></div></details>
+   <details class="more"><summary>🎯 Focus tools</summary><div class="in"><button class="opt" onclick="S.built=true;show('feed');toast('Just this one. You\'ve got it 💪')">▶ Just 1 reel <small>when starting is hard</small></button><button class="opt" onclick="buddy(10)">👯 Study with Scrolly, 10 min <small>a body double</small></button><button class="opt" onclick="breathe()">😮‍💨 I'm overwhelmed <small>breathe, then one tiny step</small></button><span>${S.test?`🗓 <b>${esc(S.test.n)}</b>: Scrolly spreads your reels out until then.`:"🗓 Add a test date in Make."}</span><span>🔁 ${pileN()} reel${pileN()===1?"":"s"} in your review pile, ${dueN()} due today. Missed reels come back tomorrow, then in 3 days, then a week.</span>
+     <div class="tgl" style="border:0"><span>📏 Reels per day<small>Scrolly stops after this many. Brains need breaks.</small></span><div class="chips" style="flex:none">${[3,5].map(n=>`<button data-limit="${n}" aria-pressed="${S.limit===n}" style="${S.limit===n?"background:var(--pink)":""}">${n}</button>`).join("")}</div></div></div></details>
    <details class="more" id="decksFold"><summary>📚 My decks</summary><div class="in" id="deckList"><span class="muted">Loading…</span></div></details>
    <details class="more"><summary>🧠 Brain modes</summary><div class="in">
     ${T("night","🌗 Night look","Navy doodle notebook instead of pastel")}
@@ -429,7 +460,7 @@ function renderMe(){const lead=S.learn.has("listen")?"🎧 Audio Explorer":S.lea
     ${T("sound","🔈 Sounds","Little happy beeps")}
     <div class="tgl"><span>🎨 Color tint<small>Some readers find a tint easier</small></span><div class="row2" style="flex:none">${[["none","#fffdf8"],["peach","#f3cfb4"],["blue","#b9d8ea"],["lilac","#d9c6e6"],["mint","#bfe0cf"]].map(([k,c])=>`<button class="swatch" data-tint="${k}" aria-pressed="${S.tint===k}" style="background:${c}" aria-label="${k} tint"></button>`).join("")}</div></div>
    </div></details>
-   <details class="more"><summary>🧸 StudyRot Jr</summary><div class="in"><span>Bigger buttons, simpler words and no social features. For younger kids, with a grown-up.</span>${T("jr","StudyRot Jr","Kid mode")}</div></details>
+   <details class="more"><summary>🧸 Scrollege Jr</summary><div class="in"><span>Bigger buttons, simpler words and no social features. For younger kids, with a grown-up.</span>${T("jr","Scrollege Jr","Kid mode")}</div></details>
    <details class="more"><summary>👩‍🏫 Teacher and parent page</summary><div class="in"><span>Share a deck with a class and see progress. Built with Lovable. Students' brain settings stay private.</span><button class="cta alt" onclick="toast('Teacher page link copied (demo)')">Copy class link</button></div></details>
    <details class="more"><summary>🔒 Privacy</summary><div class="in"><span>Your notes and brain settings stay yours. No ads. Kids' mode has no accounts or chat.</span></div></details>
    <details class="more"><summary>🐣 Change study buddy</summary><div class="in"><div class="tiles t3">${PETS.map(([k,n])=>`<button class="tile" data-pet2="${k}" aria-pressed="${S.pet===k}">${sq(k,40)}${n}</button>`).join("")}</div></div></details>
@@ -442,14 +473,14 @@ function renderMe(){const lead=S.learn.has("listen")?"🎧 Audio Explorer":S.lea
   drawDecks()}
 async function drawDecks(){const el=$("#deckList");if(!el)return;const ds=await listDecks();if(!$("#deckList"))return;
   if(!ds.length){el.innerHTML=`<span class="muted">No saved decks yet. Make one and it stays on this device.</span>`;return}
-  el.innerHTML=ds.map(d=>`<div class="opt" style="cursor:default"><span>${d.id===did()&&S.built?"▶ ":""}${esc(d.title)}<small>${esc(d.sourceLabel||(d.demo?"sample deck":""))} · ${d.n} reels${d.savedAt?" · "+new Date(d.savedAt).toLocaleDateString():""}</small></span>
+  el.innerHTML=ds.map(d=>`<div class="opt" style="cursor:default"><span>${d.id===(MINE.id||"demo")&&S.built?"▶ ":""}${esc(d.title)}<small>${esc(d.sourceLabel||(d.demo?"sample deck":""))} · ${d.n} reels${d.savedAt?" · "+new Date(d.savedAt).toLocaleDateString():""}</small></span>
     <span class="chips" style="flex:none"><button data-open="${esc(d.id)}" aria-label="Open ${esc(d.title)}">Open</button><button data-del="${esc(d.id)}" aria-label="Delete ${esc(d.title)}">🗑</button></span></div>`).join("");
-  el.querySelectorAll("[data-open]").forEach(b=>b.onclick=async()=>{const d=await loadDeck(b.dataset.open);if(!d)return toast("Couldn't open that deck");useDeck(d);S.deckId=d.id;S.src=d.sourceLabel||(d.demo?"your notes":S.src);S.built=true;S.got=new Set();S.later=new Set();S.wrong=[];S.simple=new Set();saveSettings(S);show("feed");toast("📚 "+d.title)});
+  el.querySelectorAll("[data-open]").forEach(b=>b.onclick=async()=>{const d=await loadDeck(b.dataset.open);if(!d)return toast("Couldn't open that deck");S.feed="mine";useDeck(d);S.deckId=d.id;S.src=d.sourceLabel||(d.demo?"your notes":S.src);S.built=true;S.got=new Set();S.later=new Set();S.wrong=[];S.simple=new Set();saveSettings(S);show("feed");toast("📚 "+d.title)});
   el.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{const d=ds.find(x=>x.id===b.dataset.del);if(!confirm(`Delete "${d.title}" from this device? This can't be undone.`))return;
-    await deleteDeck(d.id);dropDeckReviews(S,d.id);if(d.id===did()){useDeck(DEMO_DECK);S.deckId="demo";S.built=false}saveSettings(S);toast("Deleted");drawDecks()})}
+    await deleteDeck(d.id);dropDeckReviews(S,d.id);if(d.id===(MINE.id||"demo")){useDeck(DEMO_DECK);S.deckId="demo";S.built=false}saveSettings(S);toast("Deleted");drawDecks()})}
 
 /* ---------- help explainers ---------- */
-$("#helpBtn").onclick=()=>{const H={feed:["👀 Watch, 🎧 Listen, 📖 Read or 🎮 Play: tap at the top to switch.","🎮 3D quiz turns any reel into a runner game.","💬 Ask only uses your notes. ⋯ More has jingles, story mode and Teach Rotty."],make:["Upload a PDF, paste notes, or snap a photo.","Rotty makes 5 reels and 3D games, each linked to its page.","Add a test date and Rotty spreads it out."],me:["Turn on any brain mode, anytime.","Calm mode, easy-read, bionic, ruler, tints, no-timer.","Collect critter stickers as you learn."]}[S.tab]||[];
+$("#helpBtn").onclick=()=>{const H={feed:["👀 Watch, 🎧 Listen, 📖 Read or 🎮 Play: tap at the top to switch.","🎮 3D quiz turns any reel into a runner game.","💬 Ask only uses your notes. ⋯ More has jingles, story mode and Teach Scrolly."],make:["Upload a PDF, paste notes, or snap a photo.","Scrolly makes 5 reels and 3D games, each linked to its page.","Add a test date and Scrolly spreads it out."],me:["Turn on any brain mode, anytime.","Calm mode, easy-read, bionic, ruler, tints, no-timer.","Collect critter stickers as you learn."]}[S.tab]||[];
   openSheet(`<h4 id="sheetTitle">▶ How this works</h4><div style="display:grid;gap:8px">${H.map((h,k)=>`<div class="card" style="box-shadow:none">${["1️⃣","2️⃣","3️⃣"][k]} ${h}</div>`).join("")}</div><button class="cta" style="margin-top:10px" onclick="say(${JSON.stringify(H.join(' ')).replace(/"/g,'&quot;')})">🔊 Read it to me</button>`)};
 
 /* ---------- 3D games (Three.js) ---------- */
@@ -559,7 +590,7 @@ const had=loadSettings(S);
 if(!had)S.streak=1;
 if(S.lastDay!==today){S.streak=S.lastDay===new Date(Date.now()-864e5).toDateString()?(S.streak||0)+1:1;S.lastDay=today}
 S.tab="feed";S.hist=[];
-apply();show("feed");if(!S.onboarded)onboard();
+apply();show("feed");if(!S.onboarded)onboard();loadPack();
 (async()=>{let d=await loadDeck(S.deckId||"demo");
   if(!d){const old=await loadDeck("current");if(old){old.id=old.demo?"demo":"d"+(old.savedAt||Date.now());await saveDeck(old);await deleteDeck("current");d=old;S.deckId=old.id}}
   if(d&&d.reels&&d.reels.length){useDeck(d);S.src=d.sourceLabel||S.src;if(S.tab==="feed")renderFeed()}})();

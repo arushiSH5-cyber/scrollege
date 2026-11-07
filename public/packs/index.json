@@ -1,0 +1,10 @@
+{
+ "packs": [
+  {
+   "id": "ai-fun-facts",
+   "file": "ai-fun-facts.json",
+   "title": "AI fun facts",
+   "emoji": "✨"
+  }
+ ]
+}

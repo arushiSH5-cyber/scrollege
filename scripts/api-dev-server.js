@@ -28,7 +28,7 @@ export function apiDevServer() {
     });
   };
   return {
-    name: "studyrot-api",
+    name: "scrollege-api",
     configureServer(server) {
       mount(server, (name) => server.ssrLoadModule(path.resolve("api", name + ".ts")));
     },

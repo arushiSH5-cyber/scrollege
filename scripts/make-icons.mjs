@@ -1,4 +1,4 @@
-// Renders Rotty (from the mockup's SVG) to PNG app icons.
+// Renders Scrolly (from the mockup's SVG) to PNG app icons, on Scrollege's soft pink -> lilac -> mint gradient.
 import sharp from "sharp";
 import { mkdirSync } from "node:fs";
 const INK = "#4a3f3a";
@@ -6,7 +6,8 @@ const rotty = `<path d="M40 20v-7" stroke="${INK}" stroke-width="2.4" stroke-lin
 // grid-paper background like the app
 const grid = (n) => Array.from({ length: n }, (_, i) => `<path d="M${(i * 80) / n} 0V80M0 ${(i * 80) / n}H80" stroke="#ece5d6" stroke-width=".5"/>`).join("");
 const svg = (pad, round) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="1024" height="1024">
-  <rect width="80" height="80" rx="${round}" fill="#fbf7ee"/>${grid(8)}
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe3ef"/><stop offset=".5" stop-color="#ece2ff"/><stop offset="1" stop-color="#d8f6e8"/></linearGradient></defs>
+  <rect width="80" height="80" rx="${round}" fill="url(#g)"/>
   <g transform="translate(${pad} ${pad - 2}) scale(${(80 - pad * 2) / 80})">${rotty}</g></svg>`;
 mkdirSync("public/icons", { recursive: true });
 const out = [

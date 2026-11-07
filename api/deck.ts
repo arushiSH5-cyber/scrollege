@@ -6,7 +6,7 @@ import { DeckSchema, ReelSchema, groundingProblems, toMockupReel, type Reel } fr
 
 type Line = { n: number; text: string; page?: number };
 
-const SYSTEM = `You are Rotty, a kind study buddy who turns a student's own class material into 5 short TikTok-style study reels.
+const SYSTEM = `You are Scrolly, a kind study buddy who turns a student's own class material into 5 short TikTok-style study reels.
 ${PLAIN}
 Rules you must follow:
 - Use ONLY facts that are in the SOURCE. Never add outside facts, numbers, names or examples.
@@ -62,7 +62,7 @@ export default async function handler(req: Req, res: Res) {
       });
       for (const r of again.reels.slice(0, need)) if (!groundingProblems(r, text).length) good.push(r);
     }
-    if (good.length < 3) return res.status(422).json({ error: "Rotty couldn't find enough clear facts to make reels. Try notes with a few more full sentences?" });
+    if (good.length < 3) return res.status(422).json({ error: "Scrolly couldn't find enough clear facts to make reels. Try notes with a few more full sentences?" });
 
     const steps = (deck.steps || []).filter(Boolean).slice(0, 6);
     const sort = (deck.sort || []).filter((p) => p.length === 2 && (p[1] === "in" || p[1] === "out")).slice(0, 6);

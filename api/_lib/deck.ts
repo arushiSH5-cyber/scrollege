@@ -8,7 +8,7 @@ export const ReelSchema = z.object({
   quotes: z.array(z.string()).describe("One exact quote copied word-for-word from the source for EACH read bullet, same order. 4-25 words each."),
   simple: z.string().describe("One sentence, simpler version"),
   story: z.array(z.string()).describe("3 short story lines with cute critter characters, keeping facts correct"),
-  pod: z.array(z.array(z.string())).describe('2 podcast lines as [speaker, line]; speakers are "Rotty" (curious) then "Pip" (explains)'),
+  pod: z.array(z.array(z.string())).describe('2 podcast lines as [speaker, line]; speakers are "Scrolly" (curious) then "Pip" (explains)'),
   q: z.object({
     question: z.string(),
     options: z.array(z.string()).describe("3 options. Exactly one is right. Wrong ones are clearly wrong, not tricks."),

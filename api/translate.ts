@@ -24,7 +24,7 @@ export default async function handler(req: Req, res: Res) {
   try {
     const out = await structured({
       model: FAST, schema: TDeck, maxTokens: 12000, effort: "low",
-      system: `Translate this study deck into ${lang}. Keep the exact same structure, item counts and order. Keep facts exactly the same. Use simple, everyday words a student would know. Keep speaker names (Rotty, Pip) as they are. Keep chemical formulas and numbers as they are.`,
+      system: `Translate this study deck into ${lang}. Keep the exact same structure, item counts and order. Keep facts exactly the same. Use simple, everyday words a student would know. Keep speaker names (Scrolly, Pip) as they are. Keep chemical formulas and numbers as they are.`,
       content: JSON.stringify(input),
     });
     return res.json({

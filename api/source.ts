@@ -50,14 +50,14 @@ export default async function handler(req: Req, res: Res) {
       label = String(data?.name || "your PDF").slice(0, 80);
     } else if (type === "photo") {
       const text = await readImage(String(data));
-      if (!text) return res.status(422).json({ error: "Rotty couldn't find any words in that photo. Try a clearer, closer one?" });
+      if (!text) return res.status(422).json({ error: "Scrolly couldn't find any words in that photo. Try a clearer, closer one?" });
       const page = Number(body.page) || undefined;
       lines = number(page ? chunk(text, page) : linesOf(text));
       label = String(body.name || "your photo").slice(0, 80);
     } else {
       return res.status(400).json({ error: "Unknown source type" });
     }
-    if (!lines.length) return res.status(422).json({ error: "Rotty couldn't find any text in that." });
+    if (!lines.length) return res.status(422).json({ error: "Scrolly couldn't find any text in that." });
     const text = lines.map((l) => l.text).join("\n");
     return res.json({ text, sourceLabel: label, lines });
   } catch (e) { return fail(res, e); }

@@ -2,7 +2,7 @@ import { test, expect, mockAI, MOCK_DECK } from "./fixtures";
 
 test("onboarding → brain card → buddy → Make", async ({ page, app, theme }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Hi! I'm Rotty." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hi! I'm Scrolly 👋" })).toBeVisible();
   await page.locator(`[data-th="${theme === "night" ? 1 : 0}"]`).click();
   await expect(page.locator("html")).toHaveClass(theme === "night" ? /night/ : /^(?!.*night)/);
   await page.getByRole("button", { name: "Let's go!" }).click();
@@ -22,7 +22,7 @@ test("onboarding → brain card → buddy → Make", async ({ page, app, theme }
   // brain quiz answers turned settings on, and they survive a reload
   await page.reload();
   await expect(page.locator(".onb")).toHaveCount(0);
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("studyrot:v1")!));
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("scrollege:v1")!));
   expect(saved).toMatchObject({ onboarded: true, pet: "frog", dys: true, notimer: true, night: theme === "night" });
 });
 
@@ -97,11 +97,11 @@ test("wrong then right answer, and the miss goes to the review pile", async ({ p
   await s.getByRole("button", { name: "Try again" }).click();
   await s.getByRole("button", { name: "Carbon dioxide" }).click();
   await expect(s.getByText("🎉 Yes!")).toBeVisible();
-  const review = await page.evaluate(() => JSON.parse(localStorage.getItem("studyrot:v1")!).review);
+  const review = await page.evaluate(() => JSON.parse(localStorage.getItem("scrollege:v1")!).review);
   expect(review).toEqual([expect.objectContaining({ d: "demo", i: 1, step: 0 })]);
 });
 
-test("jingle, Ask (in notes vs not) and Teach Rotty", async ({ page, app }) => {
+test("jingle, Ask (in notes vs not) and Teach Scrolly", async ({ page, app }) => {
   await app.open();
   const s = app.slot(0);
   await s.locator('[data-a="more"]').click();
@@ -143,11 +143,11 @@ test("Ask and Teach use the AI for a real deck", async ({ page, app }) => {
   await expect(page.locator("#chat .bot").last()).toContainText("not in your notes");
 });
 
-test("focus timer (study with Rotty)", async ({ page, app }) => {
+test("focus timer (study with Scrolly)", async ({ page, app }) => {
   await app.open({ xp: 0 });
   await app.tab("Me");
   await page.getByText("🎯 Focus tools").click();
-  await page.getByRole("button", { name: /Study with Rotty, 10 min/ }).click();
+  await page.getByRole("button", { name: /Study with Scrolly, 10 min/ }).click();
   await expect(page.locator("#bt")).toHaveText("10:00");
   await expect(page.locator("#bt")).toHaveText(/9:5\d/, { timeout: 4000 });
   await page.locator("#bp").click();
@@ -159,7 +159,7 @@ test("focus timer (study with Rotty)", async ({ page, app }) => {
 test("overwhelmed: breathe, then one tiny step", async ({ page, app }) => {
   await page.clock.install();
   await app.open();
-  await page.locator("#ovBtn").click();
+  await page.locator("#breakBtn").click();
   await expect(page.getByRole("heading", { name: "Let's breathe together" })).toBeVisible();
   await page.clock.runFor(21_000);
   await expect(page.locator("#bw")).toContainText("You're okay");
@@ -185,7 +185,7 @@ test("spaced review: a reel due today comes first", async ({ page, app }) => {
   await expect(app.slot(0).locator("h3")).toHaveText("What comes out");
   await expect(app.slot(0).locator(".num")).toContainText("🔁 Review");
   await app.slot(0).locator('[data-a="got"]').click();
-  const review = await page.evaluate(() => JSON.parse(localStorage.getItem("studyrot:v1")!).review);
+  const review = await page.evaluate(() => JSON.parse(localStorage.getItem("scrollege:v1")!).review);
   expect(review[0].step).toBe(1); // comes back in 3 days
   expect(review[0].due > k).toBe(true);
 });
@@ -249,4 +249,38 @@ test("no horizontal scroll on any screen at 390px", async ({ page, app }) => {
   await app.tab("Me");
   await page.locator("details.more summary").evaluateAll((els) => els.forEach((e) => (e as HTMLElement).click()));
   await app.noHorizontalScroll();
+});
+
+test("Explore tab: AI fun facts pack, Ask from the pack, fit-the-line lab", async ({ page, app }) => {
+  await app.open({ built: false });
+  await page.getByRole("tab", { name: "✨ Explore" }).click();
+  await expect(app.slot(0).locator("h3")).toHaveText("Linear regression");
+  await expect(page.locator(".slot[data-i] h3")).toHaveText(["Linear regression", "Gradient descent", "Overfitting", "Neural networks", "How chatbots write"]);
+  await expect(app.slot(0).locator(".src")).toHaveText("✨ Scrollege Explore · AI basics");
+  await expect(page.locator(".slot[data-game]")).toContainText("Stack the steps of training an AI model");
+  // fit-the-line lab: real least-squares on the starting dots
+  await app.slot(0).locator("[data-try]").click();
+  await expect(page.locator("#eq")).toHaveText("y = 0.81x + 0.99");
+  await page.locator("#fitOut").click();
+  await expect(page.locator("#eq")).toHaveText("y = 0.20x + 2.61");
+  await page.locator("#fitClear").click();
+  await expect(page.locator("#eq")).toHaveText("Add 2+ dots");
+  const box = (await page.locator("#fit").boundingBox())!;
+  await page.mouse.click(box.x + box.width * 0.3, box.y + box.height * 0.7);
+  await page.mouse.click(box.x + box.width * 0.7, box.y + box.height * 0.3);
+  await expect(page.locator("#eq")).toHaveText(/^y = 1\.\d\dx/);
+  await page.locator("#sheet .x").click();
+  // Ask answers only from the pack
+  await app.slot(0).locator('[data-a="ask"]').click();
+  await page.getByRole("button", { name: "What is a token?" }).click();
+  await expect(page.locator("#chat .bot").last()).toContainText("token");
+  await expect(page.locator("#chat .bot .src").last()).toContainText("Explore:");
+  await page.getByRole("button", { name: "Who invented the iPhone?" }).click();
+  await expect(page.locator("#chat .bot").last()).toContainText("not in this feed");
+  await page.locator("#sheet .x").click();
+  // the choice is remembered, and My notes still works
+  await page.reload();
+  await expect(app.slot(0).locator("h3")).toHaveText("Linear regression");
+  await page.getByRole("tab", { name: "📚 My notes" }).click();
+  await expect(page.getByRole("heading", { name: "No feed yet" })).toBeVisible();
 });

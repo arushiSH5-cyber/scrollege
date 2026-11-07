@@ -14,7 +14,7 @@ export async function post(path, body, { timeoutMs = 90000 } = {}) {
     if (!r.ok) return { error: j.error || `Something went wrong (${r.status}).` };
     return j;
   } catch (e) {
-    return { offline: true, error: navigator.onLine ? "Couldn't reach Rotty's kitchen." : "You're offline." };
+    return { offline: true, error: navigator.onLine ? "Couldn't reach Scrolly's kitchen." : "You're offline." };
   } finally {
     clearTimeout(t);
   }

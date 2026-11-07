@@ -16,7 +16,7 @@ export class App {
     await this.page.addInitScript(([night, extra]) => {
       if (sessionStorage.getItem("seeded")) return;
       sessionStorage.setItem("seeded", "1");
-      localStorage.setItem("studyrot:v1", JSON.stringify({ onboarded: true, night, built: true, learn: ["watch"], hard: [], sound: false, lastDay: null, ...extra }));
+      localStorage.setItem("scrollege:v1", JSON.stringify({ onboarded: true, night, built: true, learn: ["watch"], hard: [], sound: false, lastDay: null, ...extra }));
     }, [this.theme === "night", extra] as const);
   }
   async open(extra: Record<string, unknown> = {}) { await this.seed(extra); await this.page.goto("/"); await this.ready(); }
@@ -41,7 +41,7 @@ export const MOCK_DECK = {
     t: ["What is a cell?", "The nucleus", "Mitochondria", "Cell membrane", "Why cells matter"][k],
     cap: ["cap one", "cap two", "cap three"], read: [`Fact ${k} a`, `Fact ${k} b`, `Fact ${k} c`],
     quotes: ["Cells are the basic unit of life."], simple: `Simple ${k}`, story: ["s1", "s2", "s3"],
-    pod: [["Rotty", "What is it?"], ["Pip", `It is thing ${k}.`]],
+    pod: [["Scrolly", "What is it?"], ["Pip", `It is thing ${k}.`]],
     q: [`Question ${k}?`, [`Right ${k}`, `Wrong ${k}a`, `Wrong ${k}b`], 0, `Because ${k}.`], jingle: ["la la", "la la"], line: k === 1 ? 2 : 1,
   })),
   steps: ["Step A", "Step B", "Step C", "Step D"], sort: [],

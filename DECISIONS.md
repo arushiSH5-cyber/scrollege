@@ -1,5 +1,21 @@
 # Decisions
 
+## Now Scrollege (new approved design: reference/scrollege.html)
+- Same app, renamed: StudyRot → **Scrollege**, Rotty → **Scrolly** (also in the AI prompts and podcast lines).
+- The soft, bubbly skin from the mockup is used as-is (gradients, no thick outlines, jelly buttons, floating tab bar, drifting critters).
+- Header: ← back, 🫧 Need a break, 🌗, 🍃, ?. The old floating 😮‍💨 button is hidden, as in the mockup.
+- **Feed has two tabs:** 📚 My notes (your deck) and ✨ Explore. Explore works before you make anything and answers offline.
+- Explore packs live in `public/packs/*.json` (`index.json` lists them). The first is "AI fun facts", copied exactly from the mockup.
+  Its drawings stay in `app.js` (packs point at them with `sc`). A pack without drawings shows a critter.
+  `stepsOf` names what Step Tower stacks ("training an AI model").
+- 🧪 Fit-the-line lab (`fitLab()`) is ported exactly: real least-squares, y = mx + b, average squared error, "add a weird dot".
+- Ask, Teach, Jingle and Translate on Explore use the local versions (the pack is the source). On your own deck they use Claude.
+- Test date on Make is now a folded "Got a test coming up?" section (from the mockup).
+- Storage keys renamed (`scrollege:v1`, IndexedDB `scrollege`), so StudyRot test data on this computer is not carried over.
+- Still no Firecrawl / 🔗 Link (you asked to leave it out for now).
+- App icons: Scrolly on the pink → lilac → mint gradient.
+
+
 Small calls made while building, so nothing is a surprise.
 
 ## Local only

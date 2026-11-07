@@ -1,0 +1,253 @@
+{
+ "id": "ai-fun-facts",
+ "title": "AI fun facts",
+ "pack": true,
+ "label": "Scrollege Explore · AI basics",
+ "art": "ai",
+ "steps": [
+  "Collect data",
+  "Split it into training and test sets",
+  "Train the model to lower its error",
+  "Test it on data it hasn't seen",
+  "Use it to make predictions"
+ ],
+ "chips": [
+  "What is a token?",
+  "What is overfitting?",
+  "What is the learning rate?"
+ ],
+ "reels": [
+  {
+   "t": "Linear regression",
+   "sc": 5,
+   "a": "#e6f1f8",
+   "cap": [
+    "Dots on a graph",
+    "draw the line that fits best",
+    "then use it to predict"
+   ],
+   "read": [
+    "Linear regression finds the straight line that best fits your data",
+    "The line is y = mx + b: m is the slope, b is where it crosses the y-axis",
+    "“Best fit” usually means the smallest total squared error"
+   ],
+   "simple": "Draw the best straight line through the dots, then use it to guess new ones.",
+   "story": [
+    "Pip runs a lemonade stand.",
+    "Hotter days, more cups sold.",
+    "Pip draws a line and predicts tomorrow!"
+   ],
+   "pod": [
+    [
+     "Scrolly",
+     "How would I guess a house price?"
+    ],
+    [
+     "Pip",
+     "Plot size against price, draw the best-fit line, and read your guess off the line!"
+    ]
+   ],
+   "q": [
+    "In y = mx + b, what is m?",
+    [
+     "The slope: how steep the line is",
+     "The number of dots",
+     "The mistake"
+    ],
+    0,
+    "m is the slope: how much y changes when x goes up by 1."
+   ],
+   "jingle": [
+    "Plot the dots and draw the line,",
+    "least squared error, works just fine!"
+   ],
+   "line": 1,
+   "tryit": true
+  },
+  {
+   "t": "Gradient descent",
+   "sc": 6,
+   "a": "#e6f4ec",
+   "cap": [
+    "Mistakes are a hill",
+    "take small steps downhill",
+    "until the error is lowest"
+   ],
+   "read": [
+    "Training a model means lowering its error",
+    "Gradient descent checks which way is downhill and takes a small step",
+    "The size of each step is called the learning rate"
+   ],
+   "simple": "The model keeps taking tiny steps to make fewer mistakes.",
+   "story": [
+    "A blindfolded hiker wants the valley.",
+    "She feels which way slopes down.",
+    "Tiny steps… and she makes it!"
+   ],
+   "pod": [
+    [
+     "Scrolly",
+     "How does a model get better?"
+    ],
+    [
+     "Pip",
+     "It feels which way the error goes down and takes a small step. Again and again!"
+    ]
+   ],
+   "q": [
+    "What is the learning rate?",
+    [
+     "How big each step is",
+     "How fast the computer is",
+     "The final score"
+    ],
+    0,
+    "It sets the size of each step downhill."
+   ],
+   "jingle": [
+    "Feel the slope and take a stride,",
+    "down the hill the errors slide!"
+   ],
+   "line": 2
+  },
+  {
+   "t": "Overfitting",
+   "sc": 7,
+   "a": "#fbe5e5",
+   "cap": [
+    "Memorizing isn't learning",
+    "perfect on practice",
+    "bad on new data"
+   ],
+   "read": [
+    "Overfitting means a model memorizes its training data, noise and all",
+    "It scores great on practice data but badly on new data",
+    "Fixes: more data, a simpler model, and testing on unseen data"
+   ],
+   "simple": "Like memorizing answers instead of understanding: you flop on the real test.",
+   "story": [
+    "Bo memorizes every practice answer.",
+    "The real test has new questions.",
+    "Bo learns to learn the pattern instead."
+   ],
+   "pod": [
+    [
+     "Scrolly",
+     "My model got 100% in practice!"
+    ],
+    [
+     "Pip",
+     "Careful! Test it on new data. It might just be memorizing."
+    ]
+   ],
+   "q": [
+    "A model aces practice data but fails new data. Why?",
+    [
+     "It's overfitting",
+     "It's underfitting",
+     "It's perfect"
+    ],
+    0,
+    "It memorized instead of learning the pattern."
+   ],
+   "jingle": [
+    "Don't just memorize the test,",
+    "learn the pattern, that works best!"
+   ],
+   "line": 3
+  },
+  {
+   "t": "Neural networks",
+   "sc": 8,
+   "a": "#fcf3d6",
+   "cap": [
+    "Layers of tiny math units",
+    "connections have weights",
+    "learning = adjusting weights"
+   ],
+   "read": [
+    "A neural network is layers of simple math units called neurons",
+    "Each connection has a weight that changes during training",
+    "Stacking layers lets it learn complex patterns, like faces or speech"
+   ],
+   "simple": "Lots of tiny calculators passing numbers along and learning from mistakes.",
+   "story": [
+    "Each neuron is a tiny voter.",
+    "Some votes count more than others.",
+    "Training teaches them whose vote matters."
+   ],
+   "pod": [
+    [
+     "Scrolly",
+     "Is it a real brain?"
+    ],
+    [
+     "Pip",
+     "Nope! It's inspired by brains, but it's really just lots of multiplying and adding."
+    ]
+   ],
+   "q": [
+    "What changes when a neural network learns?",
+    [
+     "The weights on its connections",
+     "Its screen color",
+     "Its name"
+    ],
+    0,
+    "Training adjusts the weights."
+   ],
+   "jingle": [
+    "Neurons pass the numbers through,",
+    "weights adjust till answers are true!"
+   ],
+   "line": 4
+  },
+  {
+   "t": "How chatbots write",
+   "sc": 9,
+   "a": "#f1eaf7",
+   "cap": [
+    "One token at a time",
+    "a token is a word or part of one",
+    "it predicts what comes next"
+   ],
+   "read": [
+    "Language models are trained to predict the next token",
+    "A token is a word or a piece of a word",
+    "They write by predicting one token at a time, very fast"
+   ],
+   "simple": "A chatbot guesses the next word piece, over and over, really fast.",
+   "story": [
+    "The bot reads: “The cat sat on the…”",
+    "It guesses the most likely next piece.",
+    "“mat!” Then it guesses again."
+   ],
+   "pod": [
+    [
+     "Scrolly",
+     "How does a chatbot write a whole essay?"
+    ],
+    [
+     "Pip",
+     "One token at a time! It keeps predicting what comes next."
+    ]
+   ],
+   "q": [
+    "What does a language model predict?",
+    [
+     "The next token",
+     "The weather",
+     "Your password"
+    ],
+    0,
+    "It predicts the next token, one at a time."
+   ],
+   "jingle": [
+    "One more token, then one more,",
+    "that's what language models are for!"
+   ],
+   "line": 5
+  }
+ ],
+ "stepsOf": "training an AI model"
+}

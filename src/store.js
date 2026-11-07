@@ -1,9 +1,9 @@
 // On-device storage only. Settings -> localStorage, decks -> IndexedDB.
 // Everything is wrapped in try/catch so private windows still work.
-const KEY = "studyrot:v1";
+const KEY = "scrollege:v1";
 const SETS = ["learn", "hard", "seen", "got", "later", "simple"];
 const SAVE = ["night","pet","petName","vibe","mode","calm","dys","bionic","ruler","tint","big","notimer","sound","voice","lang","jr",
-  "xp","streak","test","story","built","onboarded","src","wrong","lastDay","tapQuiz","review","limit","deckId", ...SETS];
+  "xp","streak","test","story","built","onboarded","src","wrong","lastDay","tapQuiz","review","limit","deckId","feed", ...SETS];
 
 export function loadSettings(S) {
   try {
@@ -25,7 +25,7 @@ let dbp;
 function db() {
   if (!dbp) dbp = new Promise((res, rej) => {
     try {
-      const r = indexedDB.open("studyrot", 1);
+      const r = indexedDB.open("scrollege", 1);
       r.onupgradeneeded = () => r.result.createObjectStore("decks", { keyPath: "id" });
       r.onsuccess = () => res(r.result);
       r.onerror = () => rej(r.error);

@@ -1,10 +1,10 @@
-// The built app must look like the approved mockup (reference/studyrot-v3.html): ≤2% pixel difference per screen.
+// The built app must look like the approved mockup (reference/scrollege.html): ≤2% pixel difference per screen.
 import { test, expect } from "./fixtures";
 import { PNG } from "pngjs";
 import pixelmatch from "pixelmatch";
 import path from "node:path";
 
-const MOCKUP = "file://" + path.resolve("reference/studyrot-v3.html");
+const MOCKUP = "file://" + path.resolve("reference/scrollege.html");
 const FREEZE = `*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}.about{display:none!important}`;
 
 async function shot(page: any) {
