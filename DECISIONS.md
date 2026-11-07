@@ -59,3 +59,7 @@ The mockup showed the app inside a phone frame beside a pitch panel. A real app 
 ## Bugs found by the tests and fixed
 - No-timer mode in Quiz Run 3D didn't actually wait: showing the starting lane on each new gate counted as a pick. Now the gate waits for a real pick.
 - Make's input tabs used `role="tab"` with `aria-pressed` (not allowed) and the test name/date inputs had no labels.
+
+## Firecrawl removed (for now)
+- The 🔗 Link input, the `link` branch of `/api/source`, the `@mendable/firecrawl-js` package and `FIRECRAWL_API_KEY` are gone.
+  Make offers 📄 PDF, 📝 Notes and 📷 Photo. To bring links back, restore them from commit bda5bc6.

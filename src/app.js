@@ -149,12 +149,11 @@ $("#backBtn").onclick=goBack;
 /* ---------- make a feed ---------- */
 function renderMake(){
   P().innerHTML=`<h2>Make a feed</h2><span class="muted" style="margin-top:-8px">Give Rotty anything. Get 5 bite-size reels.</span>
-   <div class="input-tabs" role="group" aria-label="What are you giving Rotty?">${[["pdf","📄","PDF"],["notes","📝","Notes"],["link","🔗","Link"],["photo","📷","Photo"]].map(([k,e,t],i)=>`<button class="tile" data-in="${k}" aria-pressed="${i===0}"><span class="em">${e}</span>${t}</button>`).join("")}</div>
+   <div class="input-tabs" role="group" aria-label="What are you giving Rotty?">${[["pdf","📄","PDF"],["notes","📝","Notes"],["photo","📷","Photo"]].map(([k,e,t],i)=>`<button class="tile" data-in="${k}" aria-pressed="${i===0}"><span class="em">${e}</span>${t}</button>`).join("")}</div>
    <div id="inBox"></div>
    <div class="card" style="background:var(--lilac2)"><b>🗓 Test coming up?</b><div class="row2"><input class="in" id="tName" placeholder="Bio quiz" aria-label="Test name" value="${S.test?esc(S.test.n):""}"><input class="in" id="tDate" type="date" aria-label="Test date" value="${S.test?S.test.d:""}"></div><small class="muted">Rotty spreads your reels out so you review a little each day.</small></div>
    <button class="cta pink" id="go">Cook my feed 🍳</button>`;
   let mode="pdf";const box=()=>{$("#inBox").innerHTML={pdf:`<label class="cta alt" style="text-align:center;cursor:pointer;display:block">📄 Upload a PDF<br><small class="muted">Slides, class notes or a textbook chapter</small><input type="file" accept="application/pdf" id="inPdf" hidden></label><div id="pdfOut"></div>`,notes:`<textarea class="in" id="inT" aria-label="Your notes">${NOTES}</textarea>`,
-    link:`<input class="in" id="inL" value="https://en.wikipedia.org/wiki/Photosynthesis" aria-label="Link"><small class="muted">🔥 Firecrawl reads the page and turns it into clean text. Each reel links back to it.</small>`,
     photo:`<label class="cta alt" style="text-align:center;cursor:pointer">📷 Snap your notes or a textbook page<input type="file" accept="image/*" capture="environment" id="inP" hidden></label><div id="pPrev"></div>`,
     voice:`<button class="cta alt" id="inV">🎤 Tap and explain the topic out loud</button><div id="vOut" class="muted"></div>`}[mode];
     const pf=$("#inPdf");if(pf)pf.onchange=e=>readPdf(e.target.files[0]);
@@ -167,10 +166,9 @@ function renderMake(){
     let req;
     if(mode==="pdf")req=S.pdf.scanned?{type:"pdf-scan",data:{name:S.pdf.name,images:S.pdf.images}}:{type:"pdf",data:{name:S.pdf.name,pages:S.pdf.pages.map((t,k)=>({n:k+1,text:t}))}};
     else if(mode==="notes")req={type:"notes",data:$("#inT").value};
-    else if(mode==="link")req={type:"link",data:$("#inL").value.trim()};
     else req={type:"photo",data:S.photo};
     if(mode==="notes"&&req.data.trim().length<40)return toast("Add a few more lines of notes first");
-    S.src={pdf:S.pdf?S.pdf.name:"your PDF",notes:"your notes",link:"the link (via Firecrawl)",photo:"your photo"}[mode];cook(req)};
+    S.src={pdf:S.pdf?S.pdf.name:"your PDF",notes:"your notes",photo:"your photo"}[mode];cook(req)};
 }
 /* shrink a photo so it uploads fast (long edge 1600px, jpeg) */
 function shrinkImage(file,max=1600){return new Promise((res,rej)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.85))};img.onerror=rej;img.src=u})}
@@ -194,7 +192,7 @@ async function readPdf(f){if(!f)return;const out=$("#pdfOut");S.pdf=null;
    out.innerHTML=`<div class="card" style="box-shadow:none;background:var(--mint2)"><b>✓ ${esc(f.name)}</b><span>${n} page${n===1?"":"s"} · ${words.toLocaleString()} words</span><div class="box" style="max-width:none;box-shadow:none;font-size:13.5px">${esc(all.slice(0,280))}…</div><small class="muted">Each reel will link to its page number. Only the text is sent, never the file.</small></div>`;beep(880)}
   catch(e){out.innerHTML=e&&e.name==="PasswordException"?`<div class="card" style="box-shadow:none;background:var(--blush2)"><b>🔒 This PDF has a password</b><span>Open it, save a copy without the password, then upload that.</span></div>`:`<span class="muted">Couldn't read that PDF. Is it a real PDF file?</span>`}}
 function cook(req){const o=document.createElement("div");o.className="ov";o.innerHTML=`<div class="bob">${rotty("thinking",100)}</div><h3>Rotty is cooking your feed…</h3>
-  <div class="cook">${["📖 Reading "+(req.type==="link"?"the page":req.type.startsWith("pdf")&&S.pdf?S.pdf.n+" PDF pages":req.type==="photo"?"your photo":"your notes"),"🔑 Finding the 5 big ideas","🎬 Making reels: watch, listen, read","🎮 Building games","📎 Checking every reel against your source"].map(x=>`<div>${x}</div>`).join("")}</div>
+  <div class="cook">${["📖 Reading "+(req.type.startsWith("pdf")&&S.pdf?S.pdf.n+" PDF pages":req.type==="photo"?"your photo":"your notes"),"🔑 Finding the 5 big ideas","🎬 Making reels: watch, listen, read","🎮 Building games","📎 Checking every reel against your source"].map(x=>`<div>${x}</div>`).join("")}</div>
   <small class="muted" id="cookNote" aria-live="polite"></small>`;screen.appendChild(o);
   const rows=[...o.querySelectorAll(".cook div")];let k=0,anim=false,result=null;
   const finish=()=>{if(!anim||!result)return;o.remove();
@@ -243,7 +241,7 @@ function stage(r,i){
 }
 function renderFeed(keep){
   const V=$("#feedV");if(!V)return;
-  if(!S.built){V.innerHTML=`<div class="pad" style="align-items:center;text-align:center;padding-top:110px">${rotty("sleepy",110)}<h2>No feed yet</h2><p class="muted" style="margin:0">Drop your notes, a link or a photo and Rotty makes one.</p><button class="cta pink" onclick="show('make')">➕ Make my feed</button><button class="cta alt" onclick="S.built=true;renderFeed()">Try the sample (Photosynthesis)</button></div>`;return}
+  if(!S.built){V.innerHTML=`<div class="pad" style="align-items:center;text-align:center;padding-top:110px">${rotty("sleepy",110)}<h2>No feed yet</h2><p class="muted" style="margin:0">Drop your notes, a PDF or a photo and Rotty makes one.</p><button class="cta pink" onclick="show('make')">➕ Make my feed</button><button class="cta alt" onclick="S.built=true;renderFeed()">Try the sample (Photosynthesis)</button></div>`;return}
   const top=keep?V.scrollTop:0;
   const ord=feedOrder(),due=dueToday(S,did()),slots=[];ord.forEach((i,pos)=>{slots.push(reel(DECK.reels[i],i,pos,ord,due.includes(i)));if(pos===2)slots.push(gameSlot())});slots.push(limitSlot(ord.length));
   V.innerHTML=slots.join("");V.scrollTop=top;bindFeed();tickCaps();
@@ -334,7 +332,7 @@ function localAsk(q){const words=q.toLowerCase().match(/[a-z]{4,}/g)||[];let bes
   if(DECK.demo&&/green/.test(q.toLowerCase())){best={line:DECK.reels[2].read[2],rr:DECK.reels[2]};score=2}
   return score?{answer:best.line,line:best.rr.line,ref:srcRef(best.rr)}:{answer:null}}
 function ask(r){const chips=DECK.demo?["Why are leaves green?","What goes in?","What comes out?","Who was Darwin?"]:DECK.reels.slice(0,3).map(x=>x.t.replace(/[?.!]*$/,"?"));
-  openSheet(`<h4 id="sheetTitle">💬 Ask Rotty</h4><p class="sub">I only answer from your ${DECK.demo?"notes":esc(DECK.sourceType==="pdf"?"PDF":DECK.sourceType==="link"?"page":"notes")}, and I show where it came from.</p>
+  openSheet(`<h4 id="sheetTitle">💬 Ask Rotty</h4><p class="sub">I only answer from your ${DECK.demo?"notes":esc(DECK.sourceType==="pdf"?"PDF":"notes")}, and I show where it came from.</p>
   <div class="chips">${chips.map(q=>`<button data-q>${esc(q)}</button>`).join("")}</div>
   <div class="chat" id="chat" aria-live="polite"></div><form class="ask" id="af"><input id="aq" placeholder="Ask about ${esc(DECK.title)}…" aria-label="Your question"><button>Ask</button></form>`);
   const go=async q=>{$("#chat").insertAdjacentHTML("beforeend",`<div class="me">${esc(q)}</div>`);
@@ -451,7 +449,7 @@ async function drawDecks(){const el=$("#deckList");if(!el)return;const ds=await 
     await deleteDeck(d.id);dropDeckReviews(S,d.id);if(d.id===did()){useDeck(DEMO_DECK);S.deckId="demo";S.built=false}saveSettings(S);toast("Deleted");drawDecks()})}
 
 /* ---------- help explainers ---------- */
-$("#helpBtn").onclick=()=>{const H={feed:["👀 Watch, 🎧 Listen, 📖 Read or 🎮 Play: tap at the top to switch.","🎮 3D quiz turns any reel into a runner game.","💬 Ask only uses your notes. ⋯ More has jingles, story mode and Teach Rotty."],make:["Upload a PDF, paste notes or a link, or snap a photo.","Rotty makes 5 reels and 3D games, each linked to its page.","Add a test date and Rotty spreads it out."],me:["Turn on any brain mode, anytime.","Calm mode, easy-read, bionic, ruler, tints, no-timer.","Collect critter stickers as you learn."]}[S.tab]||[];
+$("#helpBtn").onclick=()=>{const H={feed:["👀 Watch, 🎧 Listen, 📖 Read or 🎮 Play: tap at the top to switch.","🎮 3D quiz turns any reel into a runner game.","💬 Ask only uses your notes. ⋯ More has jingles, story mode and Teach Rotty."],make:["Upload a PDF, paste notes, or snap a photo.","Rotty makes 5 reels and 3D games, each linked to its page.","Add a test date and Rotty spreads it out."],me:["Turn on any brain mode, anytime.","Calm mode, easy-read, bionic, ruler, tints, no-timer.","Collect critter stickers as you learn."]}[S.tab]||[];
   openSheet(`<h4 id="sheetTitle">▶ How this works</h4><div style="display:grid;gap:8px">${H.map((h,k)=>`<div class="card" style="box-shadow:none">${["1️⃣","2️⃣","3️⃣"][k]} ${h}</div>`).join("")}</div><button class="cta" style="margin-top:10px" onclick="say(${JSON.stringify(H.join(' ')).replace(/"/g,'&quot;')})">🔊 Read it to me</button>`)};
 
 /* ---------- 3D games (Three.js) ---------- */

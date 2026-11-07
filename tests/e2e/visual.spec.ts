@@ -35,6 +35,8 @@ for (const [name, go] of SCREENS) {
     // the mockup's show() is a script global; ours is exposed on window
     await mock.evaluate(() => { (window as any).show = (window as any).show || (globalThis as any).show; });
     await go(mock); await go(mine);
+    // Link input was removed on purpose (no Firecrawl for now): drop it from the mockup before comparing
+    await mock.evaluate(() => { document.querySelector('[data-in="link"]')?.remove(); const t = document.querySelector(".input-tabs") as HTMLElement | null; if (t) t.style.gridTemplateColumns = "repeat(3,1fr)"; });
     const d = diff(await shot(mock), await shot(mine));
     console.log(`${name}: ${(d * 100).toFixed(2)}% different`);
     expect(d).toBeLessThanOrEqual(0.02);

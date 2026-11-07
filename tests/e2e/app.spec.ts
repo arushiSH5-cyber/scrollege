@@ -39,17 +39,6 @@ test("Make: notes → real deck from the (mocked) AI, with line sources", async 
   expect(calls.deck[0].lines).toHaveLength(3);
 });
 
-test("Make: link goes through Firecrawl source", async ({ page, app }) => {
-  await app.open({ built: false });
-  const calls = await mockAI(page, "example.com (via Firecrawl)");
-  await app.tab("Make");
-  await page.locator('[data-in="link"]').click();
-  await page.locator("#inL").fill("https://example.com/cells");
-  await page.getByRole("button", { name: /Cook my feed/ }).click();
-  await expect(app.slot(0).locator(".src")).toContainText("example.com (via Firecrawl)", { timeout: 15_000 });
-  expect(calls.source[0]).toEqual({ type: "link", data: "https://example.com/cells" });
-});
-
 test("Make: photo is shrunk and sent for vision", async ({ page, app }) => {
   await app.open({ built: false });
   const calls = await mockAI(page, "your photo");

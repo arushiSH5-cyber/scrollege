@@ -1,5 +1,5 @@
 // Runs the Vercel-style handlers in /api locally inside Vite (no `vercel dev`,
-// no Vercel login, nothing leaves this computer except the AI/Firecrawl calls).
+// no Vercel login, nothing leaves this computer except the calls to Claude).
 import path from "node:path";
 import { existsSync } from "node:fs";
 

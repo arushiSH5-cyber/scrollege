@@ -1,6 +1,6 @@
 # StudyRot 🍃
 
-**Brain rot, but make it learning.** Drop a PDF, notes, a link or a photo. Get a TikTok-style feed and 3D games that fit *your* brain,
+**Brain rot, but make it learning.** Drop a PDF, notes or a photo. Get a TikTok-style feed and 3D games that fit *your* brain,
 built for ADHD, dyslexic and autistic students first. Works on desktop and phone as one installable app (PWA).
 
 > Local only. No remote, pushing is blocked by a git hook. See `DECISIONS.md`.
@@ -11,12 +11,11 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 Works with no keys (`DEMO_MODE=true` in `.env.local` → sample Photosynthesis deck).
-To cook real decks, put your keys in `.env.local` and set `DEMO_MODE=false`:
+To cook real decks, run `sh scripts/set-keys.sh` (or put your key in `.env.local` and set `DEMO_MODE=false`):
 
 | Key | Where to get it |
 |---|---|
 | `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys |
-| `FIRECRAWL_API_KEY` | firecrawl.dev → Dashboard → API Keys (only needed for 🔗 Link) |
 
 ## Install it
 - **Desktop (Chrome / Edge):** `npm run build && npm run preview`, open http://localhost:4173, click the install icon in the address bar.

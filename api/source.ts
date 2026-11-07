@@ -1,6 +1,5 @@
-// POST /api/source {type:"notes"|"voice"|"pdf"|"link"|"photo", data, page?} -> {text, sourceLabel, lines:[{n,text,page?}]}
+// POST /api/source {type:"notes"|"voice"|"pdf"|"photo", data, page?} -> {text, sourceLabel, lines:[{n,text,page?}]}
 import { z } from "zod";
-import Firecrawl from "@mendable/firecrawl-js";
 import { guard, isDemo, fail, structured, SMART, type Req, type Res } from "./_lib/util";
 
 type Line = { n: number; text: string; page?: number };
@@ -18,9 +17,6 @@ function chunk(text: string, page?: number): Omit<Line, "n">[] {
 }
 const number = (ls: Omit<Line, "n">[]): Line[] => ls.map((l, i) => ({ n: i + 1, ...l }));
 const linesOf = (text: string) => text.split(/\r?\n/).map((t) => t.trim()).filter(Boolean).map((t) => ({ text: t }));
-const mdToText = (md: string) => md
-  .replace(/!\[[^\]]*\]\([^)]*\)/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
-  .replace(/^#{1,6}\s*/gm, "").replace(/[*_`>|]/g, "").replace(/^\s*[-+]\s+/gm, "").replace(/\n{2,}/g, "\n");
 
 const Copy = z.object({ text: z.string().describe("All the text in the image, copied exactly, line by line. Empty if there is no readable text.") });
 async function readImage(dataUrl: string) {
@@ -58,16 +54,6 @@ export default async function handler(req: Req, res: Res) {
       const page = Number(body.page) || undefined;
       lines = number(page ? chunk(text, page) : linesOf(text));
       label = String(body.name || "your photo").slice(0, 80);
-    } else if (type === "link") {
-      let url: URL;
-      try { url = new URL(String(data)); if (!/^https?:$/.test(url.protocol)) throw 0; } catch { return res.status(400).json({ error: "That doesn't look like a link. It should start with https://" }); }
-      if (!process.env.FIRECRAWL_API_KEY) return res.status(500).json({ error: "Links need a FIRECRAWL_API_KEY in .env.local." });
-      const fc = new Firecrawl({ apiKey: process.env.FIRECRAWL_API_KEY });
-      const doc: any = await fc.scrape(url.toString(), { formats: ["markdown"], onlyMainContent: true });
-      const md = String(doc?.markdown || "");
-      if (md.trim().length < 50) return res.status(422).json({ error: "Rotty couldn't read that page. Is it behind a login?" });
-      lines = number(mdToText(md).slice(0, MAX_CHARS).split("\n").flatMap((p) => chunk(p)));
-      label = url.hostname.replace(/^www\./, "") + " (via Firecrawl)";
     } else {
       return res.status(400).json({ error: "Unknown source type" });
     }
