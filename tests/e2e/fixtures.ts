@@ -21,8 +21,8 @@ export class App {
     }, [this.theme, extra] as const);
   }
   async open(extra: Record<string, unknown> = {}) { await this.seed(extra); await this.page.goto("/"); await this.ready(); }
-  async ready() { await expect(this.page.locator("#nav button")).toHaveCount(3); }
-  tab(name: "Feed" | "Make" | "Me") { return this.page.locator("#nav button", { hasText: name }).click(); }
+  async ready() { await expect(this.page.locator("#nav button").first()).toBeVisible(); }
+  tab(name: "Feed" | "Make" | "Squad" | "Me") { return this.page.locator("#nav button", { hasText: name }).click(); }
   slot(n: number) { return this.page.locator(".slot[data-i]").nth(n); }
   async noHorizontalScroll() {
     const over = await this.page.evaluate(() => {

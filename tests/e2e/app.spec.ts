@@ -365,15 +365,14 @@ test("Explore: fun facts, news with sources, next topics, projects", async ({ pa
   await app.noHorizontalScroll();
 });
 
-test("Watch in 3D plays captions, then Replay / Done", async ({ page, app }) => {
+test("Watch in 3D plays captions, then shows Replay / Done under the caption", async ({ page, app }) => {
   test.setTimeout(180_000);
   await app.open({ calm: false });
   await app.slot(0).locator('[data-a="v3"]').click();
   await expect(page.locator(".g3.vid canvas")).toBeVisible();
   await expect(page.locator("#vcap")).toContainText("Computers learn from examples");
-  await expect(page.locator("#g3m")).toContainText("That's the idea!", { timeout: 120_000 }); // software 3D in CI can be slow
-  await expect(page.locator("#vcap")).toContainText("to predict new things");
-  await page.locator("#g3m").getByRole("button", { name: "Done" }).click();
+  await expect(page.locator("#vend")).toBeVisible({ timeout: 120_000 }); // software 3D in CI can be slow
+  await page.locator("#vend [data-done]").click();
   await expect(page.locator(".g3")).toHaveCount(0);
 });
 
@@ -458,4 +457,79 @@ test("Read aloud and Listen can pause and resume the voice", async ({ page, app 
   await expect(play).toHaveAttribute("aria-label", "Resume");
   await play.click();
   await expect(play).toHaveAttribute("aria-label", "Pause");
+});
+
+test.describe("v9 live 3D reels", () => {
+  test("one live canvas, on the visible reel; it moves on scroll and leaves in Listen", async ({ page, app }) => {
+    test.setTimeout(90_000);
+    await app.open({ mode: "watch", calm: false });
+    await expect(page.locator(".live3d canvas")).toHaveCount(1);
+    await expect(app.slot(0).locator(".live3d canvas")).toHaveCount(1);
+    await page.locator("#feedV").evaluate((v) => (v.scrollTop = v.clientHeight));
+    await expect(app.slot(1).locator(".live3d canvas")).toHaveCount(1, { timeout: 10_000 });
+    await expect(page.locator(".live3d canvas")).toHaveCount(1);
+    await app.slot(1).locator('[data-m="listen"]').click();
+    await expect(page.locator(".live3d canvas")).toHaveCount(0);
+  });
+
+  test("the caption line and the scene beat stay in step", async ({ page, app }) => {
+    test.setTimeout(90_000);
+    await app.open({ mode: "watch", calm: false });
+    await expect(page.locator(".live3d canvas")).toHaveCount(1);
+    for (let n = 0; n < 3; n++) {
+      const { capK, beat } = await page.evaluate(() => ({ capK: (window as any).__v3.capK(), beat: (window as any).__v3.live()?.beat }));
+      expect(beat).toBe(capK % 3);
+      await expect.poll(() => page.evaluate(() => (window as any).__v3.capK()), { timeout: 10_000 }).toBeGreaterThan(capK);
+    }
+  });
+
+  test("all 10 scene kinds play all 3 beats for 10 s each without errors", async ({ page, app }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    await app.open({ mode: "read" });
+    const res = await page.evaluate(() => {
+      const T = (window as any).THREE, V = (window as any).__v3, out: string[] = [];
+      const cv = document.createElement("canvas"); cv.width = 320; cv.height = 240;
+      const R = new T.WebGLRenderer({ canvas: cv });
+      for (const kind of ["sort", "features", "cluster", "split", "clsreg", "scatter", "hill", "overfit", "net", "tokens"]) {
+        try {
+          const sc = new T.Scene(), cam = new T.PerspectiveCamera(48, 4 / 3, 0.1, 100); V.v3lights(sc);
+          const s = V.v3scene(kind, sc, true); cam.position.set(0, 3, 9); cam.lookAt(0, 1, 0);
+          for (let k = 0; k < 3; k++) { s.beat(k); let bt = 0; for (let f = 0; f < 300; f++) { bt += 1 / 30; s.tick(1 / 30, k * 10 + bt, bt, k); if (f % 60 === 0) R.render(sc, cam); } }
+          out.push(kind + ":ok");
+        } catch (e: any) { out.push(kind + ":" + e.message); }
+      }
+      R.dispose(); return out;
+    });
+    expect(res).toEqual(["sort", "features", "cluster", "split", "clsreg", "scatter", "hill", "overfit", "net", "tokens"].map((k) => k + ":ok"));
+    expect(errors).toEqual([]);
+  });
+
+  test("full-screen video keeps moving after the voice ends; Replay restarts the voice", async ({ page, app }) => {
+    test.setTimeout(240_000);
+    // count every line the app speaks (device voice; audio is muted in tests)
+    await page.route("**/api/tts", (r) => r.fulfill({ json: { on: false } }));
+    await page.addInitScript(() => { (window as any).__spoken = 0; const o = speechSynthesis.speak.bind(speechSynthesis); speechSynthesis.speak = (u: any) => { (window as any).__spoken++; o(u); }; });
+    await app.open({ calm: false, sound: true });
+    await app.slot(0).locator('[data-a="v3"]').click();
+    await expect(page.locator(".g3.vid canvas")).toBeVisible();
+    await expect(page.locator("#vend")).toBeVisible({ timeout: 180_000 });   // voice part finished
+    const before = await page.locator("#vcap").textContent();
+    await expect.poll(() => page.locator("#vcap").textContent(), { timeout: 30_000 }).not.toBe(before); // still looping
+    const n = await page.evaluate(() => (window as any).__spoken);
+    await page.locator("#vend [data-replay]").click();
+    await expect(page.locator("#vend")).toBeHidden();
+    await expect.poll(() => page.evaluate(() => (window as any).__spoken), { timeout: 15_000 }).toBeGreaterThan(n);
+    await page.locator(".g3 .back").click();
+    await expect(page.locator(".g3")).toHaveCount(0);
+  });
+
+  test("Squad tab and the weekly recap open", async ({ page, app }) => {
+    await app.open();
+    await app.tab("Squad");
+    await expect(page.locator("#P")).toContainText("Friends this week", { ignoreCase: true });
+    await app.tab("Me");
+    await page.locator(".wrapban").click();
+    await expect(page.locator(".recap")).toBeVisible();
+  });
 });

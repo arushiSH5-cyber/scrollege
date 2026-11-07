@@ -15,6 +15,7 @@ Rules you must follow:
 - Quiz: one clearly right answer and two clearly wrong ones. No trick questions, no "all of the above".
 - Story and jingle lines must keep the facts correct.
 - Each reel covers a different big idea.
+- When a reel has a 3D scene (v3), write its 3 captions so line 1 matches beat 1, line 2 beat 2, line 3 beat 3 of that scene.
 - Titles, captions, story and jingle lines must also be true to the SOURCE. Never trade accuracy for a catchy phrase (for example, don't say something goes "in" when the source says it is made or comes out).`;
 
 function brainHints(b: any): string {

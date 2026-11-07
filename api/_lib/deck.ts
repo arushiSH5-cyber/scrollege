@@ -18,8 +18,19 @@ export const ReelSchema = z.object({
   jingle: z.array(z.string()).describe("2 rhyming lines that keep the facts correct"),
   line: z.number().int().describe("The source line number [n] this reel is mostly based on"),
   mm: z.array(z.string()).describe('Memory-match pair: [key term from this reel (1-3 words), its meaning in max 6 words]'),
-  v3: z.enum(["scatter", "overfit", "hill", "net", "tokens", "split", "sort", "cluster", "none"]).describe(
-    "3D video scene. These scenes are for machine learning / data / AI ideas only. For any other subject (biology, history, etc.) use none. Pick a scene only if it clearly shows this idea: scatter (dots + best-fit line), overfit (wiggly curve vs simple line), hill (ball rolling downhill), net (layers of nodes), tokens (word blocks one at a time), split (cubes into train/test), sort (balls into two labeled bins), cluster (balls drifting into groups)"),
+  v3: z.enum(["sort", "features", "cluster", "split", "clsreg", "scatter", "hill", "overfit", "net", "tokens", "none"]).describe(
+    "Live 3D scene that acts out this reel. Each scene has 3 beats, and cap[0], cap[1], cap[2] must describe beat 1, 2, 3 in order. " +
+    "These scenes show machine-learning / data / AI ideas and have built-in labels, so for any other subject use none. " +
+    "sort: (1) balls drop into two labeled bins = learning from examples (2) a rulebook shrinks away = not hand-written rules (3) a new gray ball turns the right color and lands in the right bin = predicting. " +
+    "features: (1) clue tags orbit a house (2) a price label pops up (3) sparks flow from the clues into the price. " +
+    "cluster: (1) balls wear name tags (2) tags float away, balls turn gray (3) balls drift into groups on their own. " +
+    "split: (1) cubes fly into 80% train / 20% test pads (2) a critter studies the training cubes (3) it checks the test cubes. " +
+    "clsreg: (1) a spinning ? (2) balls drop into category bins = classification (3) a ball rolls along a number line = regression. " +
+    "scatter: (1) dots appear (2) a line wiggles into the best fit as errors shrink (3) a prediction point rides the line. " +
+    "hill: (1) a ball wobbles on the rim of an error bowl (2) it hops downhill, error shrinks (3) it reaches the bottom. " +
+    "overfit: (1) a wiggly line hits every dot (2) 100% on practice (3) new dots miss, a simple line fades in. " +
+    "net: (1) layers pop in (2) connections with pulses (3) weights change, output lights up. " +
+    "tokens: (1) word blocks drop in one at a time (2) a word splits into pieces (3) candidate next words with %, the best one flies in."),
 });
 export const CardSchema = z.object({
   title: z.string().describe("Funny card name, 2-4 words"),

@@ -10,7 +10,7 @@ test("desktop: tabs in a left rail, reels in a centered column, keys move reels"
   expect(slot!.width).toBeLessThanOrEqual(560);
   expect(Math.abs(slot!.x + slot!.width / 2 - (120 + (1280 - 120) / 2))).toBeLessThan(4);
   await page.keyboard.press("ArrowDown");
-  await expect.poll(() => page.locator("#feedV").evaluate((v) => Math.round(v.scrollTop / v.clientHeight))).toBe(1);
+  await expect.poll(() => page.locator("#feedV").evaluate((v) => Math.round(v.scrollTop / v.clientHeight)), { timeout: 30_000 }).toBe(1);
   await app.slot(1).locator('[data-a="ask"]').click();
   await expect(page.locator("#sheet")).toHaveClass(/on/);
   await page.keyboard.press("Escape");

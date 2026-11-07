@@ -1,5 +1,17 @@
 # Decisions
 
+## Scrollege v9 (approved design: reference/scrollege-v9.html)
+- v8 was never shared as a prompt; its changes came from the v9 mockup: a **👯 Squad** tab (friends, cheers, duels, study room, class board; hidden in Jr)
+  and a **✨ Weekly recap** story (from the end of a feed and from Me). Both show the mockup's **sample** friends and numbers: there are no accounts yet.
+- **Live 3D reels:** in Watch mode the visible reel plays its own 3D scene behind the caption; each caption line is a "beat" with its own action
+  (3.8 s per beat, 4.8 s in Calm). Only one renderer exists; it's removed on scroll, mode/tab change, and when a game, recap or break opens.
+  Reduced motion, no WebGL, or a reel without a scene → the old picture stays.
+- Full-screen Watch 3D uses the same scenes, keeps looping after the voice ends, and shows "↻ Replay with voice / Done" under the caption.
+- AI decks pick one of the 10 scenes per reel and write caption lines to match its beats. **Deviation from the v9 prompt:** for subjects the scenes
+  don't fit (biology, history…), the deck uses `none` (no live 3D) instead of forcing `scatter`/`sort`, because those scenes have built-in labels
+  like "cats/dogs" that would be wrong. The planned `v3labels` would let any subject use them.
+- Small test-only hook `window.__v3` (read-only) lets the tests check beats and render all 10 scenes quickly.
+
 ## Voice + click sounds
 - Every button plays a soft note from a happy 5-note scale (switches go up when on, down when off). A button that already has its own sound (pop, flip, cheer) doesn't also click. Follows Sounds, Calm mode and Volume.
 - Read-aloud uses **Cartesia** (`sonic-3.6`, voice "Skylar" by default, `CARTESIA_VOICE_ID` to change) through `/api/tts`, so the key stays on the server.
