@@ -6,6 +6,10 @@ test("desktop: tabs in a left rail, reels in a centered column, keys move reels"
   expect(nav!.x).toBeLessThanOrEqual(12);
   expect(nav!.width).toBeLessThan(130);
   expect(nav!.height).toBeGreaterThan(700);
+  // the tabs stack in one column (Feed, Make, Squad, Me), not squeezed side by side
+  const xs = await page.locator("#nav button:visible").evaluateAll((bs) => bs.map((b) => Math.round(b.getBoundingClientRect().x)));
+  expect(new Set(xs).size).toBe(1);
+  expect(xs.length).toBe(4);
   const slot = await app.slot(0).boundingBox();
   expect(slot!.width).toBeLessThanOrEqual(560);
   expect(Math.abs(slot!.x + slot!.width / 2 - (120 + (1280 - 120) / 2))).toBeLessThan(4);
