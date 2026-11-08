@@ -1,243 +1,280 @@
 <div align="center">
 
-<img src="public/icons/icon-512.png" width="120" alt="Scrolly, the Scrollege study cat">
+<img src="public/icons/icon-512.png" width="110" alt="Scrolly, a doodle cat with a sprout on its head">
 
-# Scrollege 🫧
+# Scrollege
 
-### Doomscrolling, but you actually pass.
+**Doomscrolling, but you actually pass.**
 
-Drop your class notes, a PDF or a photo. Get a TikTok-style feed with **live 3D scenes**, mini-games, a real narrator voice
-and meme cards, all made from **your** material and shaped around **your** brain.
-Built for ADHD, dyslexic and autistic students first, and friendly for everyone.
+You were going to scroll anyway. Might as well be your bio notes.
 
-<!-- LIVE-LINK:START -->
-### 🌐 Try it: **[scrollege.vercel.app](https://scrollege.vercel.app)**
+[**▶ Open the app**](https://scrollege.vercel.app) &nbsp;·&nbsp; works on your phone and laptop &nbsp;·&nbsp; no sign-up
 
-<a href="https://scrollege.vercel.app"><img src="docs/qr.png" width="170" alt="QR code: scan to open Scrollege on your phone"></a>
+<a href="https://scrollege.vercel.app"><img src="docs/qr.png" width="150" alt="QR code that opens scrollege.vercel.app"></a>
 
-📱 Scan with your phone camera, then **Share → Add to Home Screen** (iPhone) or **Install app** (Android).<br>
-Works on phones and laptops, installs like a real app, and the sample decks keep working offline.
-<!-- LIVE-LINK:END -->
+<sub>Point your phone camera at it, then <i>Add to Home Screen</i>. It installs like a real app.</sub>
+
+<br><br>
+
+<img src="docs/gifs/live-reel.gif" width="250" alt="A reel where a 3D scene acts out each caption: dots appear, a line fits them, a prediction point rides the line">
+&nbsp;&nbsp;
+<img src="docs/gifs/game.gif" width="250" alt="Bubble Pop: answer bubbles float up and you pop the right one">
+&nbsp;&nbsp;
+<img src="docs/gifs/break.gif" width="250" alt="Box breathing: Scrolly breathes with you while a dot travels around a square">
 
 </div>
 
-<p align="center">
-  <img src="docs/shots/live3d-sky.png" width="19%" alt="A reel with a live 3D scene acting out the caption">
-  <img src="docs/shots/live3d-ink.png" width="19%" alt="Linear regression reel in Ink night">
-  <img src="docs/shots/play-sky.png" width="19%" alt="Play mode: a different game on each reel">
-  <img src="docs/shots/break-sky.png" width="19%" alt="The break menu with 7 relax activities">
-  <img src="docs/shots/meme-card.png" width="19%" alt="A meme study card">
-</p>
+---
+
+## So, why does this exist?
+
+Here's how studying goes for a lot of us. You open your notes. You read one line. Your phone buzzes. Forty minutes later you know
+everything about a stranger's sourdough starter and nothing about photosynthesis.
+
+TikTok isn't magic. It's just really good at short, moving, personal, rewarding. Notes are long, still, the same for everyone, and boring.
+So we flipped it: **keep the part that grabs your brain, swap in your actual class material, and end like a good teacher instead of an infinite feed.**
+
+And because "just focus harder" has never once worked for anyone with ADHD, dyslexia or a brain that hates noise and surprises,
+Scrollege is built for those brains first. Everyone else gets a nicer app for free.
 
 ---
 
-## 🏆 60-second tour (for judges)
+## Try it in 60 seconds
 
-1. **Open the link or scan the QR.** Pick a look (☁️ Sky, 🌿 Sage, 🌙 Ink night) and answer 2 tiny questions. Scrolly sets up brain modes for you.
-2. **📱 Feed → 👀 Watch:** every reel is a **live 3D scene that acts out each caption line**: "dots on a graph" → dots pop in, "find the best line" → the line wiggles into place.
-3. **🎧 Listen:** a mini podcast with karaoke words, read by a **natural Cartesia voice**. Tap ⏸ to pause.
-4. **🎮 Play:** each reel has its **own 3D mini-game** (8 in total). Wrong answers come back later, so you actually learn them.
-5. **🧭 Explore:** AI fun facts, fresh AI news with sources, next topics and starter projects. Try the **🧪 Fit-the-line lab**.
-6. **🫧 (top bar):** feeling stressed? Box breathing, a desk stretch, an eye break, bubble wrap… gentle and never timed.
-7. **Finish a feed** and flip a **🃏 meme card**. Then open **👯 Squad** and your **✨ weekly recap**.
+1. Open [scrollege.vercel.app](https://scrollege.vercel.app). Pick a look and answer two tiny questions about how you like to learn.
+2. Watch a reel. The 3D scene isn't decoration: it acts out each caption, line by line.
+3. Tap 🎧 Listen. A warm narrator reads it, and the words light up karaoke-style. ⏸ when you need to.
+4. Tap 🎮 Play. Every reel turns into its own little 3D game made from that exact idea.
+5. Feeling fried? Hit 🫧 in the corner for a two-minute break that's actually good for you.
+6. Get to the end of the feed. Flip the card. Laugh a little. Go to bed.
 
-> The public demo uses the built-in sample decks so it's free to try. Run it with your own key to turn **any PDF, notes or photo** into a feed.
+<sub>The public link runs on built-in sample decks (Machine Learning basics + AI fun facts) so it's free for everyone to poke at.
+Run it with your own key and it turns any PDF, notes or photo into a feed.</sub>
 
 ---
 
-## 🤔 Why Scrollege?
+## Everything inside
 
-Studying apps usually ask you to change your brain to fit the app. Scrollege does it the other way round.
+<table>
+<tr>
+<td width="50%" valign="top">
 
-| Most study apps | Scrollege |
+### 📚 Turn your stuff into a feed
+- Upload a **PDF** (read right in your browser), paste **notes**, or snap a **photo** of a notebook page
+- Scanned PDFs with no text? AI reads the page pictures
+- Out come **5 snack-size reels**: captions, bullets, a mini podcast, a story version, a quiz, a jingle and a 3D scene
+- Every reel says where it came from: *"From bio-ch4.pdf, page 3"*
+- Saved on your device. Come back tomorrow, it's still there
+
+</td>
+<td width="50%" valign="top">
+
+### 👀 🎧 📖 🎮 Learn it your way
+- **Watch:** live 3D scenes that act out every sentence (10 of them, from best-fit lines to neural nets)
+- **Listen:** a two-character mini podcast with karaoke words and narrator vibes: chill, hype coach, cozy, gamer
+- **Read:** short bullets, *Simpler please*, bionic reading, a line ruler, read aloud
+- **Play:** a different mini-game on every reel, plus a simple tap quiz if 3D isn't your thing
+- **🎬 Watch 3D:** the full-screen version, narrated
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+### 🎮 8 tiny 3D games
+Quiz Run · Step Tower · Bubble Pop · Memory Match · Catch & Sort · Gone Fishing · Whack-a-Word · Hoop Shot
+
+All built from *your* deck. Get one wrong and it sneaks back in at the end, because that's how you actually learn it.
+Keyboard, swipe or big on-screen buttons, and no-timer mode makes every game wait for you.
+
+Bonus: the **🧪 Fit-the-line lab**. Tap dots onto a graph and watch real math fit a line in real time.
+Then add a weird dot and watch everything get dramatic.
+
+</td>
+<td valign="top">
+
+### 🤖 A study buddy that doesn't make stuff up
+- **💬 Ask Scrolly** answers only from your notes, with the line it came from. Not in your notes? It says so instead of guessing
+- **🧑‍🏫 Teach Scrolly:** explain it like Scrolly is five, get 1–3 stars and a kind hint
+- **🎵 Jingles:** turn a fact into a two-line song with a lo-fi, pop or lullaby beat
+- **📖 Story mode**, **🌎 translate** (Spanish, Chinese, Vietnamese, Hindi, Arabic) and **🔁 review tomorrow**
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+### 🧠 Built for different brains
+No diagnosis needed. A tiny quiz picks good defaults, and you can change anything later.
+
+| If this is hard… | Scrollege helps with… |
 |---|---|
-| A wall of text | 5 snack-size reels. One short caption at a time |
-| Still pictures | **Live 3D scenes** that act out every sentence |
-| One way to learn | 👀 Watch · 🎧 Listen · 📖 Read · 🎮 Play, on every reel |
-| AI that sometimes makes stuff up | **Every fact is checked against your notes word for word** and shows its page or line 📎 |
-| Robot voice | A warm, natural narrator (falls back to your device's best voice) |
-| Infinite scroll, streak guilt | A daily limit, a pet that naps (never dies), a celebration at the end |
-| Same screen for everyone | Calm mode, easy-read font, bionic reading, line ruler, tints, no-timer mode… |
+| Getting started | "Just 1 reel", study with Scrolly (a body double) |
+| Walls of text | Listen first, easy-read font, line ruler, tints |
+| Noise and surprises | 🍃 Calm mode: no motion, no sounds, a "next up" preview |
+| Timers | No-timer mode, everywhere |
+| Writing | Answer by voice |
+| English is new | Translate any deck |
 
----
+Plus big text, bionic reading, and **Scrollege Jr** for younger kids.
 
-## ✨ What it can do
+</td>
+<td valign="top">
 
-### 🍳 Cook a feed from anything
-- **📄 PDF:** read right in your browser, page by page. Scanned PDFs get read by AI vision. Only the text is sent, never the file.
-- **📝 Notes:** paste them in.
-- **📷 Photo:** snap your notebook or a textbook page.
+### 🫧 Feel okay
+The 🫧 button is on every screen. Tell Scrolly how you feel and it suggests a break:
 
-Scrolly turns it into **5 reels**, each with captions, bullet points, a mini podcast, a story version, a quiz, a jingle,
-a 3D scene, memory-match words and a source chip.
+box breathing · desk stretch · squeeze & let go · 20-20-20 eye break · 5-4-3-2-1 grounding · water + wiggle · bubble wrap (yes, real popping)
 
-### 🎬 Live 3D reels
-Every caption line is a "beat" with its own animation, so **the picture always matches the sentence**. 10 scenes cover the big ML ideas:
-sorting into bins, features → labels, clustering, train/test splits, classification vs regression, best-fit lines,
-gradient descent, overfitting, neural networks and next-token prediction. Tap **🎬 Watch 3D** for the full-screen version with narration.
+Each one is a few short steps, read out loud, pause or skip anytime. Nothing is timed against you.
+And if things feel heavier than a break can fix, it gently points you to a trusted adult or your school counselor.
 
-### 🧠 Brain modes (the quiz sets them for you)
-| If studying is hard because… | Scrollege turns on |
-|---|---|
-| 🚀 Getting started | "Just 1 reel", study with Scrolly (a body double) |
-| 🔤 Walls of text | Listen first with karaoke words, easy-read font, line ruler |
-| 🔊 Noise and surprises | 🍃 Calm mode: no motion, no sounds, slower beats, "Next: …" preview |
-| ⏱ Timers and pressure | No-timer mode. The 3D games wait for you |
-| ✍️ Writing | Answer by voice |
-| 🌎 English is new | Translate any deck |
+</td>
+</tr>
+<tr>
+<td valign="top">
 
-No diagnosis needed. Students pick what's true for them, and can change anything in **🧸 Me**.
+### 🌱 Sticky, but the healthy kind
+- A **daily limit** (5 reels by default), then a celebration instead of "one more"
+- **Spaced review:** missed reels come back tomorrow, then in 3 days, then a week
+- A **study buddy pet** that grows from egg to graduate as you learn. It naps when you're away. It never dies. No guilt streaks
+- **🃏 Meme cards:** finish a feed, flip an original funny-but-true study card, collect them in your binder
+- **✨ Weekly recap:** a story-style look back at your week
+- **👯 Squad:** friends, cheers and duels *(sample friends for now, real accounts come later)*
 
-### 🎮 8 tiny 3D games, made from your notes
-**Quiz Run · Step Tower · Bubble Pop · Memory Match · Catch & Sort · Gone Fishing · Whack-a-Word · Hoop Shot.**
-In 🎮 Play mode each reel features a different one, and there's always a **simple tap quiz** for accessibility.
-Every 3D action also has a big on-screen button, so keyboards and screen readers work too.
-
-**🧪 Fit-the-line lab:** tap to add dots and watch real least-squares math fit a line live. Add a weird dot and see what an outlier does.
-
-### 🗣 A voice that sounds human
-Read aloud, 🎧 Listen, 🎬 Watch 3D and the break steps use a natural **Cartesia** voice. Narrator vibes change its mood
-(😌 Chill, 📣 Hype, 🧸 Cozy, 🎮 Gamer), and ⏸ pauses it anytime. Soft, musical click sounds and lo-fi game music round it out.
-
-### 🫧 Need a break?
-Box breathing, a desk stretch, squeeze & let go, a 20-20-20 eye break, 5-4-3-2-1 grounding, water + wiggle, and bubble wrap to pop.
-Tell Scrolly how you feel and it suggests one. Every step can be paused or skipped; nothing is timed against you.
+</td>
+<td valign="top">
 
 ### 🧭 Explore
-🤯 AI fun facts reels, 📰 fresh AI news with a "why it matters" line and a source link, 🧭 next topics, and 🛠 beginner projects with steps.
+For when you're done with your notes but still curious:
+- 🤯 **AI fun facts** reels (gradient descent, overfitting, how chatbots write…)
+- 📰 **Fresh AI news** with a plain "why it matters" line and the source
+- 🧭 **Next topics** to learn, and 🛠 **starter projects** like "sleep vs grades" or a mini spam detector
 
-### 🃏 Meme cards, 👯 Squad and ✨ weekly recap
-Finish your feed, flip an original funny-but-true study card for your binder. Squad shows friends, cheers and duels,
-and the weekly recap is a story-style look back at your week. *(Squad and the recap show sample friends and numbers in this version: no accounts yet.)*
+### 🎨 Make it yours
+Three watercolor looks: ☁️ Sky, 🌿 Sage and 🌙 Ink night. Pick Mochi the chick or Pickle the frog as your buddy.
+Soft musical clicks, lo-fi game music, phone haptics. All of it switches off with one tap.
 
-### 🎨 Three looks
-☁️ Sky, 🌿 Sage and 🌙 Ink night: soft watercolor backgrounds with little doodles. Switch any time with 🎨.
+</td>
+</tr>
+</table>
+
+---
+
+## A peek
 
 <p align="center">
-  <img src="docs/shots/hello.png" width="15.5%" alt="Onboarding: pick your look">
-  <img src="docs/shots/read-sage.png" width="15.5%" alt="Read mode in Sage">
-  <img src="docs/shots/games-sage.png" width="15.5%" alt="Pick a game">
-  <img src="docs/shots/explore-ink.png" width="15.5%" alt="Explore in Ink night">
-  <img src="docs/shots/squad-sky.png" width="15.5%" alt="Squad">
-  <img src="docs/shots/recap-sage.png" width="15.5%" alt="Weekly recap">
+  <img src="docs/shots/hello.png" width="16%" alt="Hello screen: pick your look">
+  <img src="docs/shots/live3d-ink.png" width="16%" alt="Live 3D reel in Ink night">
+  <img src="docs/shots/read-sage.png" width="16%" alt="Read mode in Sage">
+  <img src="docs/shots/games-sage.png" width="16%" alt="Pick a game">
+  <img src="docs/shots/explore-ink.png" width="16%" alt="Explore">
+  <img src="docs/shots/meme-card.png" width="16%" alt="A meme study card">
 </p>
 <p align="center">
-  <img src="docs/shots/fit-lab.png" width="19%" alt="Fit-the-line lab">
-  <img src="docs/shots/quiz-run.png" width="19%" alt="Quiz Run 3D">
-  <img src="docs/shots/desktop.png" width="58%" alt="Scrollege on a laptop">
+  <img src="docs/shots/fit-lab.png" width="16%" alt="Fit-the-line lab">
+  <img src="docs/shots/break-sky.png" width="16%" alt="Need a break?">
+  <img src="docs/shots/squad-sky.png" width="16%" alt="Squad">
+  <img src="docs/shots/recap-sage.png" width="16%" alt="Weekly recap">
+  <img src="docs/shots/desktop.png" width="33%" alt="Scrollege on a laptop">
 </p>
 
 ---
 
-## 🛡 Never makes things up
+## How we keep the AI honest
 
-Scrollege is built so the AI can't sneak in facts that aren't in your notes:
-
-1. Your notes are split into numbered lines (or pages for a PDF).
-2. Claude writes the reels **and** has to copy, word for word, the line that backs up each fact.
-3. Our code checks every quote against your notes. Any reel with a made-up quote is thrown away and rewritten once.
-4. 💬 Ask only answers from your notes. If the answer isn't there, Scrolly says so instead of guessing.
+Study apps that invent facts are worse than no app. So Scrollege has a rule: **no quote, no reel.**
 
 ```mermaid
 flowchart LR
   A[📄 PDF / 📝 notes / 📷 photo] --> B[Numbered lines]
-  B --> C[Claude writes 5 reels + quotes]
-  C --> D{Every quote found<br/>word for word?}
-  D -- yes --> E[📱 Your feed + 3D scenes]
-  D -- no --> F[Drop + rewrite once] --> D
+  B --> C[Claude writes 5 reels<br/>+ an exact quote for every fact]
+  C --> D{Is every quote really<br/>in your notes, word for word?}
+  D -- yes --> E[📱 Your feed]
+  D -- no --> F[Throw that reel out<br/>and write it again] --> D
 ```
+
+That check is plain code, not another AI promising it was careful.
+Ask Scrolly follows the same idea: it answers from your notes or it says it doesn't know.
 
 ---
 
-## 🚀 Run it yourself
+## Under the hood
+
+- **Front end:** plain HTML, CSS and JavaScript with Vite. No framework. An installable PWA that works offline with the sample decks
+- **3D:** three.js. One live scene at a time, cleaned up as you scroll, so phones stay fast
+- **AI:** Claude (Sonnet builds decks and reads photos, Haiku answers quick questions), with structured outputs and the quote check above
+- **Voice:** Cartesia for the narrator. Every clip is cached and shared, so it stays on the free plan, and it falls back to your device's voice if anything hiccups
+- **Sounds:** made live with WebAudio. No audio files
+- **Privacy:** no accounts, no ads, no tracking. Your notes and settings stay on your device
+- **Tested:** 76 automated tests on phone sizes in all three looks plus desktop, including accessibility checks and all 10 3D scenes
+
+---
+
+## Run it yourself
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
+npm run dev        # → http://localhost:5173
 ```
 
-It works straight away in **demo mode** with the sample *ML Basics* deck. No keys needed.
+It runs right away with the sample decks. To cook decks from your own notes, add keys to `.env.local` (never committed) and set `DEMO_MODE=false`:
 
-To cook real decks from your own notes, put your keys in `.env.local` (git-ignored, never uploaded) and set `DEMO_MODE=false`:
-
-| Key | What it's for | Where to get it |
+| Key | What it unlocks | Get one at |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | Turning notes, PDFs and photos into decks; Ask; Teach Scrolly | [console.anthropic.com](https://console.anthropic.com) → API Keys |
-| `CARTESIA_API_KEY` *(optional)* | The natural narrator voice | [play.cartesia.ai](https://play.cartesia.ai) → API Keys |
+| `ANTHROPIC_API_KEY` | Turning PDFs, notes and photos into decks · Ask · Teach | [console.anthropic.com](https://console.anthropic.com) |
+| `CARTESIA_API_KEY` *(optional)* | The natural narrator voice | [play.cartesia.ai](https://play.cartesia.ai) |
 
-`sh scripts/set-keys.sh` saves the Anthropic key for you with hidden typing. Restart `npm run dev` after changing keys.
+<details>
+<summary><b>Keeping keys (and wallets) safe on a public link</b></summary>
 
-### 📱 On your phone
-- Open [scrollege.vercel.app](https://scrollege.vercel.app) / scan the QR code at the top, then **Share → Add to Home Screen** (iPhone) or **Install app** (Android), or
-- with `npm run dev` running, open the **Network** address Vite prints (same Wi-Fi).
+- The public demo uses no Claude key at all (`DEMO_MODE=true`).
+- If you add one: daily caps per visitor and in total, an optional access code (`AI_ACCESS_CODE`) so only your link gets real AI, and a spend limit in the Anthropic Console as the hard stop.
+- Cartesia: each sentence is generated once and shared from Vercel's cache, with daily caps (`TTS_DAILY_CHARS_PER_PERSON`, `TTS_DAILY_CHARS_TOTAL`).
+  If it's slow, out of credits or failing, the app switches to the device voice on its own. Keep the account on the free plan with no card and it can't charge you.
 
----
+</details>
 
-## 🔐 Keeping keys (and wallets) safe
+<details>
+<summary><b>Build on it</b></summary>
 
-**Claude:** the public demo runs in `DEMO_MODE=true`, so it uses no Claude key at all. If you add one to a hosted copy:
-daily caps per visitor (`AI_DAILY_PER_PERSON`, default 20 turns) and in total (`AI_DAILY_TOTAL`, default 300),
-an optional `AI_ACCESS_CODE` so only your link gets real AI, and a monthly spend limit in the Anthropic Console as the hard stop.
-
-**Cartesia voice:** built to stay on the free plan with lots of testers.
-- Each sentence becomes one cached clip that's **shared with everyone** through Vercel's cache, so repeats cost nothing.
-- Strict daily caps: `TTS_DAILY_CHARS_PER_PERSON` (default 2,500) and `TTS_DAILY_CHARS_TOTAL` (default 15,000).
-- If Cartesia is slow, out of credits or failing, the app **switches to the device's own voice automatically** and stops asking Cartesia for the day.
-- Keep your Cartesia account on the free plan **without a payment method**, and it can't charge you anything.
-
-Keys only ever live in `.env.local` and in Vercel's hidden settings, never in the code or on GitHub.
-
----
-
-## 🧩 Build on it
-
-| I want to… | Do this |
+| I want to… | Look here |
 |---|---|
-| Add a fun-facts pack | Drop a JSON file in [`public/packs/`](public/packs/) (copy `ai-fun-facts.json`) and list it in `index.json` |
-| Add a 3D scene | Add a kind to `V3K` in [`src/app.js`](src/app.js) with one action per beat, then add it to the `v3` list in [`api/_lib/deck.ts`](api/_lib/deck.ts) |
-| Add a mini-game | Add it to `GAMES` and `playGame()` in `src/app.js` (the 8 games are good templates) |
-| Add a break activity | Add a row to `RELAX` in `src/app.js`: steps are `[text, seconds]` |
-| Add a look | Add it to `LOOKS` and `deco()` in `src/app.js` and give it an `html.th-…` block in [`src/styles.css`](src/styles.css) |
-| Change what the AI writes | Prompts live in [`api/deck.ts`](api/deck.ts); the deck shape is the Zod schema in `api/_lib/deck.ts` |
-| Add an AI feature | Copy [`api/jingle.ts`](api/jingle.ts): `guard()` → `aiBudget()` → `structured()` |
+| Add a fun-facts pack | Drop a JSON file in [`public/packs/`](public/packs/) and list it in `index.json` |
+| Add a 3D scene | Add a kind to `V3K` in [`src/app.js`](src/app.js) (one action per caption line), then list it in [`api/_lib/deck.ts`](api/_lib/deck.ts) |
+| Add a mini-game | `GAMES` + `playGame()` in `src/app.js`. The 8 games are good templates |
+| Add a break activity | One row in `RELAX`: steps are `[text, seconds]` |
+| Add a look | `LOOKS` + `deco()` in `src/app.js`, and an `html.th-…` block in [`src/styles.css`](src/styles.css) |
+| Change what the AI writes | [`api/deck.ts`](api/deck.ts) (prompt) and `api/_lib/deck.ts` (deck shape) |
 
 ```
-index.html          app shell
-src/app.js          the app: onboarding, feed, live 3D, games, breaks, Explore, cards, Squad, Me
-src/styles.css      the approved design + phone/desktop layout
-src/api.js          talks to /api (falls back to demo offline)
-src/store.js        on-device saving + spaced review
-api/*.ts            source · deck · ask · teach · jingle · translate · tts (Vercel functions)
-public/packs/       ready-made reel packs (JSON)
-tests/              Playwright (phone in 3 looks + desktop, axe, mockup match) and unit tests
-reference/          the approved mockups and build prompts
-DECISIONS.md        every design and build decision, in plain words
+src/app.js       the app        api/*.ts       Vercel functions (deck, ask, teach, jingle, translate, tts)
+src/styles.css   the look       public/packs/  ready-made reel packs
+tests/           Playwright + unit tests       DECISIONS.md   every decision, in plain words
 ```
 
-### Tests
-```bash
-npm test            # grounding check, spaced review, AI limits
-npm run test:e2e    # Playwright: every mode, all 10 3D scenes, all games, breaks, voice + pause, accessibility, mockup match (muted)
-```
+Tests: `npm test` (quote check, review timing, AI limits) and `npm run test:e2e` (the whole app, muted).
+Every push to `main` deploys to [scrollege.vercel.app](https://scrollege.vercel.app) on its own.
 
-### Updating the live site
-The live site is connected to this repo: **every push to `main` deploys to [scrollege.vercel.app](https://scrollege.vercel.app) automatically**.
+</details>
 
 ---
 
-## 🔬 Why it works (in plain words)
+## Why it works (no made-up stats, promise)
 
-- **Retrieval practice:** quizzes, games and Teach Scrolly make you pull an idea out of your head, which helps it stick better than re-reading.
-- **Spaced repetition:** reels you miss or save come back tomorrow, then in 3 days, then a week.
-- **Pictures + words:** every idea comes with a moving 3D scene, a voice, a game or a story, not just text.
-- **Healthy sticky:** a daily limit and a celebration at the end, instead of endless scrolling.
+- **Pulling an idea out of your head beats re-reading it.** That's why every reel ends in a quiz, a game or "teach it back".
+- **Spacing beats cramming.** Things you miss come back on another day, not five minutes later.
+- **Pictures plus words beat words alone.** Every idea gets a moving scene, a voice or a story.
+- **Stopping is a feature.** A daily limit and a real ending, so you close the app feeling done, not drained.
 
----
+<br>
 
-## 🛠 Made with
+<div align="center">
 
-Vanilla HTML/CSS/JS + [Vite](https://vite.dev) · [three.js](https://threejs.org) · [pdf.js](https://mozilla.github.io/pdf.js/) ·
-[Claude](https://www.anthropic.com) (Sonnet for decks and photos, Haiku for quick answers) · [Cartesia](https://cartesia.ai) voice ·
-Vercel · WebAudio for sounds and music.
+Made with too much bubble tea, three.js, [Claude](https://www.anthropic.com) and [Cartesia](https://cartesia.ai).
 
-Privacy: no accounts, no ads. Your notes, decks and settings stay on your device.
+<img src="docs/shots/live3d-sky.png" width="140" alt="">
+
+**[Go scroll something useful →](https://scrollege.vercel.app)**
+
+</div>
